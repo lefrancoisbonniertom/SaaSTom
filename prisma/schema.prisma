@@ -1,0 +1,47 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Client {
+  id         String     @id @default(cuid())
+  name       String
+  work       String
+  amount     Int        @default(0)
+  status     String     @default("Prospect")
+  contact    String
+  nextAction String
+  documents  Document[]
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+}
+
+model Document {
+  id         String   @id @default(cuid())
+  title      String
+  type       String
+  content    String
+  clientName String?
+  clientId   String?
+  client     Client?  @relation(fields: [clientId], references: [id], onDelete: SetNull)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Task {
+  id        String   @id @default(cuid())
+  title     String
+  done      Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Usage {
+  id            String   @id @default("default")
+  aiCreditsUsed Int      @default(0)
+  updatedAt     DateTime @updatedAt
+}

@@ -1,0 +1,147 @@
+"use client";
+
+import { FileText, Plus, Search } from "lucide-react";
+import { useMemo, useState } from "react";
+import { useAppState } from "@/components/app-state-provider";
+
+export function DocumentsWorkspace() {
+  const { state, generateDocument } = useAppState();
+  const [query, setQuery] = useState("");
+  const [prompt, setPrompt] = useState("");
+  const [selectedId, setSelectedId] = useState("");
+  const [isCreating, setIsCreating] = useState(false);
+
+  const filteredDocuments = useMemo(() => {
+    const normalizedQuery = query.trim().toLowerCase();
+
+    if (!normalizedQuery) {
+      return state.documents;
+    }
+
+    return state.documents.filter((document) =>
+      [document.title, document.type, document.clientName, document.content]
+        .join(" ")
+        .toLowerCase()
+        .includes(normalizedQuery),
+    );
+  }, [query, state.documents]);
+
+  const selectedDocument =
+    state.documents.find((document) => document.id === selectedId) ??
+    state.documents[0];
+
+  async function handleCreate() {
+    const cleanedPrompt = prompt.trim();
+
+    if (!cleanedPrompt) {
+      return;
+    }
+
+    setIsCreating(true);
+
+    try {
+      const document = await generateDocument(cleanedPrompt, "Brouillon");
+      setSelectedId(document.id);
+      setPrompt("");
+    } finally {
+      setIsCreating(false);
+    }
+  }
+
+  return (
+    <div className="grid gap-4 xl:grid-cols-[0.8fr_1.2fr]">
+      <section className="space-y-4">
+        <div className="rounded-lg border border-[#dfe4d8] bg-white p-4 shadow-[0_1px_0_rgba(23,32,27,0.04)] sm:p-5">
+          <div className="flex items-center gap-2">
+            <Plus className="size-4 text-[#e65f3c]" />
+            <h3 className="text-lg font-semibold">Nouveau brouillon</h3>
+          </div>
+          <textarea
+            className="mt-4 min-h-32 w-full resize-none rounded-md border border-[#dfe4d8] bg-[#fbfcf8] p-3 text-sm leading-6 outline-none focus:border-[#4f6f57]"
+            onChange={(event) => setPrompt(event.target.value)}
+            placeholder="Exemple : Creer un email de relance pour Atelier Moreau."
+            value={prompt}
+          />
+          <button
+            className="mt-3 flex h-10 w-full items-center justify-center gap-2 rounded-md bg-[#17201b] px-4 text-sm font-semibold text-white transition hover:bg-[#2a352e] disabled:cursor-not-allowed disabled:opacity-50"
+            disabled={!prompt.trim() || isCreating}
+            onClick={() => void handleCreate()}
+            type="button"
+          >
+            <FileText className="size-4" />
+            {isCreating ? "Creation..." : "Creer le document"}
+          </button>
+        </div>
+
+        <div className="rounded-lg border border-[#dfe4d8] bg-white p-4 shadow-[0_1px_0_rgba(23,32,27,0.04)] sm:p-5">
+          <div className="relative">
+            <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[#73806c]" />
+            <input
+              className="h-10 w-full rounded-md border border-[#dfe4d8] bg-[#fbfcf8] pl-9 pr-3 text-sm outline-none focus:border-[#4f6f57]"
+              onChange={(event) => setQuery(event.target.value)}
+              placeholder="Rechercher document..."
+              type="search"
+              value={query}
+            />
+          </div>
+
+          <div className="mt-4 space-y-3">
+            {filteredDocuments.map((document) => (
+              <button
+                className={`flex w-full items-start gap-3 rounded-lg border p-3 text-left transition ${
+                  selectedDocument?.id === document.id
+                    ? "border-[#4f6f57] bg-[#f3f7ec]"
+                    : "border-[#dfe4d8] bg-[#fbfcf8] hover:border-[#b9c4ad]"
+                }`}
+                key={document.id}
+                onClick={() => setSelectedId(document.id)}
+                type="button"
+              >
+                <div className="grid size-9 shrink-0 place-items-center rounded-md bg-white text-[#4f6f57]">
+                  <FileText className="size-4" />
+                </div>
+                <div className="min-w-0">
+                  <p className="truncate text-sm font-semibold">
+                    {document.title}
+                  </p>
+                  <p className="mt-1 text-xs font-medium text-[#66705f]">
+                    {document.type} · {document.createdAt}
+                  </p>
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="rounded-lg border border-[#dfe4d8] bg-white p-4 shadow-[0_1px_0_rgba(23,32,27,0.04)] sm:p-5">
+        {selectedDocument ? (
+          <>
+            <p className="text-sm font-medium text-[#66705f]">
+              {selectedDocument.type}
+            </p>
+            <h3 className="mt-1 text-xl font-semibold">
+              {selectedDocument.title}
+            </h3>
+            <p className="mt-2 text-sm text-[#66705f]">
+              {selectedDocument.clientName ?? "Sans client lie"} ·{" "}
+              {selectedDocument.createdAt}
+            </p>
+            <pre className="mt-5 min-h-96 whitespace-pre-wrap rounded-md border border-[#dfe4d8] bg-[#fbfcf8] p-4 text-sm leading-6 text-[#384438]">
+              {selectedDocument.content}
+            </pre>
+          </>
+        ) : (
+          <div className="grid min-h-96 place-items-center rounded-md border border-dashed border-[#dfe4d8] bg-[#fbfcf8] p-6 text-center">
+            <div>
+              <FileText className="mx-auto size-8 text-[#8c9785]" />
+              <p className="mt-3 text-sm font-medium text-[#66705f]">
+                Aucun document pour le moment.
+              </p>
+            </div>
+          </div>
+        )}
+      </section>
+    </div>
+  );
+}
