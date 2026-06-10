@@ -1,5 +1,6 @@
 import Stripe from "stripe";
 import { prisma } from "@/lib/server/prisma";
+import { sendPlanCanceledEmail, sendPlanUpgradeEmail } from "@/lib/server/email";
 
 export const runtime = "nodejs";
 
@@ -44,10 +45,12 @@ export async function POST(request: Request) {
       const priceId = sub.items.data[0]?.price.id ?? "";
       const plan = planFromPriceId(priceId);
 
-      await prisma.user.update({
+      const user = await prisma.user.update({
         where: { id: userId },
         data: { plan, stripeSubscriptionId: sub.id },
       });
+
+      await sendPlanUpgradeEmail(user.email, plan);
       break;
     }
 
@@ -71,10 +74,12 @@ export async function POST(request: Request) {
       const userId = sub.metadata?.userId;
       if (!userId) break;
 
-      await prisma.user.update({
+      const user = await prisma.user.update({
         where: { id: userId },
         data: { plan: "free", stripeSubscriptionId: null },
       });
+
+      await sendPlanCanceledEmail(user.email);
       break;
     }
   }
