@@ -17,7 +17,10 @@ export default async function proxy(request: NextRequest) {
 
   const { pathname } = request.nextUrl;
   const isAuthPage =
-    pathname.startsWith("/login") || pathname.startsWith("/register");
+    pathname.startsWith("/login") ||
+    pathname.startsWith("/register") ||
+    pathname.startsWith("/forgot-password") ||
+    pathname.startsWith("/reset-password");
 
   const hasActiveSession = request.cookies.has(SESSION_MARKER_COOKIE);
 

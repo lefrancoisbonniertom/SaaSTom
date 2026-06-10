@@ -18,10 +18,11 @@ model User {
   createdAt            DateTime @default(now())
   updatedAt            DateTime @updatedAt
 
-  clients   Client[]
-  documents Document[]
-  tasks     Task[]
-  usage     Usage?
+  clients             Client[]
+  documents           Document[]
+  tasks               Task[]
+  usage               Usage?
+  passwordResetTokens PasswordResetToken[]
 }
 
 model Client {
@@ -68,4 +69,13 @@ model Usage {
   user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   aiCreditsUsed Int      @default(0)
   updatedAt     DateTime @updatedAt
+}
+
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
 }

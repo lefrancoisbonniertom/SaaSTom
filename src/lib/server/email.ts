@@ -53,6 +53,30 @@ export async function sendPlanUpgradeEmail(to: string, plan: string) {
   });
 }
 
+export async function sendPasswordResetEmail(to: string, resetUrl: string) {
+  if (!resend) return;
+
+  await resend.emails.send({
+    from: FROM_EMAIL,
+    to,
+    subject: "Réinitialise ton mot de passe SaaSTom",
+    html: wrapEmail(
+      "Réinitialisation du mot de passe",
+      `
+        <p style="font-size: 14px; line-height: 22px; color: #384438;">
+          Tu as demandé à réinitialiser le mot de passe de ton compte SaaSTom. Clique sur le bouton ci-dessous pour choisir un nouveau mot de passe.
+        </p>
+        <a href="${resetUrl}" style="display: inline-block; margin-top: 12px; background: #e65f3c; color: #ffffff; text-decoration: none; font-size: 14px; font-weight: 600; padding: 10px 18px; border-radius: 6px;">
+          Réinitialiser mon mot de passe
+        </a>
+        <p style="margin-top: 16px; font-size: 13px; line-height: 20px; color: #8c9785;">
+          Ce lien est valable 1 heure. Si tu n'es pas à l'origine de cette demande, tu peux ignorer cet email.
+        </p>
+      `,
+    ),
+  });
+}
+
 export async function sendPlanCanceledEmail(to: string) {
   if (!resend) return;
 

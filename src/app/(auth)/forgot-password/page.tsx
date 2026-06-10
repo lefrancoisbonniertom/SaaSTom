@@ -2,17 +2,13 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
-import { markSessionActive } from "@/lib/session-marker";
 
-export default function LoginPage() {
-  const router = useRouter();
+export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [sent, setSent] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -20,19 +16,12 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const result = await signIn("credentials", {
-        email,
-        password,
-        redirect: false,
+      await fetch("/api/auth/forgot-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
       });
-
-      if (result?.error) {
-        setError("Email ou mot de passe incorrect.");
-      } else {
-        markSessionActive();
-        router.push("/dashboard");
-        router.refresh();
-      }
+      setSent(true);
     } catch {
       setError("Une erreur est survenue. Réessaie.");
     } finally {
@@ -40,14 +29,25 @@ export default function LoginPage() {
     }
   }
 
+  if (sent) {
+    return (
+      <section className="rounded-xl border border-white/75 bg-white/80 p-8 shadow-[0_18px_55px_rgba(27,43,37,0.08)] backdrop-blur">
+        <h1 className="text-2xl font-semibold text-[#17201b]">Vérifie ta boîte mail</h1>
+        <p className="mt-3 text-sm leading-6 text-[#62736b]">
+          Si un compte existe pour <strong>{email}</strong>, tu vas recevoir un email avec un lien pour réinitialiser ton mot de passe. Pense à vérifier tes spams.
+        </p>
+        <Link className="mt-6 inline-block text-sm font-medium text-[#e65f3c] hover:underline" href="/login">
+          Retour à la connexion
+        </Link>
+      </section>
+    );
+  }
+
   return (
     <section className="rounded-xl border border-white/75 bg-white/80 p-8 shadow-[0_18px_55px_rgba(27,43,37,0.08)] backdrop-blur">
-      <h1 className="text-2xl font-semibold text-[#17201b]">Connexion</h1>
+      <h1 className="text-2xl font-semibold text-[#17201b]">Mot de passe oublié</h1>
       <p className="mt-1 text-sm text-[#62736b]">
-        Pas encore de compte ?{" "}
-        <Link className="font-medium text-[#e65f3c] hover:underline" href="/register">
-          Créer un compte
-        </Link>
+        Indique ton email, on t&apos;envoie un lien pour le réinitialiser.
       </p>
 
       <form className="mt-6 space-y-4" onSubmit={handleSubmit}>
@@ -67,27 +67,6 @@ export default function LoginPage() {
           />
         </div>
 
-        <div>
-          <div className="mb-1.5 flex items-center justify-between">
-            <label className="block text-sm font-medium text-[#17201b]" htmlFor="password">
-              Mot de passe
-            </label>
-            <Link className="text-sm font-medium text-[#e65f3c] hover:underline" href="/forgot-password">
-              Mot de passe oublié ?
-            </Link>
-          </div>
-          <input
-            autoComplete="current-password"
-            className="h-10 w-full rounded-md border border-[#dfe4d8] bg-white px-3 text-sm outline-none transition focus:border-[#4f6f57] focus:ring-2 focus:ring-[#4f6f57]/20"
-            id="password"
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="••••••••"
-            required
-            type="password"
-            value={password}
-          />
-        </div>
-
         {error ? (
           <p className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-600">{error}</p>
         ) : null}
@@ -98,8 +77,12 @@ export default function LoginPage() {
           type="submit"
         >
           {loading ? <Loader2 className="size-4 animate-spin" /> : null}
-          Se connecter
+          Envoyer le lien
         </button>
+
+        <Link className="block text-center text-sm font-medium text-[#526052] hover:underline" href="/login">
+          Retour à la connexion
+        </Link>
       </form>
     </section>
   );
