@@ -1,6 +1,15 @@
 "use client";
 
-import { Check, Pencil, Plus, Search, Trash2, Users, X } from "lucide-react";
+import {
+  Check,
+  Download,
+  Pencil,
+  Plus,
+  Search,
+  Trash2,
+  Users,
+  X,
+} from "lucide-react";
 import { useMemo, useState, type FormEvent } from "react";
 import { useAppState } from "@/components/app-state-provider";
 import {
@@ -195,6 +204,14 @@ export function ClientsWorkspace() {
               value={query}
             />
           </div>
+          <a
+            className="flex h-10 items-center justify-center gap-2 rounded-md border border-[#dfe4d8] bg-white px-4 text-sm font-semibold text-[#17201b] transition hover:border-[#b9c4ad] sm:whitespace-nowrap"
+            download
+            href="/api/clients/export"
+          >
+            <Download className="size-4" />
+            Exporter CSV
+          </a>
           <button
             className="flex h-10 items-center justify-center gap-2 rounded-md bg-[#17201b] px-4 text-sm font-semibold text-white transition hover:bg-[#2a352e] sm:whitespace-nowrap"
             onClick={() => setShowForm((value) => !value)}

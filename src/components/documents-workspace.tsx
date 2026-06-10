@@ -126,15 +126,25 @@ export function DocumentsWorkspace() {
         </div>
 
         <div className="rounded-lg border border-[#dfe4d8] bg-white p-4 shadow-[0_1px_0_rgba(23,32,27,0.04)] sm:p-5">
-          <div className="relative">
-            <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[#73806c]" />
-            <input
-              className="h-10 w-full rounded-md border border-[#dfe4d8] bg-[#fbfcf8] pl-9 pr-3 text-sm outline-none focus:border-[#4f6f57]"
-              onChange={(event) => setQuery(event.target.value)}
-              placeholder="Rechercher document..."
-              type="search"
-              value={query}
-            />
+          <div className="flex gap-2">
+            <div className="relative flex-1">
+              <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[#73806c]" />
+              <input
+                className="h-10 w-full rounded-md border border-[#dfe4d8] bg-[#fbfcf8] pl-9 pr-3 text-sm outline-none focus:border-[#4f6f57]"
+                onChange={(event) => setQuery(event.target.value)}
+                placeholder="Rechercher document..."
+                type="search"
+                value={query}
+              />
+            </div>
+            <a
+              className="flex h-10 shrink-0 items-center justify-center gap-2 rounded-md border border-[#dfe4d8] bg-white px-3 text-sm font-semibold text-[#17201b] transition hover:border-[#b9c4ad]"
+              download
+              href="/api/documents/export"
+            >
+              <Download className="size-4" />
+              CSV
+            </a>
           </div>
 
           <div className="mt-4 space-y-3">
