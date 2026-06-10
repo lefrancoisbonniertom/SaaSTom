@@ -15,6 +15,7 @@ model User {
   plan                 String   @default("free")
   stripeCustomerId     String?  @unique
   stripeSubscriptionId String?  @unique
+  webhookUrl           String?
   createdAt            DateTime @default(now())
   updatedAt            DateTime @updatedAt
 

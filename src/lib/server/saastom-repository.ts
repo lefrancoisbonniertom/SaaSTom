@@ -1,5 +1,6 @@
 import Groq from "groq-sdk";
 import { prisma } from "@/lib/server/prisma";
+import { dispatchWebhook } from "@/lib/server/webhook";
 import {
   buildDemoDocument,
   type ClientRecord,
@@ -267,7 +268,10 @@ export async function createClient(userId: string, input: NewClientInput) {
     },
   });
 
-  return toClientRecord(client);
+  const record = toClientRecord(client);
+  await dispatchWebhook(userId, "client.created", record);
+
+  return record;
 }
 
 export async function updateClient(
@@ -360,7 +364,10 @@ export async function generateDocument(
     create: { userId, aiCreditsUsed: 1 },
   });
 
-  return toDocumentRecord(document);
+  const record = toDocumentRecord(document);
+  await dispatchWebhook(userId, "document.created", record);
+
+  return record;
 }
 
 export async function toggleTask(userId: string, taskId: string) {
