@@ -2,10 +2,12 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useSession } from "next-auth/react";
 import {
   Bot,
   CircleDollarSign,
   FileText,
+  Gauge,
   LayoutDashboard,
   Plus,
   Search,
@@ -29,6 +31,8 @@ const navigation: Array<{
   { href: "/settings", label: "Réglages", icon: Settings },
   { href: "/pricing", label: "Tarifs", icon: WalletCards },
 ];
+
+const adminNavigation = { href: "/admin", label: "Suivi", icon: Gauge };
 
 function isActiveRoute(pathname: string, href: string) {
   return pathname === href || pathname.startsWith(`${href}/`);
@@ -88,6 +92,11 @@ function NavLink({
 
 export function AppShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
+  const { data: session } = useSession();
+  const isAdmin =
+    !!process.env.NEXT_PUBLIC_ADMIN_EMAIL &&
+    session?.user?.email === process.env.NEXT_PUBLIC_ADMIN_EMAIL;
+  const items = isAdmin ? [...navigation, adminNavigation] : navigation;
 
   return (
     <main className="min-h-screen w-full overflow-x-hidden bg-[#f4f7f4] text-[#17201b]">
@@ -96,7 +105,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           <Brand tone="light" />
 
           <nav className="mt-8 space-y-1">
-            {navigation.map((item) => (
+            {items.map((item) => (
               <NavLink
                 active={isActiveRoute(pathname, item.href)}
                 href={item.href}
@@ -128,7 +137,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           <header className="mb-5 border-b border-[#dfe4d8] pb-4 lg:hidden">
             <Brand />
             <nav className="mt-4 flex flex-wrap gap-2 pb-1">
-              {navigation.map((item) => (
+              {items.map((item) => (
                 <Link
                   className={`flex h-10 shrink-0 items-center gap-2 rounded-md border px-3 text-sm font-medium ${
                     isActiveRoute(pathname, item.href)
