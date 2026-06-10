@@ -4,6 +4,7 @@ import {
   buildDemoDocument,
   type ClientRecord,
   type ClientStatus,
+  type DashboardStats,
   type DocumentRecord,
   type SaaSTomState,
   type TaskRecord,
@@ -174,6 +175,40 @@ function toTaskRecord(task: {
   };
 }
 
+function computeDashboardStats(
+  clients: { amount: number; status: string; createdAt: Date }[],
+  documents: { createdAt: Date }[],
+): DashboardStats {
+  const dayMs = 24 * 60 * 60 * 1000;
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const dailyActivity: number[] = [];
+  for (let i = 6; i >= 0; i -= 1) {
+    const dayStart = new Date(today.getTime() - i * dayMs);
+    const dayEnd = new Date(dayStart.getTime() + dayMs);
+    const count =
+      clients.filter((client) => client.createdAt >= dayStart && client.createdAt < dayEnd).length +
+      documents.filter((document) => document.createdAt >= dayStart && document.createdAt < dayEnd).length;
+    dailyActivity.push(count);
+  }
+
+  const weekStart = new Date(today.getTime() - 6 * dayMs);
+  const newClientsThisWeek = clients.filter((client) => client.createdAt >= weekStart).length;
+
+  const totalRevenue = clients.reduce((sum, client) => sum + client.amount, 0);
+  const signedRevenue = clients
+    .filter((client) => client.status === "Signé")
+    .reduce((sum, client) => sum + client.amount, 0);
+
+  return {
+    dailyActivity,
+    activityThisWeek: dailyActivity.reduce((sum, count) => sum + count, 0),
+    newClientsThisWeek,
+    signedRevenuePercent: totalRevenue > 0 ? Math.round((signedRevenue / totalRevenue) * 100) : 0,
+  };
+}
+
 async function ensureUsage(userId: string) {
   const existing = seedPromises.get(userId);
   if (existing) return existing;
@@ -215,6 +250,7 @@ export async function getSaaSTomState(userId: string): Promise<SaaSTomState> {
     documents: documents.map(toDocumentRecord),
     tasks: tasks.map(toTaskRecord),
     aiCreditsUsed: usage?.aiCreditsUsed ?? 0,
+    stats: computeDashboardStats(clients, documents),
   };
 }
 

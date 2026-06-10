@@ -26,11 +26,19 @@ export type TaskRecord = {
   done: boolean;
 };
 
+export type DashboardStats = {
+  dailyActivity: number[];
+  activityThisWeek: number;
+  newClientsThisWeek: number;
+  signedRevenuePercent: number;
+};
+
 export type SaaSTomState = {
   clients: ClientRecord[];
   documents: DocumentRecord[];
   tasks: TaskRecord[];
   aiCreditsUsed: number;
+  stats: DashboardStats;
 };
 
 export const promptTemplates = [
@@ -73,4 +81,10 @@ export const emptyState: SaaSTomState = {
   documents: [],
   tasks: [],
   aiCreditsUsed: 0,
+  stats: {
+    dailyActivity: [0, 0, 0, 0, 0, 0, 0],
+    activityThisWeek: 0,
+    newClientsThisWeek: 0,
+    signedRevenuePercent: 0,
+  },
 };

@@ -34,8 +34,6 @@ type Metric = {
   accent: string;
 };
 
-const activityBars = [44, 68, 38, 82, 56, 74, 92];
-
 export function DashboardOverview() {
   const { state, generateDocument, toggleTask, addTask, deleteTask } = useAppState();
   const [prompt, setPrompt] = useState("");
@@ -55,16 +53,16 @@ export function DashboardOverview() {
     {
       label: "Revenus suivis",
       value: formatCurrency(totalRevenue),
-      change: "+18%",
-      note: "pipeline actif",
+      change: `${state.stats.signedRevenuePercent}%`,
+      note: "du pipeline signé",
       icon: WalletCards,
       accent: "bg-[#dff7e7] text-[#17613b]",
     },
     {
       label: "Clients actifs",
       value: String(state.clients.length),
-      change: "+5",
-      note: "contacts qualifiés",
+      change: `+${state.stats.newClientsThisWeek}`,
+      note: "cette semaine",
       icon: Users,
       accent: "bg-[#def3ff] text-[#155a78]",
     },
@@ -380,22 +378,29 @@ export function DashboardOverview() {
               <h3 className="mt-1 text-xl font-semibold">7 derniers jours</h3>
             </div>
             <p className="rounded-md bg-white/10 px-2 py-1 text-xs font-semibold text-[#b9e885]">
-              +24%
+              {state.stats.activityThisWeek} action
+              {state.stats.activityThisWeek > 1 ? "s" : ""}
             </p>
           </div>
           <div className="flex h-40 items-end gap-2">
-            {activityBars.map((height, index) => (
-              <div
-                className="flex h-full flex-1 items-end rounded-md bg-white/[0.08]"
-                data-chart-bar="activity"
-                key={`${height}-${index}`}
-              >
+            {state.stats.dailyActivity.map((count, index) => {
+              const maxActivity = Math.max(...state.stats.dailyActivity, 1);
+              const height =
+                count > 0 ? Math.max((count / maxActivity) * 100, 12) : 4;
+
+              return (
                 <div
-                  className="w-full rounded-md bg-[#58c7ff]"
-                  style={{ height: `${height}%` }}
-                />
-              </div>
-            ))}
+                  className="flex h-full flex-1 items-end rounded-md bg-white/[0.08]"
+                  data-chart-bar="activity"
+                  key={index}
+                >
+                  <div
+                    className="w-full rounded-md bg-[#58c7ff]"
+                    style={{ height: `${height}%` }}
+                  />
+                </div>
+              );
+            })}
           </div>
         </section>
 
