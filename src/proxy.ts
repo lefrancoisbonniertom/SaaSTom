@@ -22,12 +22,18 @@ export default async function proxy(request: NextRequest) {
     pathname.startsWith("/forgot-password") ||
     pathname.startsWith("/reset-password");
 
+  const isPublicPage =
+    isAuthPage ||
+    pathname.startsWith("/mentions-legales") ||
+    pathname.startsWith("/cgv") ||
+    pathname.startsWith("/confidentialite");
+
   const hasActiveSession = request.cookies.has(SESSION_MARKER_COOKIE);
 
   // The session-token cookie outlives the browser session, but our marker
   // cookie doesn't: if the JWT is still valid but the marker is gone, the
   // browser was closed and reopened since login, so force a logout.
-  if (token && !hasActiveSession && !isAuthPage) {
+  if (token && !hasActiveSession && !isPublicPage) {
     const response = NextResponse.redirect(new URL("/login", request.url));
     response.cookies.delete(
       secureCookie ? "__Secure-authjs.session-token" : "authjs.session-token",
@@ -37,7 +43,7 @@ export default async function proxy(request: NextRequest) {
 
   const isLoggedIn = !!token && hasActiveSession;
 
-  if (!isLoggedIn && !isAuthPage) {
+  if (!isLoggedIn && !isPublicPage) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 

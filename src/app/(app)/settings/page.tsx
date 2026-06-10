@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/server/prisma";
 import { PageHeader } from "@/components/page-header";
@@ -66,6 +67,18 @@ export default async function SettingsPage() {
       </div>
       <SubscriptionSection plan={plan} />
       <SettingsActions />
+
+      <nav className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-[#90a39a]">
+        <Link className="hover:text-[#17201b] hover:underline" href="/mentions-legales">
+          Mentions légales
+        </Link>
+        <Link className="hover:text-[#17201b] hover:underline" href="/cgv">
+          CGV
+        </Link>
+        <Link className="hover:text-[#17201b] hover:underline" href="/confidentialite">
+          Confidentialité
+        </Link>
+      </nav>
     </>
   );
 }
