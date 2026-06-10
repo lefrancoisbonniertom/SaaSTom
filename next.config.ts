@@ -6,5 +6,7 @@ const nextConfig: NextConfig = {
 };
 
 export default withSentryConfig(nextConfig, {
+  org: "lefrancois-bonnier-tom-ei",
+  project: "saastom",
   silent: true,
 });
