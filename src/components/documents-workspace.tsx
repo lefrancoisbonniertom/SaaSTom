@@ -1,16 +1,24 @@
 "use client";
 
-import { FileText, Plus, Search } from "lucide-react";
+import { Download, FileText, Mail, Plus, Search } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useAppState } from "@/components/app-state-provider";
 
+type SendFeedback = {
+  documentId: string;
+  type: "success" | "error";
+  text: string;
+};
+
 export function DocumentsWorkspace() {
-  const { state, generateDocument } = useAppState();
+  const { state, generateDocument, sendDocumentEmail } = useAppState();
   const [query, setQuery] = useState("");
   const [prompt, setPrompt] = useState("");
   const [draftClientId, setDraftClientId] = useState("");
   const [selectedId, setSelectedId] = useState("");
   const [isCreating, setIsCreating] = useState(false);
+  const [isSending, setIsSending] = useState(false);
+  const [sendFeedback, setSendFeedback] = useState<SendFeedback | null>(null);
 
   const filteredDocuments = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase();
@@ -51,6 +59,32 @@ export function DocumentsWorkspace() {
       setDraftClientId("");
     } finally {
       setIsCreating(false);
+    }
+  }
+
+  function handleSelectDocument(documentId: string) {
+    setSelectedId(documentId);
+    setSendFeedback(null);
+  }
+
+  async function handleSendEmail() {
+    if (!selectedDocument) {
+      return;
+    }
+
+    setIsSending(true);
+
+    try {
+      const message = await sendDocumentEmail(selectedDocument.id);
+      setSendFeedback({ documentId: selectedDocument.id, type: "success", text: message });
+    } catch (error) {
+      setSendFeedback({
+        documentId: selectedDocument.id,
+        type: "error",
+        text: error instanceof Error ? error.message : "Une erreur est survenue.",
+      });
+    } finally {
+      setIsSending(false);
     }
   }
 
@@ -112,7 +146,7 @@ export function DocumentsWorkspace() {
                     : "border-[#dfe4d8] bg-[#fbfcf8] hover:border-[#b9c4ad]"
                 }`}
                 key={document.id}
-                onClick={() => setSelectedId(document.id)}
+                onClick={() => handleSelectDocument(document.id)}
                 type="button"
               >
                 <div className="grid size-9 shrink-0 place-items-center rounded-md bg-white text-[#4f6f57]">
@@ -135,16 +169,48 @@ export function DocumentsWorkspace() {
       <section className="rounded-lg border border-[#dfe4d8] bg-white p-4 shadow-[0_1px_0_rgba(23,32,27,0.04)] sm:p-5">
         {selectedDocument ? (
           <>
-            <p className="text-sm font-medium text-[#66705f]">
-              {selectedDocument.type}
-            </p>
-            <h3 className="mt-1 text-xl font-semibold">
-              {selectedDocument.title}
-            </h3>
-            <p className="mt-2 text-sm text-[#66705f]">
-              {selectedDocument.clientName ?? "Sans client lié"} ·{" "}
-              {selectedDocument.createdAt}
-            </p>
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <p className="text-sm font-medium text-[#66705f]">
+                  {selectedDocument.type}
+                </p>
+                <h3 className="mt-1 text-xl font-semibold">
+                  {selectedDocument.title}
+                </h3>
+                <p className="mt-2 text-sm text-[#66705f]">
+                  {selectedDocument.clientName ?? "Sans client lié"} ·{" "}
+                  {selectedDocument.createdAt}
+                </p>
+              </div>
+              <div className="flex shrink-0 items-center gap-2">
+                <button
+                  className="flex h-9 items-center gap-2 rounded-md border border-[#dfe4d8] bg-white px-3 text-sm font-semibold text-[#17201b] transition hover:border-[#b9c4ad] disabled:cursor-not-allowed disabled:opacity-50"
+                  disabled={isSending}
+                  onClick={() => void handleSendEmail()}
+                  type="button"
+                >
+                  <Mail className="size-4" />
+                  {isSending ? "Envoi..." : "Envoyer au client"}
+                </button>
+                <a
+                  className="flex h-9 items-center gap-2 rounded-md border border-[#dfe4d8] bg-white px-3 text-sm font-semibold text-[#17201b] transition hover:border-[#b9c4ad]"
+                  download
+                  href={`/api/documents/${selectedDocument.id}/pdf`}
+                >
+                  <Download className="size-4" />
+                  PDF
+                </a>
+              </div>
+            </div>
+            {sendFeedback && sendFeedback.documentId === selectedDocument.id ? (
+              <p
+                className={`mt-3 text-sm font-medium ${
+                  sendFeedback.type === "success" ? "text-[#4f6f57]" : "text-[#c0432a]"
+                }`}
+              >
+                {sendFeedback.text}
+              </p>
+            ) : null}
             <pre className="mt-5 min-h-96 whitespace-pre-wrap rounded-md border border-[#dfe4d8] bg-[#fbfcf8] p-4 text-sm leading-6 text-[#384438]">
               {selectedDocument.content}
             </pre>

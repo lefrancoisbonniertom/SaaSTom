@@ -77,6 +77,47 @@ export async function sendPasswordResetEmail(to: string, resetUrl: string) {
   });
 }
 
+export async function sendDocumentEmail({
+  to,
+  documentTitle,
+  documentType,
+  clientName,
+  pdfBuffer,
+  pdfFilename,
+}: {
+  to: string;
+  documentTitle: string;
+  documentType: string;
+  clientName: string | null;
+  pdfBuffer: Buffer;
+  pdfFilename: string;
+}) {
+  if (!resend) return;
+
+  await resend.emails.send({
+    from: FROM_EMAIL,
+    to,
+    subject: `Document : ${documentTitle}`,
+    html: wrapEmail(
+      documentTitle,
+      `
+        <p style="font-size: 14px; line-height: 22px; color: #384438;">
+          Bonjour${clientName ? ` ${clientName}` : ""},
+        </p>
+        <p style="font-size: 14px; line-height: 22px; color: #384438;">
+          Vous trouverez ci-joint le document <strong>${documentTitle}</strong> (${documentType}).
+        </p>
+      `,
+    ),
+    attachments: [
+      {
+        filename: pdfFilename,
+        content: pdfBuffer,
+      },
+    ],
+  });
+}
+
 export async function sendPlanCanceledEmail(to: string) {
   if (!resend) return;
 

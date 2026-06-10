@@ -56,6 +56,7 @@ type AppStateContextValue = {
     clientId?: string,
   ) => Promise<DocumentRecord>;
   toggleTask: (taskId: string) => Promise<void>;
+  sendDocumentEmail: (documentId: string) => Promise<string>;
   refresh: () => Promise<void>;
 };
 
@@ -208,6 +209,15 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
 
         setState(payload.state);
         setError(null);
+      },
+      sendDocumentEmail: async (documentId) => {
+        const payload = await parseJsonResponse<{ message: string }>(
+          await fetch(`/api/documents/${documentId}/send`, {
+            method: "POST",
+          }),
+        );
+
+        return payload.message;
       },
     }),
     [error, isLoading, refresh, state],
