@@ -5,6 +5,7 @@ import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
+import { markSessionActive } from "@/lib/session-marker";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -28,6 +29,7 @@ export default function LoginPage() {
       if (result?.error) {
         setError("Email ou mot de passe incorrect.");
       } else {
+        markSessionActive();
         router.push("/dashboard");
         router.refresh();
       }

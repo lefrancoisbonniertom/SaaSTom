@@ -5,6 +5,7 @@ import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
+import { markSessionActive } from "@/lib/session-marker";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -33,6 +34,7 @@ export default function RegisterPage() {
     }
 
     await signIn("credentials", { email, password, redirect: false });
+    markSessionActive();
     router.push("/dashboard");
     router.refresh();
   }

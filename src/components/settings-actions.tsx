@@ -3,12 +3,14 @@
 import { LogOut } from "lucide-react";
 import { useState } from "react";
 import { signOut } from "next-auth/react";
+import { clearSessionMarker } from "@/lib/session-marker";
 
 export function SettingsActions() {
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   async function handleLogout() {
     setIsLoggingOut(true);
+    clearSessionMarker();
     await signOut({ callbackUrl: "/login" });
   }
 
