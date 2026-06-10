@@ -118,6 +118,66 @@ export async function sendDocumentEmail({
   });
 }
 
+export async function sendDailyDigestEmail({
+  to,
+  clients,
+  tasks,
+}: {
+  to: string;
+  clients: { name: string; work: string; nextAction: string }[];
+  tasks: { title: string }[];
+}) {
+  if (!resend) return;
+
+  const clientItems = clients
+    .map(
+      (client) => `
+        <li style="margin-bottom: 8px;">
+          <strong>${client.name}</strong> — ${client.work}<br />
+          <span style="color: #8c9785;">Prochaine action : ${client.nextAction}</span>
+        </li>
+      `,
+    )
+    .join("");
+
+  const taskItems = tasks
+    .map((task) => `<li style="margin-bottom: 8px;">${task.title}</li>`)
+    .join("");
+
+  const sections = [
+    clients.length
+      ? `
+        <h2 style="font-size: 14px; color: #17201b; margin: 20px 0 8px;">À relancer (${clients.length})</h2>
+        <ul style="padding-left: 18px; margin: 0; font-size: 14px; line-height: 22px; color: #384438;">${clientItems}</ul>
+      `
+      : "",
+    tasks.length
+      ? `
+        <h2 style="font-size: 14px; color: #17201b; margin: 20px 0 8px;">Tâches en attente (${tasks.length})</h2>
+        <ul style="padding-left: 18px; margin: 0; font-size: 14px; line-height: 22px; color: #384438;">${taskItems}</ul>
+      `
+      : "",
+  ].join("");
+
+  await resend.emails.send({
+    from: FROM_EMAIL,
+    to,
+    subject: "Votre récapitulatif SaaSTom du jour",
+    html: wrapEmail(
+      "Votre récapitulatif du jour",
+      `
+        <p style="font-size: 14px; line-height: 22px; color: #384438;">
+          Voici ce qui mérite votre attention aujourd'hui.
+        </p>
+        ${sections}
+        <a href="${process.env.NEXT_PUBLIC_APP_URL}/dashboard" style="display: inline-block; margin-top: 16px; background: #e65f3c; color: #ffffff; text-decoration: none; font-size: 14px; font-weight: 600; padding: 10px 18px; border-radius: 6px;">
+          Ouvrir mon espace
+        </a>
+      `,
+    ),
+  });
+}
+
 export async function sendPlanCanceledEmail(to: string) {
   if (!resend) return;
 
