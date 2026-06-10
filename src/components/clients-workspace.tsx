@@ -52,9 +52,13 @@ const fieldClass =
 const cardFieldClass =
   "w-full rounded-md border border-[#dfe4d8] bg-[#fbfcf8] px-2 py-1.5 text-xs outline-none focus:border-[#4f6f57]";
 
-export function ClientsWorkspace() {
+export function ClientsWorkspace({
+  initialQuery = "",
+}: {
+  initialQuery?: string;
+}) {
   const { state, addClient, updateClient, deleteClient } = useAppState();
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState(initialQuery);
   const [showForm, setShowForm] = useState(false);
 
   const [name, setName] = useState("");

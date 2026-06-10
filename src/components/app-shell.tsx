@@ -10,7 +10,6 @@ import {
   Gauge,
   LayoutDashboard,
   Plus,
-  Search,
   Settings,
   Sparkles,
   Users,
@@ -18,6 +17,7 @@ import {
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import type { ReactNode } from "react";
+import { GlobalSearch } from "@/components/global-search";
 
 const navigation: Array<{
   href: string;
@@ -155,14 +155,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           </header>
 
           <div className="hidden items-center justify-end gap-2 pb-5 lg:flex">
-            <div className="relative min-w-80">
-              <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[#73806c]" />
-              <input
-                className="h-10 w-full rounded-md border border-white/70 bg-white/75 pl-9 pr-3 text-sm shadow-[0_10px_30px_rgba(27,43,37,0.06)] outline-none backdrop-blur transition placeholder:text-[#8c9785] focus:border-[#4f6f57]"
-                placeholder="Rechercher client, document..."
-                type="search"
-              />
-            </div>
+            <GlobalSearch />
             <Link
               aria-label="Ajouter un client"
               className="grid size-10 place-items-center rounded-md border border-white/70 bg-white/75 text-[#526052] shadow-[0_10px_30px_rgba(27,43,37,0.06)] transition hover:border-[#b9c4ad] hover:text-[#17201b]"

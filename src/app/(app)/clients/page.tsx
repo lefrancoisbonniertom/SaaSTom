@@ -1,7 +1,13 @@
 import { ClientsWorkspace } from "@/components/clients-workspace";
 import { PageHeader } from "@/components/page-header";
 
-export default function ClientsPage() {
+type ClientsPageProps = {
+  searchParams: Promise<{ q?: string }>;
+};
+
+export default async function ClientsPage({ searchParams }: ClientsPageProps) {
+  const { q } = await searchParams;
+
   return (
     <>
       <PageHeader
@@ -9,7 +15,7 @@ export default function ClientsPage() {
         eyebrow="CRM"
         title="Gère les clients et opportunités du SaaS."
       />
-      <ClientsWorkspace />
+      <ClientsWorkspace initialQuery={q ?? ""} key={q ?? "all"} />
     </>
   );
 }

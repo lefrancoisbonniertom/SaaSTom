@@ -10,12 +10,16 @@ type SendFeedback = {
   text: string;
 };
 
-export function DocumentsWorkspace() {
+export function DocumentsWorkspace({
+  initialSelectedId = "",
+}: {
+  initialSelectedId?: string;
+}) {
   const { state, generateDocument, sendDocumentEmail } = useAppState();
   const [query, setQuery] = useState("");
   const [prompt, setPrompt] = useState("");
   const [draftClientId, setDraftClientId] = useState("");
-  const [selectedId, setSelectedId] = useState("");
+  const [selectedId, setSelectedId] = useState(initialSelectedId);
   const [isCreating, setIsCreating] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const [sendFeedback, setSendFeedback] = useState<SendFeedback | null>(null);

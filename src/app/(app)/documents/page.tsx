@@ -1,7 +1,13 @@
 import { DocumentsWorkspace } from "@/components/documents-workspace";
 import { PageHeader } from "@/components/page-header";
 
-export default function DocumentsPage() {
+type DocumentsPageProps = {
+  searchParams: Promise<{ id?: string }>;
+};
+
+export default async function DocumentsPage({ searchParams }: DocumentsPageProps) {
+  const { id } = await searchParams;
+
   return (
     <>
       <PageHeader
@@ -9,7 +15,7 @@ export default function DocumentsPage() {
         eyebrow="Documents"
         title="Retrouve les emails, devis et propositions générés."
       />
-      <DocumentsWorkspace />
+      <DocumentsWorkspace initialSelectedId={id ?? ""} key={id ?? "default"} />
     </>
   );
 }
