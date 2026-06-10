@@ -344,3 +344,23 @@ export async function toggleTask(userId: string, taskId: string) {
   return toTaskRecord(updatedTask);
 }
 
+export async function createTask(userId: string, title: string) {
+  const task = await prisma.task.create({
+    data: { userId, title },
+  });
+
+  return toTaskRecord(task);
+}
+
+export async function deleteTask(userId: string, taskId: string) {
+  const existing = await prisma.task.findFirst({
+    where: { id: taskId, userId },
+  });
+
+  if (!existing) {
+    throw new Error("Task not found");
+  }
+
+  await prisma.task.delete({ where: { id: taskId } });
+}
+

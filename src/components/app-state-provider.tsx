@@ -56,6 +56,8 @@ type AppStateContextValue = {
     clientId?: string,
   ) => Promise<DocumentRecord>;
   toggleTask: (taskId: string) => Promise<void>;
+  addTask: (title: string) => Promise<void>;
+  deleteTask: (taskId: string) => Promise<void>;
   sendDocumentEmail: (documentId: string) => Promise<string>;
   refresh: () => Promise<void>;
 };
@@ -204,6 +206,30 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
         const payload = await parseJsonResponse<StateResponse>(
           await fetch(`/api/tasks/${taskId}`, {
             method: "PATCH",
+          }),
+        );
+
+        setState(payload.state);
+        setError(null);
+      },
+      addTask: async (title) => {
+        const payload = await parseJsonResponse<StateResponse>(
+          await fetch("/api/tasks", {
+            body: JSON.stringify({ title }),
+            headers: {
+              "Content-Type": "application/json",
+            },
+            method: "POST",
+          }),
+        );
+
+        setState(payload.state);
+        setError(null);
+      },
+      deleteTask: async (taskId) => {
+        const payload = await parseJsonResponse<StateResponse>(
+          await fetch(`/api/tasks/${taskId}`, {
+            method: "DELETE",
           }),
         );
 

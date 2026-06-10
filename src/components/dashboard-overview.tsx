@@ -7,8 +7,10 @@ import {
   CheckCircle2,
   FileText,
   Mail,
+  Plus,
   Send,
   Sparkles,
+  Trash2,
   Users,
   WalletCards,
   Zap,
@@ -35,10 +37,12 @@ type Metric = {
 const activityBars = [44, 68, 38, 82, 56, 74, 92];
 
 export function DashboardOverview() {
-  const { state, generateDocument, toggleTask } = useAppState();
+  const { state, generateDocument, toggleTask, addTask, deleteTask } = useAppState();
   const [prompt, setPrompt] = useState("");
   const [lastGeneratedTitle, setLastGeneratedTitle] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
+  const [taskTitle, setTaskTitle] = useState("");
+  const [isAddingTask, setIsAddingTask] = useState(false);
 
   const totalRevenue = useMemo(
     () => state.clients.reduce((sum, client) => sum + client.amount, 0),
@@ -81,6 +85,23 @@ export function DashboardOverview() {
       accent: "bg-[#ffe3db] text-[#9f3b20]",
     },
   ];
+
+  async function handleAddTask() {
+    const cleanedTitle = taskTitle.trim();
+
+    if (!cleanedTitle) {
+      return;
+    }
+
+    setIsAddingTask(true);
+
+    try {
+      await addTask(cleanedTitle);
+      setTaskTitle("");
+    } finally {
+      setIsAddingTask(false);
+    }
+  }
 
   async function handleGenerate() {
     const cleanedPrompt = prompt.trim();
@@ -283,29 +304,69 @@ export function DashboardOverview() {
 
           <div className="mt-5 space-y-3">
             {state.tasks.map((task) => (
-              <button
-                className="flex w-full items-start gap-3 rounded-lg border border-[#d8e3dc] bg-[#fbfdf9] p-3 text-left transition hover:border-[#adc5b8]"
+              <div
+                className="flex w-full items-start gap-3 rounded-lg border border-[#d8e3dc] bg-[#fbfdf9] p-3"
                 key={task.id}
-                onClick={() => void toggleTask(task.id)}
-                type="button"
               >
-                <CheckCircle2
-                  className={`mt-0.5 size-5 shrink-0 ${
-                    task.done ? "text-emerald-700" : "text-[#91a39a]"
-                  }`}
-                />
-                <p
-                  className={`text-sm leading-6 ${
-                    task.done
-                      ? "text-[#62736b] line-through"
-                      : "text-[#26332d]"
-                  }`}
+                <button
+                  className="flex flex-1 items-start gap-3 text-left"
+                  onClick={() => void toggleTask(task.id)}
+                  type="button"
                 >
-                  {task.title}
-                </p>
-              </button>
+                  <CheckCircle2
+                    className={`mt-0.5 size-5 shrink-0 ${
+                      task.done ? "text-emerald-700" : "text-[#91a39a]"
+                    }`}
+                  />
+                  <p
+                    className={`text-sm leading-6 ${
+                      task.done
+                        ? "text-[#62736b] line-through"
+                        : "text-[#26332d]"
+                    }`}
+                  >
+                    {task.title}
+                  </p>
+                </button>
+                <button
+                  aria-label="Supprimer la tâche"
+                  className="shrink-0 text-[#91a39a] transition hover:text-[#c0432a]"
+                  onClick={() => void deleteTask(task.id)}
+                  type="button"
+                >
+                  <Trash2 className="size-4" />
+                </button>
+              </div>
             ))}
+            {state.tasks.length === 0 ? (
+              <p className="rounded-lg border border-dashed border-[#d8e3dc] bg-[#fbfdf9] p-3 text-center text-sm text-[#62736b]">
+                Aucune action pour le moment.
+              </p>
+            ) : null}
           </div>
+
+          <form
+            className="mt-3 flex items-center gap-2"
+            onSubmit={(event) => {
+              event.preventDefault();
+              void handleAddTask();
+            }}
+          >
+            <input
+              className="h-10 flex-1 rounded-md border border-[#d8e3dc] bg-white px-3 text-sm outline-none focus:border-[#4f6f57]"
+              onChange={(event) => setTaskTitle(event.target.value)}
+              placeholder="Ajouter une action..."
+              value={taskTitle}
+            />
+            <button
+              aria-label="Ajouter la tâche"
+              className="grid size-10 shrink-0 place-items-center rounded-md bg-[#17201b] text-white transition hover:bg-[#2a352e] disabled:cursor-not-allowed disabled:opacity-50"
+              disabled={!taskTitle.trim() || isAddingTask}
+              type="submit"
+            >
+              <Plus className="size-4" />
+            </button>
+          </form>
         </section>
       </div>
 
