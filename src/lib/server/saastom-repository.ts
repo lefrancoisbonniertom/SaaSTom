@@ -1,16 +1,61 @@
+import Groq from "groq-sdk";
 import { prisma } from "@/lib/server/prisma";
 import {
   buildDemoDocument,
-  initialClients,
-  initialDocuments,
-  initialState,
-  initialTasks,
   type ClientRecord,
   type ClientStatus,
   type DocumentRecord,
   type SaaSTomState,
   type TaskRecord,
 } from "@/lib/saastom-data";
+
+const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
+
+async function generateWithGroq(
+  prompt: string
+): Promise<{ title: string; content: string }> {
+  const response = await groq.chat.completions.create({
+    model: "llama-3.3-70b-versatile",
+    max_tokens: 1024,
+    response_format: { type: "json_object" },
+    messages: [
+      {
+        role: "system",
+        content: `Tu es un assistant IA intégré à SaaSTom, un CRM et outil de productivité pour freelances et indépendants français.
+
+Mission : À partir d'un brief utilisateur, génère un document professionnel complet, prêt à l'emploi : relance client, proposition commerciale, devis descriptif, email de suivi, brief projet, compte-rendu, etc.
+
+Réponds UNIQUEMENT avec un objet JSON valide :
+{"title": "Titre court et descriptif (55 caractères max)", "content": "Contenu complet du document"}
+
+Critères :
+- Écris en français, ton professionnel
+- Adapte le registre au type (formel pour devis, chaleureux pour relance)
+- Le contenu doit être directement envoyable au client ou utilisable`,
+      },
+      { role: "user", content: prompt },
+    ],
+  });
+
+  const text = response.choices[0]?.message?.content ?? "";
+
+  try {
+    const parsed = JSON.parse(text) as Record<string, unknown>;
+    return {
+      title:
+        typeof parsed.title === "string"
+          ? parsed.title.slice(0, 55)
+          : prompt.slice(0, 46),
+      content:
+        typeof parsed.content === "string" ? parsed.content : text,
+    };
+  } catch {
+    return {
+      title: prompt.slice(0, 46) || "Document IA",
+      content: text || buildDemoDocument(prompt),
+    };
+  }
+}
 
 type NewClientInput = {
   name: string;
@@ -21,14 +66,23 @@ type NewClientInput = {
   nextAction?: string;
 };
 
+type ClientUpdateInput = Partial<{
+  name: string;
+  work: string;
+  amount: number;
+  status: ClientStatus;
+  contact: string;
+  nextAction: string;
+}>;
+
 const clientStatuses = new Set<ClientStatus>([
   "Prospect",
-  "A relancer",
+  "À relancer",
   "En cours",
-  "Signe",
+  "Signé",
 ]);
 
-let seedPromise: Promise<void> | null = null;
+const seedPromises = new Map<string, Promise<void>>();
 
 function normalizeStatus(status: string): ClientStatus {
   if (clientStatuses.has(status as ClientStatus)) {
@@ -43,7 +97,7 @@ function formatDateLabel(date: Date) {
   const diffInMinutes = Math.max(0, Math.round((now - date.getTime()) / 60000));
 
   if (diffInMinutes < 1) {
-    return "A l'instant";
+    return "À l'instant";
   }
 
   if (diffInMinutes < 60) {
@@ -93,6 +147,7 @@ function toDocumentRecord(document: {
   title: string;
   type: string;
   createdAt: Date;
+  clientId: string | null;
   clientName: string | null;
   content: string;
 }): DocumentRecord {
@@ -101,6 +156,7 @@ function toDocumentRecord(document: {
     title: document.title,
     type: document.type,
     createdAt: formatDateLabel(document.createdAt),
+    clientId: document.clientId ?? undefined,
     clientName: document.clientName ?? undefined,
     content: document.content,
   };
@@ -118,98 +174,40 @@ function toTaskRecord(task: {
   };
 }
 
-function initialDocumentDate(index: number) {
-  const date = new Date();
-  date.setMinutes(date.getMinutes() - [12, 180, 1440][index]);
-  return date;
-}
+async function ensureUsage(userId: string) {
+  const existing = seedPromises.get(userId);
+  if (existing) return existing;
 
-async function seedDefaults() {
-  const now = new Date();
-
-  await prisma.client.createMany({
-    data: initialClients.map((client) => ({
-      ...client,
-      createdAt: now,
-      updatedAt: now,
-    })),
-  });
-
-  await prisma.document.createMany({
-    data: initialDocuments.map((document, index) => {
-      const createdAt = initialDocumentDate(index);
-
-      return {
-        id: document.id,
-        title: document.title,
-        type: document.type,
-        content: document.content,
-        clientName: document.clientName,
-        createdAt,
-        updatedAt: createdAt,
-      };
-    }),
-  });
-
-  await prisma.task.createMany({
-    data: initialTasks.map((task) => ({
-      ...task,
-      createdAt: now,
-      updatedAt: now,
-    })),
-  });
-
-  await prisma.usage.create({
-    data: {
-      id: "default",
-      aiCreditsUsed: initialState.aiCreditsUsed,
-      updatedAt: now,
-    },
-  });
-}
-
-export async function ensureSeedData() {
-  if (seedPromise) {
-    return seedPromise;
-  }
-
-  seedPromise = (async () => {
-    const clientCount = await prisma.client.count();
-
-    if (clientCount > 0) {
-      return;
+  const promise = (async () => {
+    const usage = await prisma.usage.findUnique({ where: { userId } });
+    if (!usage) {
+      await prisma.usage.create({
+        data: { userId, aiCreditsUsed: 0, updatedAt: new Date() },
+      });
     }
-
-    await seedDefaults();
   })();
 
-  return seedPromise;
+  seedPromises.set(userId, promise);
+  return promise;
 }
 
-export async function getSaaSTomState(): Promise<SaaSTomState> {
-  await ensureSeedData();
+export async function getSaaSTomState(userId: string): Promise<SaaSTomState> {
+  await ensureUsage(userId);
 
   const [clients, documents, tasks, usage] = await Promise.all([
     prisma.client.findMany({
-      orderBy: {
-        createdAt: "desc",
-      },
+      where: { userId },
+      orderBy: { createdAt: "desc" },
     }),
     prisma.document.findMany({
-      orderBy: {
-        createdAt: "desc",
-      },
+      where: { userId },
+      orderBy: { createdAt: "desc" },
     }),
     prisma.task.findMany({
-      orderBy: {
-        createdAt: "asc",
-      },
+      where: { userId },
+      orderBy: { createdAt: "asc" },
     }),
-    prisma.usage.findUnique({
-      where: {
-        id: "default",
-      },
-    }),
+    prisma.usage.findUnique({ where: { userId } }),
   ]);
 
   return {
@@ -220,53 +218,118 @@ export async function getSaaSTomState(): Promise<SaaSTomState> {
   };
 }
 
-export async function createClient(input: NewClientInput) {
+export async function createClient(userId: string, input: NewClientInput) {
   const client = await prisma.client.create({
     data: {
+      userId,
       name: input.name,
       work: input.work,
       amount: input.amount,
       status: input.status,
       contact: input.contact,
-      nextAction: input.nextAction ?? "Definir la prochaine action.",
+      nextAction: input.nextAction ?? "Définir la prochaine action.",
     },
   });
 
   return toClientRecord(client);
 }
 
-export async function generateDocument(prompt: string, type = "Document IA") {
+export async function updateClient(
+  userId: string,
+  clientId: string,
+  input: ClientUpdateInput,
+) {
+  const existing = await prisma.client.findFirst({
+    where: { id: clientId, userId },
+  });
+
+  if (!existing) {
+    throw new Error("Client not found");
+  }
+
+  const client = await prisma.client.update({
+    where: { id: clientId },
+    data: {
+      ...(input.name !== undefined && { name: input.name }),
+      ...(input.work !== undefined && { work: input.work }),
+      ...(input.amount !== undefined && { amount: input.amount }),
+      ...(input.status !== undefined && { status: input.status }),
+      ...(input.contact !== undefined && { contact: input.contact }),
+      ...(input.nextAction !== undefined && { nextAction: input.nextAction }),
+    },
+  });
+
+  if (input.name !== undefined) {
+    await prisma.document.updateMany({
+      where: { clientId, userId },
+      data: { clientName: input.name },
+    });
+  }
+
+  return toClientRecord(client);
+}
+
+export async function deleteClient(userId: string, clientId: string) {
+  const existing = await prisma.client.findFirst({
+    where: { id: clientId, userId },
+  });
+
+  if (!existing) {
+    throw new Error("Client not found");
+  }
+
+  await prisma.client.delete({ where: { id: clientId } });
+}
+
+export async function generateDocument(
+  userId: string,
+  prompt: string,
+  type = "Document IA",
+  clientId?: string,
+) {
+  let title: string;
+  let content: string;
+
+  if (process.env.GROQ_API_KEY) {
+    const result = await generateWithGroq(prompt);
+    title = result.title;
+    content = result.content;
+  } else {
+    title = prompt.slice(0, 46) || "Nouveau document IA";
+    content = buildDemoDocument(prompt);
+  }
+
+  let linkedClient: { id: string; name: string } | null = null;
+  if (clientId) {
+    linkedClient = await prisma.client.findFirst({
+      where: { id: clientId, userId },
+      select: { id: true, name: true },
+    });
+  }
+
   const document = await prisma.document.create({
     data: {
-      title: prompt.slice(0, 46) || "Nouveau document IA",
+      userId,
+      title,
       type,
-      content: buildDemoDocument(prompt),
+      content,
+      clientId: linkedClient?.id,
+      clientName: linkedClient?.name,
     },
   });
 
   await prisma.usage.upsert({
-    where: {
-      id: "default",
-    },
-    update: {
-      aiCreditsUsed: {
-        increment: 1,
-      },
-    },
-    create: {
-      id: "default",
-      aiCreditsUsed: 1,
-    },
+    where: { userId },
+    update: { aiCreditsUsed: { increment: 1 } },
+    create: { userId, aiCreditsUsed: 1 },
   });
 
   return toDocumentRecord(document);
 }
 
-export async function toggleTask(taskId: string) {
-  const task = await prisma.task.findUnique({
-    where: {
-      id: taskId,
-    },
+export async function toggleTask(userId: string, taskId: string) {
+  const task = await prisma.task.findFirst({
+    where: { id: taskId, userId },
   });
 
   if (!task) {
@@ -274,25 +337,10 @@ export async function toggleTask(taskId: string) {
   }
 
   const updatedTask = await prisma.task.update({
-    where: {
-      id: taskId,
-    },
-    data: {
-      done: !task.done,
-    },
+    where: { id: taskId },
+    data: { done: !task.done },
   });
 
   return toTaskRecord(updatedTask);
 }
 
-export async function resetSaaSTomDemo() {
-  seedPromise = null;
-
-  await prisma.document.deleteMany();
-  await prisma.client.deleteMany();
-  await prisma.task.deleteMany();
-  await prisma.usage.deleteMany();
-  await seedDefaults();
-
-  return getSaaSTomState();
-}

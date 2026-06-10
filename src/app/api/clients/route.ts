@@ -1,20 +1,22 @@
+import { auth } from "@/lib/auth";
 import { createClient, getSaaSTomState } from "@/lib/server/saastom-repository";
 import type { ClientStatus } from "@/lib/saastom-data";
 
 export const runtime = "nodejs";
 
-const statuses: ClientStatus[] = [
-  "Prospect",
-  "A relancer",
-  "En cours",
-  "Signe",
-];
+const statuses: ClientStatus[] = ["Prospect", "À relancer", "En cours", "Signé"];
 
 function isClientStatus(status: unknown): status is ClientStatus {
   return typeof status === "string" && statuses.includes(status as ClientStatus);
 }
 
 export async function POST(request: Request) {
+  const session = await auth();
+  if (!session?.user?.id) {
+    return Response.json({ message: "Non autorisé." }, { status: 401 });
+  }
+  const userId = session.user.id;
+
   const body = (await request.json()) as {
     name?: unknown;
     work?: unknown;
@@ -34,7 +36,7 @@ export async function POST(request: Request) {
     );
   }
 
-  const client = await createClient({
+  const client = await createClient(userId, {
     name,
     work,
     amount: typeof body.amount === "number" ? body.amount : 0,
@@ -48,7 +50,7 @@ export async function POST(request: Request) {
         ? body.nextAction.trim()
         : undefined,
   });
-  const state = await getSaaSTomState();
+  const state = await getSaaSTomState(userId);
 
   return Response.json({ client, state }, { status: 201 });
 }

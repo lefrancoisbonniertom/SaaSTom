@@ -5,9 +5,9 @@ export default function DashboardPage() {
   return (
     <>
       <PageHeader
-        description="Vue d'ensemble des clients, documents et priorites pour piloter le MVP."
+        description="Vue d'ensemble des clients, documents et priorités pour piloter le MVP."
         eyebrow="Tableau de bord"
-        title="Pilote ton activite avec un assistant IA."
+        title="Pilote ton activité avec un assistant IA."
       />
       <DashboardOverview />
     </>

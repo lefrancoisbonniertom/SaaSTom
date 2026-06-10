@@ -5,9 +5,9 @@ export default function DocumentsPage() {
   return (
     <>
       <PageHeader
-        description="Tous les brouillons crees par l'assistant sont regroupes ici."
+        description="Tous les brouillons créés par l'assistant sont regroupés ici."
         eyebrow="Documents"
-        title="Retrouve les emails, devis et propositions generes."
+        title="Retrouve les emails, devis et propositions générés."
       />
       <DocumentsWorkspace />
     </>

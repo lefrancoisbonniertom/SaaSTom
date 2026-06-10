@@ -8,6 +8,7 @@ export function DocumentsWorkspace() {
   const { state, generateDocument } = useAppState();
   const [query, setQuery] = useState("");
   const [prompt, setPrompt] = useState("");
+  const [draftClientId, setDraftClientId] = useState("");
   const [selectedId, setSelectedId] = useState("");
   const [isCreating, setIsCreating] = useState(false);
 
@@ -40,9 +41,14 @@ export function DocumentsWorkspace() {
     setIsCreating(true);
 
     try {
-      const document = await generateDocument(cleanedPrompt, "Brouillon");
+      const document = await generateDocument(
+        cleanedPrompt,
+        "Brouillon",
+        draftClientId || undefined,
+      );
       setSelectedId(document.id);
       setPrompt("");
+      setDraftClientId("");
     } finally {
       setIsCreating(false);
     }
@@ -59,9 +65,21 @@ export function DocumentsWorkspace() {
           <textarea
             className="mt-4 min-h-32 w-full resize-none rounded-md border border-[#dfe4d8] bg-[#fbfcf8] p-3 text-sm leading-6 outline-none focus:border-[#4f6f57]"
             onChange={(event) => setPrompt(event.target.value)}
-            placeholder="Exemple : Creer un email de relance pour Atelier Moreau."
+            placeholder="Exemple : Créer un email de relance pour Atelier Moreau."
             value={prompt}
           />
+          <select
+            className="mt-3 h-10 w-full rounded-md border border-[#dfe4d8] bg-[#fbfcf8] px-3 text-sm outline-none focus:border-[#4f6f57]"
+            onChange={(event) => setDraftClientId(event.target.value)}
+            value={draftClientId}
+          >
+            <option value="">Aucun client</option>
+            {state.clients.map((client) => (
+              <option key={client.id} value={client.id}>
+                {client.name}
+              </option>
+            ))}
+          </select>
           <button
             className="mt-3 flex h-10 w-full items-center justify-center gap-2 rounded-md bg-[#17201b] px-4 text-sm font-semibold text-white transition hover:bg-[#2a352e] disabled:cursor-not-allowed disabled:opacity-50"
             disabled={!prompt.trim() || isCreating}
@@ -69,7 +87,7 @@ export function DocumentsWorkspace() {
             type="button"
           >
             <FileText className="size-4" />
-            {isCreating ? "Creation..." : "Creer le document"}
+            {isCreating ? "Création..." : "Créer le document"}
           </button>
         </div>
 
@@ -124,7 +142,7 @@ export function DocumentsWorkspace() {
               {selectedDocument.title}
             </h3>
             <p className="mt-2 text-sm text-[#66705f]">
-              {selectedDocument.clientName ?? "Sans client lie"} ·{" "}
+              {selectedDocument.clientName ?? "Sans client lié"} ·{" "}
               {selectedDocument.createdAt}
             </p>
             <pre className="mt-5 min-h-96 whitespace-pre-wrap rounded-md border border-[#dfe4d8] bg-[#fbfcf8] p-4 text-sm leading-6 text-[#384438]">

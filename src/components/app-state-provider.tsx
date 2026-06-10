@@ -10,7 +10,7 @@ import {
   type ReactNode,
 } from "react";
 import {
-  initialState,
+  emptyState,
   type ClientRecord,
   type ClientStatus,
   type DocumentRecord,
@@ -25,6 +25,8 @@ type NewClientInput = {
   contact: string;
   nextAction: string;
 };
+
+type ClientUpdateInput = Partial<NewClientInput>;
 
 type StateResponse = {
   state: SaaSTomState;
@@ -43,12 +45,17 @@ type AppStateContextValue = {
   isLoading: boolean;
   error: string | null;
   addClient: (client: NewClientInput) => Promise<ClientRecord>;
+  updateClient: (
+    clientId: string,
+    updates: ClientUpdateInput,
+  ) => Promise<void>;
+  deleteClient: (clientId: string) => Promise<void>;
   generateDocument: (
     prompt: string,
     type?: string,
+    clientId?: string,
   ) => Promise<DocumentRecord>;
   toggleTask: (taskId: string) => Promise<void>;
-  resetDemo: () => Promise<void>;
   refresh: () => Promise<void>;
 };
 
@@ -67,7 +74,7 @@ async function parseJsonResponse<T>(response: Response): Promise<T> {
 }
 
 export function AppStateProvider({ children }: { children: ReactNode }) {
-  const [state, setState] = useState<SaaSTomState>(initialState);
+  const [state, setState] = useState<SaaSTomState>(emptyState);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -152,10 +159,34 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
 
         return payload.client;
       },
-      generateDocument: async (prompt, type = "Document IA") => {
+      updateClient: async (clientId, updates) => {
+        const payload = await parseJsonResponse<StateResponse>(
+          await fetch(`/api/clients/${clientId}`, {
+            body: JSON.stringify(updates),
+            headers: {
+              "Content-Type": "application/json",
+            },
+            method: "PATCH",
+          }),
+        );
+
+        setState(payload.state);
+        setError(null);
+      },
+      deleteClient: async (clientId) => {
+        const payload = await parseJsonResponse<StateResponse>(
+          await fetch(`/api/clients/${clientId}`, {
+            method: "DELETE",
+          }),
+        );
+
+        setState(payload.state);
+        setError(null);
+      },
+      generateDocument: async (prompt, type = "Document IA", clientId) => {
         const payload = await parseJsonResponse<DocumentResponse>(
           await fetch("/api/documents/generate", {
-            body: JSON.stringify({ prompt, type }),
+            body: JSON.stringify({ prompt, type, clientId }),
             headers: {
               "Content-Type": "application/json",
             },
@@ -172,16 +203,6 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
         const payload = await parseJsonResponse<StateResponse>(
           await fetch(`/api/tasks/${taskId}`, {
             method: "PATCH",
-          }),
-        );
-
-        setState(payload.state);
-        setError(null);
-      },
-      resetDemo: async () => {
-        const payload = await parseJsonResponse<StateResponse>(
-          await fetch("/api/reset", {
-            method: "POST",
           }),
         );
 

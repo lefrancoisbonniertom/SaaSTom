@@ -26,7 +26,7 @@ const navigation: Array<{
   { href: "/assistant", label: "Assistant IA", icon: Bot },
   { href: "/clients", label: "Clients", icon: Users },
   { href: "/documents", label: "Documents", icon: FileText },
-  { href: "/settings", label: "Reglages", icon: Settings },
+  { href: "/settings", label: "Réglages", icon: Settings },
   { href: "/pricing", label: "Tarifs", icon: WalletCards },
 ];
 
@@ -34,17 +34,27 @@ function isActiveRoute(pathname: string, href: string) {
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
-function Brand() {
+function Brand({ tone = "dark" }: { tone?: "dark" | "light" }) {
   return (
     <Link className="flex items-center gap-3" href="/dashboard">
-      <div className="grid size-10 place-items-center rounded-lg bg-[#17201b] text-white">
+      <div className="grid size-10 place-items-center rounded-lg bg-[#e65f3c] text-white shadow-[0_12px_30px_rgba(230,95,60,0.28)]">
         <Sparkles className="size-5" />
       </div>
       <div>
-        <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#66705f]">
+        <p
+          className={`text-sm font-semibold uppercase tracking-[0.18em] ${
+            tone === "light" ? "text-[#90a39a]" : "text-[#66705f]"
+          }`}
+        >
           SaaSTom
         </p>
-        <h1 className="text-xl font-semibold">BusinessPilot IA</h1>
+        <h1
+          className={`text-xl font-semibold ${
+            tone === "light" ? "text-white" : "text-[#17201b]"
+          }`}
+        >
+          BusinessPilot IA
+        </h1>
       </div>
     </Link>
   );
@@ -65,8 +75,8 @@ function NavLink({
     <Link
       className={`flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium transition ${
         active
-          ? "bg-[#17201b] text-white"
-          : "text-[#526052] hover:bg-[#eef2ea] hover:text-[#17201b]"
+          ? "bg-white text-[#17201b] shadow-[0_10px_26px_rgba(0,0,0,0.18)]"
+          : "text-[#a9bbb2] hover:bg-white/[0.08] hover:text-white"
       }`}
       href={href}
     >
@@ -80,10 +90,10 @@ export function AppShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
 
   return (
-    <main className="min-h-screen w-full overflow-x-hidden bg-[#f6f7f3] text-[#17201b]">
+    <main className="min-h-screen w-full overflow-x-hidden bg-[#f4f7f4] text-[#17201b]">
       <div className="mx-auto flex min-h-screen w-full max-w-[1500px] overflow-x-hidden lg:overflow-visible">
-        <aside className="hidden w-72 shrink-0 border-r border-[#dfe4d8] bg-[#fcfdf9] px-5 py-5 lg:flex lg:flex-col">
-          <Brand />
+        <aside className="hidden w-72 shrink-0 border-r border-[#24342c] bg-[#0d1512] px-5 py-5 lg:flex lg:flex-col">
+          <Brand tone="light" />
 
           <nav className="mt-8 space-y-1">
             {navigation.map((item) => (
@@ -97,17 +107,16 @@ export function AppShell({ children }: { children: ReactNode }) {
             ))}
           </nav>
 
-          <div className="mt-auto rounded-lg border border-[#dfe4d8] bg-white p-4">
+          <div className="mt-auto rounded-lg border border-white/10 bg-white/[0.06] p-4 shadow-[0_20px_50px_rgba(0,0,0,0.24)]">
             <div className="flex items-center gap-2 text-sm font-semibold">
-              <CircleDollarSign className="size-4 text-emerald-700" />
-              Offre Pro
+              <CircleDollarSign className="size-4 text-[#b9e885]" />
+              <span className="text-white">Offre Pro</span>
             </div>
-            <p className="mt-2 text-sm leading-6 text-[#66705f]">
-              Objectif MVP : 10 generations IA gratuites, puis abonnement a 19
-              EUR/mois.
+            <p className="mt-2 text-sm leading-6 text-[#a9bbb2]">
+              10 générations IA gratuites incluses. Passez au Pro à 19 EUR/mois pour un accès illimité.
             </p>
             <Link
-              className="mt-4 flex h-10 w-full items-center justify-center gap-2 rounded-md bg-[#e65f3c] px-3 text-sm font-semibold text-white transition hover:bg-[#c94f32]"
+              className="mt-4 flex h-10 w-full items-center justify-center gap-2 rounded-md bg-[#e65f3c] px-3 text-sm font-semibold text-white transition hover:bg-[#f0714f]"
               href="/pricing"
             >
               Voir le plan
@@ -115,7 +124,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           </div>
         </aside>
 
-        <section className="w-full max-w-[100vw] min-w-0 flex-1 px-4 py-4 sm:px-6 lg:px-8">
+        <section className="w-full max-w-[100vw] min-w-0 flex-1 bg-[linear-gradient(135deg,#f5f8f2_0%,#eef8f8_48%,#fff3ec_100%)] px-4 py-4 sm:px-6 lg:px-8">
           <header className="mb-5 border-b border-[#dfe4d8] pb-4 lg:hidden">
             <Brand />
             <nav className="mt-4 flex flex-wrap gap-2 pb-1">
@@ -140,14 +149,14 @@ export function AppShell({ children }: { children: ReactNode }) {
             <div className="relative min-w-80">
               <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[#73806c]" />
               <input
-                className="h-10 w-full rounded-md border border-[#dfe4d8] bg-white pl-9 pr-3 text-sm outline-none transition placeholder:text-[#8c9785] focus:border-[#4f6f57]"
+                className="h-10 w-full rounded-md border border-white/70 bg-white/75 pl-9 pr-3 text-sm shadow-[0_10px_30px_rgba(27,43,37,0.06)] outline-none backdrop-blur transition placeholder:text-[#8c9785] focus:border-[#4f6f57]"
                 placeholder="Rechercher client, document..."
                 type="search"
               />
             </div>
             <Link
               aria-label="Ajouter un client"
-              className="grid size-10 place-items-center rounded-md border border-[#dfe4d8] bg-white text-[#526052] transition hover:border-[#b9c4ad] hover:text-[#17201b]"
+              className="grid size-10 place-items-center rounded-md border border-white/70 bg-white/75 text-[#526052] shadow-[0_10px_30px_rgba(27,43,37,0.06)] transition hover:border-[#b9c4ad] hover:text-[#17201b]"
               href="/clients"
               title="Ajouter un client"
             >

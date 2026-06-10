@@ -5,7 +5,7 @@ export default function AssistantPage() {
   return (
     <>
       <PageHeader
-        description="Premiere version sans API externe : on simule les generations et on garde l'historique."
+        description="Decris ton besoin en quelques mots, SaaSTom redige le document en quelques secondes et l'enregistre dans ton historique."
         eyebrow="Assistant IA"
         title="Transforme un brief en email, devis ou proposition."
       />

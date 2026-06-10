@@ -1,43 +1,41 @@
 "use client";
 
-import { RotateCcw } from "lucide-react";
+import { LogOut } from "lucide-react";
 import { useState } from "react";
-import { useAppState } from "@/components/app-state-provider";
+import { signOut } from "next-auth/react";
 
 export function SettingsActions() {
-  const { resetDemo } = useAppState();
-  const [isResetting, setIsResetting] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
-  async function handleReset() {
-    setIsResetting(true);
-
-    try {
-      await resetDemo();
-    } finally {
-      setIsResetting(false);
-    }
+  async function handleLogout() {
+    setIsLoggingOut(true);
+    await signOut({ callbackUrl: "/login" });
   }
 
   return (
-    <section className="mt-4 rounded-lg border border-[#dfe4d8] bg-white p-5 shadow-[0_1px_0_rgba(23,32,27,0.04)]">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h3 className="text-lg font-semibold">Donnees de demonstration</h3>
-          <p className="mt-2 text-sm leading-6 text-[#66705f]">
-            Efface les clients et documents ajoutes dans ce navigateur, puis
-            recharge les donnees de depart.
-          </p>
+    <div className="mt-4">
+      <section className="rounded-lg border border-red-100 bg-red-50/60 p-5">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <h3 className="text-lg font-semibold text-[#17201b]">
+              Déconnexion
+            </h3>
+            <p className="mt-2 text-sm leading-6 text-[#66705f]">
+              Ferme ta session sur cet appareil. Tes données restent
+              sauvegardées.
+            </p>
+          </div>
+          <button
+            className="flex h-10 items-center justify-center gap-2 rounded-md bg-red-600 px-4 text-sm font-semibold text-white transition hover:bg-red-700 disabled:opacity-60 sm:whitespace-nowrap"
+            disabled={isLoggingOut}
+            onClick={() => void handleLogout()}
+            type="button"
+          >
+            <LogOut className="size-4" />
+            {isLoggingOut ? "Déconnexion..." : "Se déconnecter"}
+          </button>
         </div>
-        <button
-          className="flex h-10 items-center justify-center gap-2 rounded-md border border-[#dfe4d8] bg-[#fbfcf8] px-4 text-sm font-semibold text-[#384438] transition hover:border-[#b9c4ad] hover:bg-white sm:whitespace-nowrap"
-          disabled={isResetting}
-          onClick={() => void handleReset()}
-          type="button"
-        >
-          <RotateCcw className="size-4" />
-          {isResetting ? "Reinitialisation..." : "Reinitialiser"}
-        </button>
-      </div>
-    </section>
+      </section>
+    </div>
   );
 }

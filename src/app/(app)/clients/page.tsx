@@ -7,7 +7,7 @@ export default function ClientsPage() {
       <PageHeader
         description="Ajoute des prospects, suis les montants et garde une prochaine action claire."
         eyebrow="CRM"
-        title="Gere les clients et opportunites du SaaS."
+        title="Gère les clients et opportunités du SaaS."
       />
       <ClientsWorkspace />
     </>

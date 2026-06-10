@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f6f7f3;
-  --foreground: #17201b;
+  --background: #f4f7f4;
+  --foreground: #111b17;
 }
 
 @theme inline {
@@ -27,4 +27,8 @@ button,
 input,
 textarea {
   font: inherit;
+}
+
+canvas {
+  display: block;
 }

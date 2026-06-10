@@ -4,11 +4,30 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
+}
+
+model User {
+  id                   String   @id @default(cuid())
+  name                 String?
+  email                String   @unique
+  password             String
+  plan                 String   @default("free")
+  stripeCustomerId     String?  @unique
+  stripeSubscriptionId String?  @unique
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  clients   Client[]
+  documents Document[]
+  tasks     Task[]
+  usage     Usage?
 }
 
 model Client {
   id         String     @id @default(cuid())
+  userId     String
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   name       String
   work       String
   amount     Int        @default(0)
@@ -22,6 +41,8 @@ model Client {
 
 model Document {
   id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   title      String
   type       String
   content    String
@@ -34,6 +55,8 @@ model Document {
 
 model Task {
   id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   title     String
   done      Boolean  @default(false)
   createdAt DateTime @default(now())
@@ -41,7 +64,8 @@ model Task {
 }
 
 model Usage {
-  id            String   @id @default("default")
+  userId        String   @id
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   aiCreditsUsed Int      @default(0)
   updatedAt     DateTime @updatedAt
 }
