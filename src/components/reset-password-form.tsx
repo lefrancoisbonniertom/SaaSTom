@@ -5,6 +5,9 @@ import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Loader2 } from "lucide-react";
 
+const fieldClass =
+  "h-10 w-full rounded-md border border-border bg-canvas-soft px-3 text-sm text-ink outline-none transition placeholder:text-ink-muted/50 focus:border-gold focus:ring-2 focus:ring-gold/20";
+
 export function ResetPasswordForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -51,12 +54,12 @@ export function ResetPasswordForm() {
 
   if (!token) {
     return (
-      <section className="rounded-xl border border-white/75 bg-white/80 p-8 shadow-[0_18px_55px_rgba(27,43,37,0.08)] backdrop-blur">
-        <h1 className="text-2xl font-semibold text-[#17201b]">Lien invalide</h1>
-        <p className="mt-3 text-sm leading-6 text-[#62736b]">
+      <section className="rounded-xl border border-border bg-surface/80 p-8 shadow-[0_18px_55px_rgba(0,0,0,0.35)] backdrop-blur">
+        <h1 className="font-display text-2xl font-semibold text-ink">Lien invalide</h1>
+        <p className="mt-3 text-sm leading-6 text-ink-muted">
           Ce lien de réinitialisation est invalide ou incomplet.
         </p>
-        <Link className="mt-6 inline-block text-sm font-medium text-[#e65f3c] hover:underline" href="/forgot-password">
+        <Link className="mt-6 inline-block text-sm font-medium text-gold hover:underline" href="/forgot-password">
           Demander un nouveau lien
         </Link>
       </section>
@@ -65,9 +68,9 @@ export function ResetPasswordForm() {
 
   if (success) {
     return (
-      <section className="rounded-xl border border-white/75 bg-white/80 p-8 shadow-[0_18px_55px_rgba(27,43,37,0.08)] backdrop-blur">
-        <h1 className="text-2xl font-semibold text-[#17201b]">Mot de passe mis à jour</h1>
-        <p className="mt-3 text-sm leading-6 text-[#62736b]">
+      <section className="rounded-xl border border-border bg-surface/80 p-8 shadow-[0_18px_55px_rgba(0,0,0,0.35)] backdrop-blur">
+        <h1 className="font-display text-2xl font-semibold text-ink">Mot de passe mis à jour</h1>
+        <p className="mt-3 text-sm leading-6 text-ink-muted">
           Ton mot de passe a bien été modifié. Redirection vers la connexion...
         </p>
       </section>
@@ -75,20 +78,20 @@ export function ResetPasswordForm() {
   }
 
   return (
-    <section className="rounded-xl border border-white/75 bg-white/80 p-8 shadow-[0_18px_55px_rgba(27,43,37,0.08)] backdrop-blur">
-      <h1 className="text-2xl font-semibold text-[#17201b]">Nouveau mot de passe</h1>
-      <p className="mt-1 text-sm text-[#62736b]">
+    <section className="rounded-xl border border-border bg-surface/80 p-8 shadow-[0_18px_55px_rgba(0,0,0,0.35)] backdrop-blur">
+      <h1 className="font-display text-2xl font-semibold text-ink">Nouveau mot de passe</h1>
+      <p className="mt-1 text-sm text-ink-muted">
         Choisis un nouveau mot de passe pour ton compte.
       </p>
 
       <form className="mt-6 space-y-4" onSubmit={handleSubmit}>
         <div>
-          <label className="mb-1.5 block text-sm font-medium text-[#17201b]" htmlFor="password">
+          <label className="mb-1.5 block text-sm font-medium text-ink" htmlFor="password">
             Nouveau mot de passe
           </label>
           <input
             autoComplete="new-password"
-            className="h-10 w-full rounded-md border border-[#dfe4d8] bg-white px-3 text-sm outline-none transition focus:border-[#4f6f57] focus:ring-2 focus:ring-[#4f6f57]/20"
+            className={fieldClass}
             id="password"
             onChange={(e) => setPassword(e.target.value)}
             placeholder="8 caractères minimum"
@@ -99,12 +102,12 @@ export function ResetPasswordForm() {
         </div>
 
         <div>
-          <label className="mb-1.5 block text-sm font-medium text-[#17201b]" htmlFor="confirmPassword">
+          <label className="mb-1.5 block text-sm font-medium text-ink" htmlFor="confirmPassword">
             Confirmer le mot de passe
           </label>
           <input
             autoComplete="new-password"
-            className="h-10 w-full rounded-md border border-[#dfe4d8] bg-white px-3 text-sm outline-none transition focus:border-[#4f6f57] focus:ring-2 focus:ring-[#4f6f57]/20"
+            className={fieldClass}
             id="confirmPassword"
             onChange={(e) => setConfirmPassword(e.target.value)}
             placeholder="8 caractères minimum"
@@ -115,11 +118,11 @@ export function ResetPasswordForm() {
         </div>
 
         {error ? (
-          <p className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-600">{error}</p>
+          <p className="rounded-md border border-red-500/20 bg-red-500/10 px-3 py-2 text-sm text-red-300">{error}</p>
         ) : null}
 
         <button
-          className="flex h-10 w-full items-center justify-center gap-2 rounded-md bg-[#e65f3c] text-sm font-semibold text-white transition hover:bg-[#f0714f] disabled:opacity-60"
+          className="flex h-10 w-full items-center justify-center gap-2 rounded-md bg-gold text-sm font-semibold text-canvas transition hover:bg-gold-soft disabled:opacity-60"
           disabled={loading}
           type="submit"
         >

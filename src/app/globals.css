@@ -1,15 +1,34 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f4f7f4;
-  --foreground: #111b17;
+  --background: #0e1812;
+  --foreground: #f3f1e8;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+
+  --color-canvas: #0e1812;
+  --color-canvas-soft: #142019;
+  --color-surface: #16211b;
+  --color-surface-raised: #1c2920;
+  --color-border: #28362e;
+  --color-border-soft: #324639;
+
+  --color-ink: #f3f1e8;
+  --color-ink-muted: #a4b3aa;
+  --color-ink-soft: #c2d0c9;
+
+  --color-gold: #c9a45e;
+  --color-gold-soft: #e3c98a;
+  --color-gold-deep: #8a6f3f;
+
+  --color-sage: #4f6f57;
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-fraunces);
 }
 
 * {
@@ -31,4 +50,36 @@ textarea {
 
 canvas {
   display: block;
+}
+
+@keyframes loading-bar {
+  0% {
+    transform: translateX(-100%);
+  }
+  50% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes loading-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(0.96);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-loading-bar {
+  animation: loading-bar 1.1s ease-in-out infinite;
+}
+
+.animate-loading-pulse {
+  animation: loading-pulse 1.6s ease-in-out infinite;
 }
