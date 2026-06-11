@@ -60,6 +60,7 @@ type AppStateContextValue = {
     documentId: string,
     updates: Partial<Pick<DocumentRecord, "title" | "content">>,
   ) => Promise<void>;
+  deleteDocument: (documentId: string) => Promise<void>;
   toggleTask: (taskId: string) => Promise<void>;
   addTask: (title: string) => Promise<void>;
   deleteTask: (taskId: string) => Promise<void>;
@@ -215,6 +216,16 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
               "Content-Type": "application/json",
             },
             method: "PATCH",
+          }),
+        );
+
+        setState(payload.state);
+        setError(null);
+      },
+      deleteDocument: async (documentId) => {
+        const payload = await parseJsonResponse<StateResponse>(
+          await fetch(`/api/documents/${documentId}`, {
+            method: "DELETE",
           }),
         );
 

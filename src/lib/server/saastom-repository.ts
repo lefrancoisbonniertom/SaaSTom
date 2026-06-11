@@ -405,6 +405,18 @@ export async function updateDocument(
   return toDocumentRecord(document);
 }
 
+export async function deleteDocument(userId: string, documentId: string) {
+  const existing = await prisma.document.findFirst({
+    where: { id: documentId, userId },
+  });
+
+  if (!existing) {
+    throw new Error("Document not found");
+  }
+
+  await prisma.document.delete({ where: { id: documentId } });
+}
+
 export async function toggleTask(userId: string, taskId: string) {
   const task = await prisma.task.findFirst({
     where: { id: taskId, userId },

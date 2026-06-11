@@ -1,6 +1,6 @@
 "use client";
 
-import { Download, FileText, Mail, Plus, Save, Search } from "lucide-react";
+import { Download, FileText, Mail, Plus, Save, Search, Trash2 } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useAppState } from "@/components/app-state-provider";
 
@@ -15,13 +15,15 @@ export function DocumentsWorkspace({
 }: {
   initialSelectedId?: string;
 }) {
-  const { state, generateDocument, sendDocumentEmail, updateDocument } = useAppState();
+  const { state, generateDocument, sendDocumentEmail, updateDocument, deleteDocument } =
+    useAppState();
   const [query, setQuery] = useState("");
   const [prompt, setPrompt] = useState("");
   const [draftClientId, setDraftClientId] = useState("");
   const [selectedId, setSelectedId] = useState(initialSelectedId);
   const [isCreating, setIsCreating] = useState(false);
   const [isSending, setIsSending] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [sendFeedback, setSendFeedback] = useState<ActionFeedback | null>(null);
   const [editedContent, setEditedContent] = useState("");
   const [editedDocumentId, setEditedDocumentId] = useState<string | undefined>(undefined);
@@ -103,6 +105,27 @@ export function DocumentsWorkspace({
       });
     } finally {
       setIsSending(false);
+    }
+  }
+
+  async function handleDelete() {
+    if (!selectedDocument) {
+      return;
+    }
+
+    if (
+      !window.confirm("Supprimer ce document ? Cette action est irréversible.")
+    ) {
+      return;
+    }
+
+    setIsDeleting(true);
+
+    try {
+      await deleteDocument(selectedDocument.id);
+      setSelectedId("");
+    } finally {
+      setIsDeleting(false);
     }
   }
 
@@ -253,6 +276,15 @@ export function DocumentsWorkspace({
                   <Download className="size-4" />
                   PDF
                 </a>
+                <button
+                  className="flex h-9 items-center gap-2 rounded-md border border-border bg-canvas-soft px-3 text-sm font-semibold text-ink-muted transition hover:border-red-500/40 hover:text-red-400 disabled:cursor-not-allowed disabled:opacity-50"
+                  disabled={isDeleting}
+                  onClick={() => void handleDelete()}
+                  type="button"
+                >
+                  <Trash2 className="size-4" />
+                  {isDeleting ? "Suppression..." : "Supprimer"}
+                </button>
               </div>
             </div>
             {sendFeedback && sendFeedback.documentId === selectedDocument.id ? (
