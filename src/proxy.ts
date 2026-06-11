@@ -4,7 +4,9 @@ import { getToken } from "next-auth/jwt";
 import { SESSION_MARKER_COOKIE } from "@/lib/session-marker";
 
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
+  matcher: [
+    "/((?!api|_next/static|_next/image|favicon.ico|opengraph-image|twitter-image|icon|apple-icon).*)",
+  ],
 };
 
 export default async function proxy(request: NextRequest) {
