@@ -110,15 +110,15 @@ export function AdminOverview({
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {metrics.map((metric) => (
           <section
-            className="rounded-lg border border-white/75 bg-white/[0.78] p-4 shadow-[0_18px_55px_rgba(27,43,37,0.08)] backdrop-blur"
+            className="rounded-lg border border-border bg-surface/70 p-4 shadow-[0_18px_55px_rgba(0,0,0,0.3)] backdrop-blur"
             key={metric.label}
           >
             <div className="flex items-start justify-between gap-3">
               <div>
-                <p className="text-sm font-medium text-[#62736b]">
+                <p className="text-sm font-medium text-ink-muted">
                   {metric.label}
                 </p>
-                <p className="mt-2 text-2xl font-semibold text-[#111b17]">
+                <p className="mt-2 text-2xl font-semibold text-ink">
                   {metric.value}
                 </p>
               </div>
@@ -128,17 +128,17 @@ export function AdminOverview({
                 <metric.icon className="size-5" />
               </div>
             </div>
-            <p className="mt-4 text-sm text-[#62736b]">{metric.note}</p>
+            <p className="mt-4 text-sm text-ink-muted">{metric.note}</p>
           </section>
         ))}
       </div>
 
       <div className="mt-4 grid gap-4 xl:grid-cols-[0.85fr_1.15fr]">
-        <section className="rounded-lg border border-white/75 bg-white/[0.78] p-4 shadow-[0_18px_55px_rgba(27,43,37,0.08)] backdrop-blur sm:p-5">
-          <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[#526b60]">
+        <section className="rounded-lg border border-border bg-surface/70 p-4 shadow-[0_18px_55px_rgba(0,0,0,0.3)] backdrop-blur sm:p-5">
+          <p className="text-sm font-semibold uppercase tracking-[0.14em] text-gold">
             Répartition
           </p>
-          <h3 className="mt-1 text-xl font-semibold text-[#111b17]">
+          <h3 className="mt-1 font-display text-xl font-semibold text-ink">
             Utilisateurs par plan
           </h3>
 
@@ -151,11 +151,11 @@ export function AdminOverview({
                   >
                     {row.label}
                   </span>
-                  <span className="font-semibold text-[#111b17]">
+                  <span className="font-semibold text-ink">
                     {row.count}
                   </span>
                 </div>
-                <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-[#eef2ec]">
+                <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-canvas-soft">
                   <div
                     className={`h-full rounded-full ${PLAN_BAR_STYLES[row.key]}`}
                     style={{ width: `${row.share}%` }}
@@ -165,36 +165,36 @@ export function AdminOverview({
             ))}
           </div>
 
-          <div className="mt-6 grid grid-cols-2 gap-3 border-t border-[#d8e3dc] pt-4">
+          <div className="mt-6 grid grid-cols-2 gap-3 border-t border-border pt-4">
             <div>
-              <p className="text-sm text-[#62736b]">Clients enregistrés</p>
-              <p className="mt-1 flex items-center gap-2 text-lg font-semibold text-[#111b17]">
-                <Users className="size-4 text-[#526b60]" />
+              <p className="text-sm text-ink-muted">Clients enregistrés</p>
+              <p className="mt-1 flex items-center gap-2 text-lg font-semibold text-ink">
+                <Users className="size-4 text-gold" />
                 {totalClients}
               </p>
             </div>
             <div>
-              <p className="text-sm text-[#62736b]">Documents générés</p>
-              <p className="mt-1 flex items-center gap-2 text-lg font-semibold text-[#111b17]">
-                <FileText className="size-4 text-[#526b60]" />
+              <p className="text-sm text-ink-muted">Documents générés</p>
+              <p className="mt-1 flex items-center gap-2 text-lg font-semibold text-ink">
+                <FileText className="size-4 text-gold" />
                 {totalDocuments}
               </p>
             </div>
           </div>
         </section>
 
-        <section className="rounded-lg border border-white/75 bg-white/[0.78] p-4 shadow-[0_18px_55px_rgba(27,43,37,0.08)] backdrop-blur sm:p-5">
-          <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[#526b60]">
+        <section className="rounded-lg border border-border bg-surface/70 p-4 shadow-[0_18px_55px_rgba(0,0,0,0.3)] backdrop-blur sm:p-5">
+          <p className="text-sm font-semibold uppercase tracking-[0.14em] text-gold">
             Acquisition
           </p>
-          <h3 className="mt-1 text-xl font-semibold text-[#111b17]">
+          <h3 className="mt-1 font-display text-xl font-semibold text-ink">
             Derniers inscrits
           </h3>
 
           <div className="mt-5 overflow-x-auto">
             <table className="w-full min-w-[480px] text-left text-sm">
               <thead>
-                <tr className="text-xs font-semibold uppercase tracking-[0.1em] text-[#90a39a]">
+                <tr className="text-xs font-semibold uppercase tracking-[0.1em] text-ink-muted">
                   <th className="pb-2 pr-3">Nom</th>
                   <th className="pb-2 pr-3">Email</th>
                   <th className="pb-2 pr-3">Plan</th>
@@ -204,20 +204,20 @@ export function AdminOverview({
               <tbody>
                 {recentUsers.length === 0 ? (
                   <tr>
-                    <td className="py-4 text-[#62736b]" colSpan={4}>
+                    <td className="py-4 text-ink-muted" colSpan={4}>
                       Aucun utilisateur pour le moment.
                     </td>
                   </tr>
                 ) : (
                   recentUsers.map((user) => (
                     <tr
-                      className="border-t border-[#eef2ec]"
+                      className="border-t border-border"
                       key={user.id}
                     >
-                      <td className="py-2 pr-3 font-medium text-[#111b17]">
+                      <td className="py-2 pr-3 font-medium text-ink">
                         {user.name ?? "—"}
                       </td>
-                      <td className="py-2 pr-3 text-[#62736b]">
+                      <td className="py-2 pr-3 text-ink-muted">
                         {user.email}
                       </td>
                       <td className="py-2 pr-3">
@@ -227,7 +227,7 @@ export function AdminOverview({
                           {PLAN_LABELS[user.plan] ?? user.plan}
                         </span>
                       </td>
-                      <td className="py-2 text-[#62736b]">
+                      <td className="py-2 text-ink-muted">
                         {new Date(user.createdAt).toLocaleDateString("fr-FR")}
                       </td>
                     </tr>

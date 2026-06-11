@@ -24,36 +24,36 @@ export function SubscriptionSection({ plan }: { plan: string }) {
   }
 
   return (
-    <section className="mt-4 rounded-lg border border-[#dfe4d8] bg-white p-5 shadow-[0_1px_0_rgba(23,32,27,0.04)]">
+    <section className="mt-4 rounded-lg border border-border bg-surface p-5 shadow-[0_18px_55px_rgba(0,0,0,0.3)]">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h3 className="text-lg font-semibold">Abonnement</h3>
-          <p className="mt-1 text-sm font-medium text-[#17201b]">
+          <h3 className="font-display text-lg font-semibold text-ink">Abonnement</h3>
+          <p className="mt-1 text-sm font-medium text-ink">
             Plan actuel :{" "}
-            <span className="text-[#4f6f57]">
+            <span className="text-gold">
               {PLAN_LABELS[plan] ?? "Gratuit"}
             </span>
           </p>
           {plan === "free" ? (
-            <p className="mt-1 text-sm text-[#66705f]">
+            <p className="mt-1 text-sm text-ink-muted">
               Passe au plan Pro pour des générations illimitées.
             </p>
           ) : (
-            <p className="mt-1 text-sm text-[#66705f]">
+            <p className="mt-1 text-sm text-ink-muted">
               Gère ta facturation, modifie ou annule depuis le portail Stripe.
             </p>
           )}
         </div>
         {plan === "free" ? (
           <a
-            className="flex h-10 items-center justify-center gap-2 rounded-md bg-[#e65f3c] px-4 text-sm font-semibold text-white transition hover:bg-[#f0714f] sm:whitespace-nowrap"
+            className="flex h-10 items-center justify-center gap-2 rounded-md bg-gold px-4 text-sm font-semibold text-canvas transition hover:bg-gold-soft sm:whitespace-nowrap"
             href="/pricing"
           >
             Passer au Pro
           </a>
         ) : (
           <button
-            className="flex h-10 items-center justify-center gap-2 rounded-md border border-[#dfe4d8] bg-[#fbfcf8] px-4 text-sm font-semibold text-[#384438] transition hover:border-[#b9c4ad] hover:bg-white disabled:opacity-60 sm:whitespace-nowrap"
+            className="flex h-10 items-center justify-center gap-2 rounded-md border border-border bg-canvas-soft px-4 text-sm font-semibold text-ink-soft transition hover:border-gold/40 hover:text-gold disabled:opacity-60 sm:whitespace-nowrap"
             disabled={loading}
             onClick={() => void openPortal()}
             type="button"

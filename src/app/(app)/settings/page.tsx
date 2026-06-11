@@ -25,33 +25,33 @@ export default async function SettingsPage() {
         title="Configure ton espace SaaS."
       />
       <div className="grid gap-4 md:grid-cols-2">
-        <section className="rounded-lg border border-[#dfe4d8] bg-white p-5 shadow-[0_1px_0_rgba(23,32,27,0.04)]">
-          <div className="grid size-10 place-items-center rounded-md bg-[#f3f7ec] text-[#4f6f57]">
+        <section className="rounded-lg border border-border bg-surface p-5 shadow-[0_18px_55px_rgba(0,0,0,0.3)]">
+          <div className="grid size-10 place-items-center rounded-md bg-gold/10 text-gold">
             <UserRound className="size-5" />
           </div>
-          <h3 className="mt-4 text-lg font-semibold">Profil</h3>
-          <p className="mt-1 text-sm font-medium text-[#17201b]">
+          <h3 className="mt-4 font-display text-lg font-semibold text-ink">Profil</h3>
+          <p className="mt-1 text-sm font-medium text-ink">
             {session?.user?.name ?? "—"}
           </p>
-          <p className="text-sm text-[#66705f]">{session?.user?.email ?? "—"}</p>
+          <p className="text-sm text-ink-muted">{session?.user?.email ?? "—"}</p>
         </section>
 
-        <section className="rounded-lg border border-[#dfe4d8] bg-white p-5 shadow-[0_1px_0_rgba(23,32,27,0.04)]">
-          <div className="grid size-10 place-items-center rounded-md bg-[#f3f7ec] text-[#4f6f57]">
+        <section className="rounded-lg border border-border bg-surface p-5 shadow-[0_18px_55px_rgba(0,0,0,0.3)]">
+          <div className="grid size-10 place-items-center rounded-md bg-gold/10 text-gold">
             <ShieldCheck className="size-5" />
           </div>
-          <h3 className="mt-4 text-lg font-semibold">Sécurité</h3>
-          <p className="mt-2 text-sm leading-6 text-[#66705f]">
+          <h3 className="mt-4 font-display text-lg font-semibold text-ink">Sécurité</h3>
+          <p className="mt-2 text-sm leading-6 text-ink-muted">
             Sessions actives et gestion du mot de passe.
           </p>
         </section>
 
-        <section className="rounded-lg border border-[#dfe4d8] bg-white p-5 shadow-[0_1px_0_rgba(23,32,27,0.04)]">
-          <div className="grid size-10 place-items-center rounded-md bg-[#f3f7ec] text-[#4f6f57]">
+        <section className="rounded-lg border border-border bg-surface p-5 shadow-[0_18px_55px_rgba(0,0,0,0.3)]">
+          <div className="grid size-10 place-items-center rounded-md bg-gold/10 text-gold">
             <KeyRound className="size-5" />
           </div>
-          <h3 className="mt-4 text-lg font-semibold">Clé IA</h3>
-          <p className="mt-2 text-sm leading-6 text-[#66705f]">
+          <h3 className="mt-4 font-display text-lg font-semibold text-ink">Clé IA</h3>
+          <p className="mt-2 text-sm leading-6 text-ink-muted">
             Moteur IA actif : Groq — Llama 3.3 70B. Rapide et gratuit.
           </p>
         </section>
@@ -61,14 +61,14 @@ export default async function SettingsPage() {
       <SubscriptionSection plan={plan} />
       <SettingsActions />
 
-      <nav className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-[#90a39a]">
-        <Link className="hover:text-[#17201b] hover:underline" href="/mentions-legales">
+      <nav className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-ink-muted">
+        <Link className="hover:text-gold hover:underline" href="/mentions-legales">
           Mentions légales
         </Link>
-        <Link className="hover:text-[#17201b] hover:underline" href="/cgv">
+        <Link className="hover:text-gold hover:underline" href="/cgv">
           CGV
         </Link>
-        <Link className="hover:text-[#17201b] hover:underline" href="/confidentialite">
+        <Link className="hover:text-gold hover:underline" href="/confidentialite">
           Confidentialité
         </Link>
       </nav>

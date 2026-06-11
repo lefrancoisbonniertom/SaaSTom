@@ -50,10 +50,10 @@ function toEditDraft(client: ClientRecord): EditDraft {
 }
 
 const fieldClass =
-  "mt-2 h-10 w-full rounded-md border border-[#dfe4d8] bg-[#fbfcf8] px-3 text-sm outline-none focus:border-[#4f6f57]";
+  "mt-2 h-10 w-full rounded-md border border-border bg-canvas-soft px-3 text-sm text-ink outline-none transition placeholder:text-ink-muted/50 focus:border-gold focus:ring-2 focus:ring-gold/20";
 
 const cardFieldClass =
-  "w-full rounded-md border border-[#dfe4d8] bg-[#fbfcf8] px-2 py-1.5 text-xs outline-none focus:border-[#4f6f57]";
+  "w-full rounded-md border border-border bg-canvas-soft px-2 py-1.5 text-xs text-ink outline-none transition placeholder:text-ink-muted/50 focus:border-gold focus:ring-2 focus:ring-gold/20";
 
 export function ClientsWorkspace({
   initialQuery = "",
@@ -199,16 +199,16 @@ export function ClientsWorkspace({
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-col gap-3 rounded-lg border border-[#dfe4d8] bg-white p-4 shadow-[0_1px_0_rgba(23,32,27,0.04)] sm:flex-row sm:items-center sm:justify-between sm:p-5">
+      <div className="flex flex-col gap-3 rounded-lg border border-border bg-surface p-4 shadow-[0_18px_55px_rgba(0,0,0,0.3)] sm:flex-row sm:items-center sm:justify-between sm:p-5">
         <div className="flex items-center gap-2">
-          <Users className="size-4 text-[#4f6f57]" />
-          <h3 className="text-lg font-semibold">Pipeline clients</h3>
+          <Users className="size-4 text-gold" />
+          <h3 className="font-display text-lg font-semibold text-ink">Pipeline clients</h3>
         </div>
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
           <div className="relative sm:w-64">
-            <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[#73806c]" />
+            <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-ink-muted" />
             <input
-              className="h-10 w-full rounded-md border border-[#dfe4d8] bg-[#fbfcf8] pl-9 pr-3 text-sm outline-none focus:border-[#4f6f57]"
+              className="h-10 w-full rounded-md border border-border bg-canvas-soft pl-9 pr-3 text-sm text-ink outline-none transition placeholder:text-ink-muted/50 focus:border-gold focus:ring-2 focus:ring-gold/20"
               onChange={(event) => setQuery(event.target.value)}
               placeholder="Filtrer..."
               type="search"
@@ -216,7 +216,7 @@ export function ClientsWorkspace({
             />
           </div>
           <a
-            className="flex h-10 items-center justify-center gap-2 rounded-md border border-[#dfe4d8] bg-white px-4 text-sm font-semibold text-[#17201b] transition hover:border-[#b9c4ad] sm:whitespace-nowrap"
+            className="flex h-10 items-center justify-center gap-2 rounded-md border border-border bg-canvas-soft px-4 text-sm font-semibold text-ink transition hover:border-gold/40 hover:text-gold sm:whitespace-nowrap"
             download
             href="/api/clients/export"
           >
@@ -224,7 +224,7 @@ export function ClientsWorkspace({
             Exporter CSV
           </a>
           <button
-            className="flex h-10 items-center justify-center gap-2 rounded-md bg-[#17201b] px-4 text-sm font-semibold text-white transition hover:bg-[#2a352e] sm:whitespace-nowrap"
+            className="flex h-10 items-center justify-center gap-2 rounded-md bg-gold px-4 text-sm font-semibold text-canvas transition hover:bg-gold-soft sm:whitespace-nowrap"
             onClick={() => setShowForm((value) => !value)}
             type="button"
           >
@@ -235,13 +235,13 @@ export function ClientsWorkspace({
       </div>
 
       {showForm ? (
-        <section className="rounded-lg border border-[#dfe4d8] bg-white p-4 shadow-[0_1px_0_rgba(23,32,27,0.04)] sm:p-5">
+        <section className="rounded-lg border border-border bg-surface p-4 shadow-[0_18px_55px_rgba(0,0,0,0.3)] sm:p-5">
           <form
             className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
             onSubmit={handleSubmit}
           >
             <div>
-              <label className="text-sm font-semibold" htmlFor="client-name">
+              <label className="text-sm font-semibold text-ink" htmlFor="client-name">
                 Nom
               </label>
               <input
@@ -253,7 +253,7 @@ export function ClientsWorkspace({
               />
             </div>
             <div>
-              <label className="text-sm font-semibold" htmlFor="client-work">
+              <label className="text-sm font-semibold text-ink" htmlFor="client-work">
                 Projet
               </label>
               <input
@@ -266,7 +266,7 @@ export function ClientsWorkspace({
             </div>
             <div>
               <label
-                className="text-sm font-semibold"
+                className="text-sm font-semibold text-ink"
                 htmlFor="client-contact"
               >
                 Contact
@@ -282,7 +282,7 @@ export function ClientsWorkspace({
             </div>
             <div>
               <label
-                className="text-sm font-semibold"
+                className="text-sm font-semibold text-ink"
                 htmlFor="client-amount"
               >
                 Montant
@@ -299,7 +299,7 @@ export function ClientsWorkspace({
             </div>
             <div>
               <label
-                className="text-sm font-semibold"
+                className="text-sm font-semibold text-ink"
                 htmlFor="client-status"
               >
                 Statut
@@ -320,7 +320,7 @@ export function ClientsWorkspace({
               </select>
             </div>
             <div>
-              <label className="text-sm font-semibold" htmlFor="client-tags">
+              <label className="text-sm font-semibold text-ink" htmlFor="client-tags">
                 Étiquettes
               </label>
               <input
@@ -333,7 +333,7 @@ export function ClientsWorkspace({
             </div>
             <div className="flex items-end">
               <button
-                className="flex h-10 w-full items-center justify-center gap-2 rounded-md bg-[#17201b] px-4 text-sm font-semibold text-white transition hover:bg-[#2a352e] disabled:cursor-not-allowed disabled:opacity-50"
+                className="flex h-10 w-full items-center justify-center gap-2 rounded-md bg-gold px-4 text-sm font-semibold text-canvas transition hover:bg-gold-soft disabled:cursor-not-allowed disabled:opacity-50"
                 disabled={!name.trim() || !work.trim() || isSaving}
                 type="submit"
               >
@@ -350,8 +350,8 @@ export function ClientsWorkspace({
           <div
             className={`flex flex-col gap-3 rounded-lg border-2 p-3 transition ${
               dragOverStatus === column.status
-                ? "border-[#4f6f57] bg-[#f3f7ec]"
-                : "border-transparent bg-[#f3f5ef]"
+                ? "border-gold bg-gold/10"
+                : "border-transparent bg-surface/40"
             }`}
             key={column.status}
             onDragLeave={() =>
@@ -371,7 +371,7 @@ export function ClientsWorkspace({
               >
                 {column.status}
               </span>
-              <span className="text-xs font-semibold text-[#73806c]">
+              <span className="text-xs font-semibold text-ink-muted">
                 {column.clients.length}
               </span>
             </div>
@@ -379,7 +379,7 @@ export function ClientsWorkspace({
             <div className="space-y-3">
               {column.clients.map((client) => (
                 <article
-                  className={`rounded-lg border border-[#dfe4d8] bg-white p-3 shadow-[0_1px_0_rgba(23,32,27,0.04)] transition ${
+                  className={`rounded-lg border border-border bg-surface p-3 shadow-[0_10px_30px_rgba(0,0,0,0.25)] transition ${
                     editingId === client.id
                       ? ""
                       : "cursor-grab active:cursor-grabbing"
@@ -482,7 +482,7 @@ export function ClientsWorkspace({
                       />
                       <div className="flex gap-2">
                         <button
-                          className="flex h-8 flex-1 items-center justify-center gap-1.5 rounded-md bg-[#17201b] text-xs font-semibold text-white transition hover:bg-[#2a352e] disabled:cursor-not-allowed disabled:opacity-50"
+                          className="flex h-8 flex-1 items-center justify-center gap-1.5 rounded-md bg-gold text-xs font-semibold text-canvas transition hover:bg-gold-soft disabled:cursor-not-allowed disabled:opacity-50"
                           disabled={isUpdating}
                           onClick={() => void saveEdit()}
                           type="button"
@@ -491,7 +491,7 @@ export function ClientsWorkspace({
                           Enregistrer
                         </button>
                         <button
-                          className="flex h-8 flex-1 items-center justify-center gap-1.5 rounded-md border border-[#dfe4d8] bg-[#fbfcf8] text-xs font-semibold text-[#384438] transition hover:border-[#b9c4ad]"
+                          className="flex h-8 flex-1 items-center justify-center gap-1.5 rounded-md border border-border bg-canvas-soft text-xs font-semibold text-ink-soft transition hover:border-gold/40"
                           onClick={cancelEdit}
                           type="button"
                         >
@@ -504,23 +504,23 @@ export function ClientsWorkspace({
                     <>
                       <div className="flex items-start justify-between gap-2">
                         <div className="min-w-0">
-                          <h4 className="truncate text-sm font-semibold">
+                          <h4 className="truncate text-sm font-semibold text-ink">
                             {client.name}
                           </h4>
-                          <p className="mt-1 truncate text-xs text-[#66705f]">
+                          <p className="mt-1 truncate text-xs text-ink-muted">
                             {client.work}
                           </p>
                         </div>
                         <div className="flex shrink-0 gap-1">
                           <button
-                            className="grid size-7 place-items-center rounded-md text-[#73806c] transition hover:bg-[#f3f7ec] hover:text-[#17201b]"
+                            className="grid size-7 place-items-center rounded-md text-ink-muted transition hover:bg-gold/10 hover:text-gold"
                             onClick={() => startEdit(client)}
                             type="button"
                           >
                             <Pencil className="size-3.5" />
                           </button>
                           <button
-                            className="grid size-7 place-items-center rounded-md text-[#73806c] transition hover:bg-red-50 hover:text-red-600"
+                            className="grid size-7 place-items-center rounded-md text-ink-muted transition hover:bg-red-500/10 hover:text-red-400"
                             onClick={() => void handleDelete(client.id)}
                             type="button"
                           >
@@ -528,20 +528,20 @@ export function ClientsWorkspace({
                           </button>
                         </div>
                       </div>
-                      <p className="mt-2 text-sm font-semibold">
+                      <p className="mt-2 text-sm font-semibold text-ink">
                         {formatCurrency(client.amount)}
                       </p>
-                      <p className="mt-1 truncate text-xs text-[#66705f]">
+                      <p className="mt-1 truncate text-xs text-ink-muted">
                         {client.contact}
                       </p>
-                      <p className="mt-2 rounded-md border border-[#dfe4d8] bg-[#fbfcf8] px-2 py-1.5 text-xs leading-5 text-[#384438]">
+                      <p className="mt-2 rounded-md border border-border bg-canvas-soft px-2 py-1.5 text-xs leading-5 text-ink-soft">
                         {client.nextAction}
                       </p>
                       {client.tags.length > 0 ? (
                         <div className="mt-2 flex flex-wrap gap-1">
                           {client.tags.map((tag) => (
                             <span
-                              className="rounded-full border border-[#dfe4d8] bg-[#f3f7ec] px-2 py-0.5 text-[10px] font-semibold text-[#4f6f57]"
+                              className="rounded-full border border-gold/20 bg-gold/10 px-2 py-0.5 text-[10px] font-semibold text-gold"
                               key={tag}
                             >
                               {tag}
@@ -555,7 +555,7 @@ export function ClientsWorkspace({
               ))}
 
               {column.clients.length === 0 ? (
-                <p className="rounded-md border border-dashed border-[#dfe4d8] p-3 text-center text-xs text-[#8c9785]">
+                <p className="rounded-md border border-dashed border-border p-3 text-center text-xs text-ink-muted">
                   Aucun client
                 </p>
               ) : null}

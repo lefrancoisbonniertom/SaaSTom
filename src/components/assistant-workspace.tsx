@@ -78,29 +78,29 @@ export function AssistantWorkspace() {
 
   return (
     <div className="grid gap-4 xl:grid-cols-[1fr_0.75fr]">
-      <section className="rounded-lg border border-[#dfe4d8] bg-white p-4 shadow-[0_1px_0_rgba(23,32,27,0.04)] sm:p-5">
+      <section className="rounded-lg border border-border bg-surface p-4 shadow-[0_18px_55px_rgba(0,0,0,0.3)] sm:p-5">
         <div className="flex items-start gap-3">
-          <div className="grid size-10 place-items-center rounded-md bg-[#17201b] text-white">
+          <div className="grid size-10 place-items-center rounded-md bg-gold text-canvas">
             <Bot className="size-5" />
           </div>
           <div>
-            <p className="text-sm font-medium text-[#66705f]">
+            <p className="text-sm font-medium text-ink-muted">
               Atelier de génération
             </p>
-            <h3 className="mt-1 text-xl font-semibold">
+            <h3 className="mt-1 font-display text-xl font-semibold text-ink">
               Donne un brief, SaaSTom prépare une première version.
             </h3>
           </div>
         </div>
 
         <label
-          className="mt-6 block text-sm font-semibold text-[#384438]"
+          className="mt-6 block text-sm font-semibold text-ink"
           htmlFor="assistant-client"
         >
           Client concerné (optionnel)
         </label>
         <select
-          className="mt-3 h-10 w-full rounded-md border border-[#dfe4d8] bg-[#fbfcf8] px-3 text-sm outline-none focus:border-[#4f6f57] disabled:opacity-50"
+          className="mt-3 h-10 w-full rounded-md border border-border bg-canvas-soft px-3 text-sm text-ink outline-none transition focus:border-gold focus:ring-2 focus:ring-gold/20 disabled:opacity-50"
           disabled={limitReached}
           id="assistant-client"
           onChange={(event) => setSelectedClientId(event.target.value)}
@@ -115,13 +115,13 @@ export function AssistantWorkspace() {
         </select>
 
         <label
-          className="mt-4 block text-sm font-semibold text-[#384438]"
+          className="mt-4 block text-sm font-semibold text-ink"
           htmlFor="assistant-prompt"
         >
           Brief
         </label>
         <textarea
-          className="mt-3 min-h-72 w-full resize-none rounded-md border border-[#dfe4d8] bg-[#fbfcf8] p-3 text-sm leading-6 outline-none transition placeholder:text-[#8c9785] focus:border-[#4f6f57] disabled:opacity-50"
+          className="mt-3 min-h-72 w-full resize-none rounded-md border border-border bg-canvas-soft p-3 text-sm leading-6 text-ink outline-none transition placeholder:text-ink-muted/50 focus:border-gold focus:ring-2 focus:ring-gold/20 disabled:opacity-50"
           disabled={limitReached}
           id="assistant-prompt"
           onChange={(event) => setPrompt(event.target.value)}
@@ -130,13 +130,13 @@ export function AssistantWorkspace() {
         />
 
         <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <p className={`text-sm ${limitReached ? "font-semibold text-red-600" : "text-[#66705f]"}`}>
+          <p className={`text-sm ${limitReached ? "font-semibold text-red-400" : "text-ink-muted"}`}>
             {limitReached
               ? "Limite atteinte — passez au plan Pro"
               : `${state.aiCreditsUsed}/${FREE_PLAN_LIMIT} générations gratuites utilisées (${creditsLeft} restante${creditsLeft > 1 ? "s" : ""})`}
           </p>
           <button
-            className="flex h-10 items-center justify-center gap-2 rounded-md bg-[#e65f3c] px-4 text-sm font-semibold text-white transition hover:bg-[#c94f32] disabled:cursor-not-allowed disabled:opacity-50 sm:whitespace-nowrap"
+            className="flex h-10 items-center justify-center gap-2 rounded-md bg-gold px-4 text-sm font-semibold text-canvas transition hover:bg-gold-soft disabled:cursor-not-allowed disabled:opacity-50 sm:whitespace-nowrap"
             disabled={!prompt.trim() || isGenerating || limitReached}
             onClick={() => void handleGenerate()}
             type="button"
@@ -147,26 +147,26 @@ export function AssistantWorkspace() {
         </div>
 
         {genError ? (
-          <div className="mt-4 flex items-start gap-2 rounded-lg border border-red-200 bg-red-50 p-4">
-            <AlertCircle className="mt-0.5 size-4 shrink-0 text-red-600" />
+          <div className="mt-4 flex items-start gap-2 rounded-lg border border-red-500/30 bg-red-500/10 p-4">
+            <AlertCircle className="mt-0.5 size-4 shrink-0 text-red-400" />
             <div>
-              <p className="text-sm font-semibold text-red-700">
+              <p className="text-sm font-semibold text-red-300">
                 Génération impossible
               </p>
-              <p className="mt-1 text-sm text-red-600">{genError}</p>
+              <p className="mt-1 text-sm text-red-400">{genError}</p>
             </div>
           </div>
         ) : null}
 
         {lastDocument && !genError ? (
-          <div className="mt-5 rounded-lg border border-emerald-200 bg-emerald-50 p-4">
-            <div className="flex items-center gap-2 text-sm font-semibold text-emerald-900">
+          <div className="mt-5 rounded-lg border border-emerald-500/30 bg-emerald-500/10 p-4">
+            <div className="flex items-center gap-2 text-sm font-semibold text-emerald-300">
               <Sparkles className="size-4" />
               Document ajouté à l&apos;historique
             </div>
-            <p className="mt-2 text-sm text-emerald-800">{lastDocument.title}</p>
+            <p className="mt-2 text-sm text-emerald-200">{lastDocument.title}</p>
             {lastDocument.clientName ? (
-              <p className="mt-1 text-xs font-medium text-emerald-700">
+              <p className="mt-1 text-xs font-medium text-emerald-400">
                 Lié à {lastDocument.clientName}
               </p>
             ) : null}
@@ -175,33 +175,33 @@ export function AssistantWorkspace() {
       </section>
 
       <aside className="space-y-4">
-        <section className="rounded-lg border border-[#dfe4d8] bg-white p-4 shadow-[0_1px_0_rgba(23,32,27,0.04)] sm:p-5">
-          <p className="text-sm font-medium text-[#66705f]">Modèles rapides</p>
+        <section className="rounded-lg border border-border bg-surface p-4 shadow-[0_18px_55px_rgba(0,0,0,0.3)] sm:p-5">
+          <p className="text-sm font-medium text-ink-muted">Modèles rapides</p>
           <div className="mt-4 space-y-3">
             {promptTemplates.map((template) => (
               <button
-                className="flex w-full items-center gap-3 rounded-lg border border-[#dfe4d8] bg-[#fbfcf8] p-3 text-left text-sm font-medium text-[#384438] transition hover:border-[#b9c4ad] disabled:opacity-40"
+                className="flex w-full items-center gap-3 rounded-lg border border-border bg-canvas-soft p-3 text-left text-sm font-medium text-ink-soft transition hover:border-gold/40 hover:bg-gold/5 disabled:opacity-40"
                 disabled={limitReached}
                 key={template}
                 onClick={() => setPrompt(template)}
                 type="button"
               >
-                <MessageSquareText className="size-4 shrink-0 text-[#e65f3c]" />
+                <MessageSquareText className="size-4 shrink-0 text-gold" />
                 {template}
               </button>
             ))}
           </div>
         </section>
 
-        <section className="rounded-lg border border-[#dfe4d8] bg-white p-4 shadow-[0_1px_0_rgba(23,32,27,0.04)] sm:p-5">
+        <section className="rounded-lg border border-border bg-surface p-4 shadow-[0_18px_55px_rgba(0,0,0,0.3)] sm:p-5">
           <div className="flex items-center gap-2">
-            <FileText className="size-4 text-[#4f6f57]" />
-            <p className="text-sm font-semibold">Dernier résultat</p>
+            <FileText className="size-4 text-gold" />
+            <p className="text-sm font-semibold text-ink">Dernier résultat</p>
           </div>
           {lastDocument ? (
             <>
               <textarea
-                className="mt-4 min-h-72 w-full resize-y rounded-md border border-[#dfe4d8] bg-[#fbfcf8] p-3 text-sm leading-6 text-[#384438] outline-none transition focus:border-[#4f6f57] focus:ring-2 focus:ring-[#4f6f57]/20"
+                className="mt-4 min-h-72 w-full resize-y rounded-md border border-border bg-canvas-soft p-3 text-sm leading-6 text-ink outline-none transition focus:border-gold focus:ring-2 focus:ring-gold/20"
                 onChange={(event) => setEditedContent(event.target.value)}
                 value={editedContent}
               />
@@ -209,10 +209,10 @@ export function AssistantWorkspace() {
                 <p
                   className={`text-xs font-medium ${
                     saveError
-                      ? "text-[#c0432a]"
+                      ? "text-red-400"
                       : saveSuccess
-                        ? "text-[#4f6f57]"
-                        : "text-[#8c9785]"
+                        ? "text-sage"
+                        : "text-ink-muted"
                   }`}
                 >
                   {saveError
@@ -224,7 +224,7 @@ export function AssistantWorkspace() {
                         : "Tu peux modifier ce texte généré par l'IA."}
                 </p>
                 <button
-                  className="flex h-9 shrink-0 items-center gap-2 rounded-md bg-[#17201b] px-3 text-sm font-semibold text-white transition hover:bg-[#2a352e] disabled:cursor-not-allowed disabled:opacity-50"
+                  className="flex h-9 shrink-0 items-center gap-2 rounded-md bg-gold px-3 text-sm font-semibold text-canvas transition hover:bg-gold-soft disabled:cursor-not-allowed disabled:opacity-50"
                   disabled={!isContentDirty || isSavingContent}
                   onClick={() => void handleSaveContent()}
                   type="button"
@@ -235,7 +235,7 @@ export function AssistantWorkspace() {
               </div>
             </>
           ) : (
-            <pre className="mt-4 max-h-96 overflow-auto whitespace-pre-wrap rounded-md border border-[#dfe4d8] bg-[#fbfcf8] p-3 text-sm leading-6 text-[#384438]">
+            <pre className="mt-4 max-h-96 overflow-auto whitespace-pre-wrap rounded-md border border-border bg-canvas-soft p-3 text-sm leading-6 text-ink-muted">
               Lance une génération pour voir ici le document créé par SaaSTom.
             </pre>
           )}

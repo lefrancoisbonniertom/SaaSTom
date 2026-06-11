@@ -44,8 +44,8 @@ export function PricingButton({
     <button
       className={`mt-6 flex h-10 w-full items-center justify-center gap-2 rounded-md px-4 text-sm font-semibold transition disabled:opacity-60 ${
         highlighted
-          ? "bg-[#e65f3c] text-white hover:bg-[#f0714f]"
-          : "bg-[#eef8f8] text-[#17201b] hover:bg-[#dff2f2]"
+          ? "bg-gold text-canvas hover:bg-gold-soft"
+          : "border border-border bg-canvas-soft text-ink hover:border-gold/40 hover:text-gold"
       }`}
       disabled={loading || isCurrentPlan}
       onClick={() => void handleClick()}

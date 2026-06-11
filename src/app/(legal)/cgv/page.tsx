@@ -31,7 +31,7 @@ export default function CgvPage() {
       </LegalSection>
 
       <LegalSection title="Article 3 — Offres et tarifs">
-        <p>SaaSTom propose les offres suivantes, détaillées sur la <Link className="text-[#e65f3c] hover:underline" href="/pricing">page tarifs</Link> :</p>
+        <p>SaaSTom propose les offres suivantes, détaillées sur la <Link className="text-gold hover:underline" href="/pricing">page tarifs</Link> :</p>
         <ul className="list-disc space-y-1 pl-5">
           <li><strong>Gratuit</strong> : 0 EUR, fonctionnalités limitées (générations IA et clients en nombre limité).</li>
           <li><strong>Pro</strong> : 19 EUR/mois, générations IA et clients illimités, fonctionnalités avancées.</li>
@@ -98,7 +98,7 @@ export default function CgvPage() {
         <p>
           Les données saisies par l&apos;utilisateur (clients, documents, tâches) restent sa propriété.
           Les modalités de traitement de ces données sont décrites dans la{" "}
-          <Link className="text-[#e65f3c] hover:underline" href="/confidentialite">
+          <Link className="text-gold hover:underline" href="/confidentialite">
             politique de confidentialité
           </Link>
           .

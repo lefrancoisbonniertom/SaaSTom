@@ -16,19 +16,19 @@ export function SettingsActions() {
 
   return (
     <div className="mt-4">
-      <section className="rounded-lg border border-red-100 bg-red-50/60 p-5">
+      <section className="rounded-lg border border-red-500/20 bg-red-500/5 p-5">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h3 className="text-lg font-semibold text-[#17201b]">
+            <h3 className="font-display text-lg font-semibold text-ink">
               Déconnexion
             </h3>
-            <p className="mt-2 text-sm leading-6 text-[#66705f]">
+            <p className="mt-2 text-sm leading-6 text-ink-muted">
               Ferme ta session sur cet appareil. Tes données restent
               sauvegardées.
             </p>
           </div>
           <button
-            className="flex h-10 items-center justify-center gap-2 rounded-md bg-red-600 px-4 text-sm font-semibold text-white transition hover:bg-red-700 disabled:opacity-60 sm:whitespace-nowrap"
+            className="flex h-10 items-center justify-center gap-2 rounded-md bg-red-500/90 px-4 text-sm font-semibold text-white transition hover:bg-red-500 disabled:opacity-60 sm:whitespace-nowrap"
             disabled={isLoggingOut}
             onClick={() => void handleLogout()}
             type="button"

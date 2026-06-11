@@ -11,8 +11,8 @@ export function LegalPage({
 }) {
   return (
     <div>
-      <h1 className="text-2xl font-semibold text-[#17201b]">{title}</h1>
-      <p className="mt-1 text-sm text-[#90a39a]">Dernière mise à jour : {updatedAt}</p>
+      <h1 className="font-display text-2xl font-semibold text-ink">{title}</h1>
+      <p className="mt-1 text-sm text-ink-muted">Dernière mise à jour : {updatedAt}</p>
       <div className="mt-6 space-y-6">{children}</div>
     </div>
   );
@@ -21,8 +21,8 @@ export function LegalPage({
 export function LegalSection({ title, children }: { title: string; children: ReactNode }) {
   return (
     <section>
-      <h2 className="text-lg font-semibold text-[#17201b]">{title}</h2>
-      <div className="mt-2 space-y-3 text-sm leading-6 text-[#384438]">{children}</div>
+      <h2 className="font-display text-lg font-semibold text-ink">{title}</h2>
+      <div className="mt-2 space-y-3 text-sm leading-6 text-ink-soft">{children}</div>
     </section>
   );
 }

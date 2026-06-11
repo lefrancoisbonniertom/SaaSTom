@@ -71,20 +71,20 @@ export function IntegrationsSection({
   }
 
   return (
-    <section className="rounded-lg border border-[#dfe4d8] bg-white p-5 shadow-[0_1px_0_rgba(23,32,27,0.04)]">
-      <div className="grid size-10 place-items-center rounded-md bg-[#f3f7ec] text-[#4f6f57]">
+    <section className="rounded-lg border border-border bg-surface p-5 shadow-[0_18px_55px_rgba(0,0,0,0.3)]">
+      <div className="grid size-10 place-items-center rounded-md bg-gold/10 text-gold">
         <Plug className="size-5" />
       </div>
-      <h3 className="mt-4 text-lg font-semibold">Intégrations</h3>
-      <p className="mt-2 text-sm leading-6 text-[#66705f]">
+      <h3 className="mt-4 font-display text-lg font-semibold text-ink">Intégrations</h3>
+      <p className="mt-2 text-sm leading-6 text-ink-muted">
         Reçois un webhook (compatible Zapier, Make, n8n...) à chaque création
         de client ou de document.
       </p>
-      <label className="mt-4 block text-sm font-semibold" htmlFor="webhook-url">
+      <label className="mt-4 block text-sm font-semibold text-ink" htmlFor="webhook-url">
         URL du webhook
       </label>
       <input
-        className="mt-2 h-10 w-full rounded-md border border-[#dfe4d8] bg-[#fbfcf8] px-3 text-sm outline-none focus:border-[#4f6f57]"
+        className="mt-2 h-10 w-full rounded-md border border-border bg-canvas-soft px-3 text-sm text-ink outline-none transition placeholder:text-ink-muted/50 focus:border-gold focus:ring-2 focus:ring-gold/20"
         id="webhook-url"
         onChange={(event) => setWebhookUrl(event.target.value)}
         placeholder="https://hooks.zapier.com/..."
@@ -93,7 +93,7 @@ export function IntegrationsSection({
       />
       <div className="mt-3 flex flex-wrap gap-2">
         <button
-          className="flex h-10 items-center justify-center gap-2 rounded-md bg-[#17201b] px-4 text-sm font-semibold text-white transition hover:bg-[#2a352e] disabled:cursor-not-allowed disabled:opacity-50"
+          className="flex h-10 items-center justify-center gap-2 rounded-md bg-gold px-4 text-sm font-semibold text-canvas transition hover:bg-gold-soft disabled:cursor-not-allowed disabled:opacity-50"
           disabled={isSaving || webhookUrl.trim() === savedUrl.trim()}
           onClick={() => void handleSave()}
           type="button"
@@ -101,7 +101,7 @@ export function IntegrationsSection({
           {isSaving ? "Enregistrement..." : "Enregistrer"}
         </button>
         <button
-          className="flex h-10 items-center justify-center gap-2 rounded-md border border-[#dfe4d8] bg-white px-4 text-sm font-semibold text-[#17201b] transition hover:border-[#b9c4ad] disabled:cursor-not-allowed disabled:opacity-50"
+          className="flex h-10 items-center justify-center gap-2 rounded-md border border-border bg-canvas-soft px-4 text-sm font-semibold text-ink transition hover:border-gold/40 hover:text-gold disabled:cursor-not-allowed disabled:opacity-50"
           disabled={isTesting || !savedUrl.trim()}
           onClick={() => void handleTest()}
           type="button"
@@ -112,13 +112,13 @@ export function IntegrationsSection({
       {feedback ? (
         <p
           className={`mt-3 text-sm font-medium ${
-            feedback.type === "success" ? "text-[#4f6f57]" : "text-[#c0432a]"
+            feedback.type === "success" ? "text-sage" : "text-red-400"
           }`}
         >
           {feedback.text}
         </p>
       ) : null}
-      <p className="mt-3 text-xs leading-5 text-[#90a39a]">
+      <p className="mt-3 text-xs leading-5 text-ink-muted">
         Événements envoyés : <code>client.created</code>,{" "}
         <code>document.created</code>.
       </p>
