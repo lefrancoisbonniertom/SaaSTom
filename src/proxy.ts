@@ -24,6 +24,7 @@ export default async function proxy(request: NextRequest) {
 
   const isPublicPage =
     isAuthPage ||
+    pathname === "/" ||
     pathname.startsWith("/mentions-legales") ||
     pathname.startsWith("/cgv") ||
     pathname.startsWith("/confidentialite");
