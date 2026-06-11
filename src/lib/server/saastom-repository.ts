@@ -79,6 +79,11 @@ type ClientUpdateInput = Partial<{
   tags: string[];
 }>;
 
+type DocumentUpdateInput = Partial<{
+  title: string;
+  content: string;
+}>;
+
 const clientStatuses = new Set<ClientStatus>([
   "Prospect",
   "À relancer",
@@ -374,6 +379,30 @@ export async function generateDocument(
   await dispatchWebhook(userId, "document.created", record);
 
   return record;
+}
+
+export async function updateDocument(
+  userId: string,
+  documentId: string,
+  input: DocumentUpdateInput,
+) {
+  const existing = await prisma.document.findFirst({
+    where: { id: documentId, userId },
+  });
+
+  if (!existing) {
+    throw new Error("Document not found");
+  }
+
+  const document = await prisma.document.update({
+    where: { id: documentId },
+    data: {
+      ...(input.title !== undefined && { title: input.title }),
+      ...(input.content !== undefined && { content: input.content }),
+    },
+  });
+
+  return toDocumentRecord(document);
 }
 
 export async function toggleTask(userId: string, taskId: string) {

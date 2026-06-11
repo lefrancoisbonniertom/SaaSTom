@@ -56,6 +56,10 @@ type AppStateContextValue = {
     type?: string,
     clientId?: string,
   ) => Promise<DocumentRecord>;
+  updateDocument: (
+    documentId: string,
+    updates: Partial<Pick<DocumentRecord, "title" | "content">>,
+  ) => Promise<void>;
   toggleTask: (taskId: string) => Promise<void>;
   addTask: (title: string) => Promise<void>;
   deleteTask: (taskId: string) => Promise<void>;
@@ -202,6 +206,20 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
         setError(null);
 
         return payload.document;
+      },
+      updateDocument: async (documentId, updates) => {
+        const payload = await parseJsonResponse<StateResponse>(
+          await fetch(`/api/documents/${documentId}`, {
+            body: JSON.stringify(updates),
+            headers: {
+              "Content-Type": "application/json",
+            },
+            method: "PATCH",
+          }),
+        );
+
+        setState(payload.state);
+        setError(null);
       },
       toggleTask: async (taskId) => {
         const payload = await parseJsonResponse<StateResponse>(

@@ -1,10 +1,10 @@
 "use client";
 
-import { Download, FileText, Mail, Plus, Search } from "lucide-react";
+import { Download, FileText, Mail, Plus, Save, Search } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useAppState } from "@/components/app-state-provider";
 
-type SendFeedback = {
+type ActionFeedback = {
   documentId: string;
   type: "success" | "error";
   text: string;
@@ -15,14 +15,18 @@ export function DocumentsWorkspace({
 }: {
   initialSelectedId?: string;
 }) {
-  const { state, generateDocument, sendDocumentEmail } = useAppState();
+  const { state, generateDocument, sendDocumentEmail, updateDocument } = useAppState();
   const [query, setQuery] = useState("");
   const [prompt, setPrompt] = useState("");
   const [draftClientId, setDraftClientId] = useState("");
   const [selectedId, setSelectedId] = useState(initialSelectedId);
   const [isCreating, setIsCreating] = useState(false);
   const [isSending, setIsSending] = useState(false);
-  const [sendFeedback, setSendFeedback] = useState<SendFeedback | null>(null);
+  const [sendFeedback, setSendFeedback] = useState<ActionFeedback | null>(null);
+  const [editedContent, setEditedContent] = useState("");
+  const [editedDocumentId, setEditedDocumentId] = useState<string | undefined>(undefined);
+  const [isSavingContent, setIsSavingContent] = useState(false);
+  const [saveFeedback, setSaveFeedback] = useState<ActionFeedback | null>(null);
 
   const filteredDocuments = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase();
@@ -42,6 +46,16 @@ export function DocumentsWorkspace({
   const selectedDocument =
     state.documents.find((document) => document.id === selectedId) ??
     state.documents[0];
+
+  if (selectedDocument?.id !== editedDocumentId) {
+    setEditedDocumentId(selectedDocument?.id);
+    setEditedContent(selectedDocument?.content ?? "");
+    setSaveFeedback(null);
+  }
+
+  const isContentDirty = selectedDocument
+    ? editedContent !== selectedDocument.content
+    : false;
 
   async function handleCreate() {
     const cleanedPrompt = prompt.trim();
@@ -89,6 +103,31 @@ export function DocumentsWorkspace({
       });
     } finally {
       setIsSending(false);
+    }
+  }
+
+  async function handleSaveContent() {
+    if (!selectedDocument) {
+      return;
+    }
+
+    setIsSavingContent(true);
+
+    try {
+      await updateDocument(selectedDocument.id, { content: editedContent });
+      setSaveFeedback({
+        documentId: selectedDocument.id,
+        type: "success",
+        text: "Modifications enregistrées.",
+      });
+    } catch (error) {
+      setSaveFeedback({
+        documentId: selectedDocument.id,
+        type: "error",
+        text: error instanceof Error ? error.message : "Une erreur est survenue.",
+      });
+    } finally {
+      setIsSavingContent(false);
     }
   }
 
@@ -225,9 +264,37 @@ export function DocumentsWorkspace({
                 {sendFeedback.text}
               </p>
             ) : null}
-            <pre className="mt-5 min-h-96 whitespace-pre-wrap rounded-md border border-[#dfe4d8] bg-[#fbfcf8] p-4 text-sm leading-6 text-[#384438]">
-              {selectedDocument.content}
-            </pre>
+            <textarea
+              className="mt-5 min-h-96 w-full resize-y rounded-md border border-[#dfe4d8] bg-[#fbfcf8] p-4 text-sm leading-6 text-[#384438] outline-none transition focus:border-[#4f6f57] focus:ring-2 focus:ring-[#4f6f57]/20"
+              onChange={(event) => setEditedContent(event.target.value)}
+              value={editedContent}
+            />
+            <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+              <p
+                className={`text-xs font-medium ${
+                  saveFeedback && saveFeedback.documentId === selectedDocument.id
+                    ? saveFeedback.type === "success"
+                      ? "text-[#4f6f57]"
+                      : "text-[#c0432a]"
+                    : "text-[#8c9785]"
+                }`}
+              >
+                {saveFeedback && saveFeedback.documentId === selectedDocument.id
+                  ? saveFeedback.text
+                  : isContentDirty
+                    ? "Modifications non enregistrées."
+                    : "Tu peux modifier ce texte généré par l'IA."}
+              </p>
+              <button
+                className="flex h-9 shrink-0 items-center gap-2 rounded-md bg-[#17201b] px-3 text-sm font-semibold text-white transition hover:bg-[#2a352e] disabled:cursor-not-allowed disabled:opacity-50"
+                disabled={!isContentDirty || isSavingContent}
+                onClick={() => void handleSaveContent()}
+                type="button"
+              >
+                <Save className="size-4" />
+                {isSavingContent ? "Enregistrement..." : "Enregistrer les modifications"}
+              </button>
+            </div>
           </>
         ) : (
           <div className="grid min-h-96 place-items-center rounded-md border border-dashed border-[#dfe4d8] bg-[#fbfcf8] p-6 text-center">

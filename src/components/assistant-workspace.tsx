@@ -1,6 +1,6 @@
 "use client";
 
-import { AlertCircle, Bot, FileText, MessageSquareText, Send, Sparkles } from "lucide-react";
+import { AlertCircle, Bot, FileText, MessageSquareText, Save, Send, Sparkles } from "lucide-react";
 import { useState } from "react";
 import { useAppState } from "@/components/app-state-provider";
 import { promptTemplates, type DocumentRecord } from "@/lib/saastom-data";
@@ -8,12 +8,28 @@ import { promptTemplates, type DocumentRecord } from "@/lib/saastom-data";
 const FREE_PLAN_LIMIT = 10;
 
 export function AssistantWorkspace() {
-  const { state, generateDocument } = useAppState();
+  const { state, generateDocument, updateDocument } = useAppState();
   const [prompt, setPrompt] = useState(promptTemplates[0]);
   const [selectedClientId, setSelectedClientId] = useState("");
   const [lastDocument, setLastDocument] = useState<DocumentRecord | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [genError, setGenError] = useState<string | null>(null);
+  const [editedContent, setEditedContent] = useState("");
+  const [editedDocumentId, setEditedDocumentId] = useState<string | undefined>(undefined);
+  const [isSavingContent, setIsSavingContent] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
+  const [saveSuccess, setSaveSuccess] = useState(false);
+
+  if (lastDocument?.id !== editedDocumentId) {
+    setEditedDocumentId(lastDocument?.id);
+    setEditedContent(lastDocument?.content ?? "");
+    setSaveError(null);
+    setSaveSuccess(false);
+  }
+
+  const isContentDirty = lastDocument
+    ? editedContent !== lastDocument.content
+    : false;
 
   const creditsLeft = FREE_PLAN_LIMIT - state.aiCreditsUsed;
   const limitReached = state.aiCreditsUsed >= FREE_PLAN_LIMIT;
@@ -38,6 +54,25 @@ export function AssistantWorkspace() {
       );
     } finally {
       setIsGenerating(false);
+    }
+  }
+
+  async function handleSaveContent() {
+    if (!lastDocument) {
+      return;
+    }
+
+    setIsSavingContent(true);
+    setSaveError(null);
+
+    try {
+      await updateDocument(lastDocument.id, { content: editedContent });
+      setLastDocument({ ...lastDocument, content: editedContent });
+      setSaveSuccess(true);
+    } catch (err) {
+      setSaveError(err instanceof Error ? err.message : "Une erreur est survenue.");
+    } finally {
+      setIsSavingContent(false);
     }
   }
 
@@ -163,10 +198,47 @@ export function AssistantWorkspace() {
             <FileText className="size-4 text-[#4f6f57]" />
             <p className="text-sm font-semibold">Dernier résultat</p>
           </div>
-          <pre className="mt-4 max-h-96 overflow-auto whitespace-pre-wrap rounded-md border border-[#dfe4d8] bg-[#fbfcf8] p-3 text-sm leading-6 text-[#384438]">
-            {lastDocument?.content ??
-              "Lance une génération pour voir ici le document créé par SaaSTom."}
-          </pre>
+          {lastDocument ? (
+            <>
+              <textarea
+                className="mt-4 min-h-72 w-full resize-y rounded-md border border-[#dfe4d8] bg-[#fbfcf8] p-3 text-sm leading-6 text-[#384438] outline-none transition focus:border-[#4f6f57] focus:ring-2 focus:ring-[#4f6f57]/20"
+                onChange={(event) => setEditedContent(event.target.value)}
+                value={editedContent}
+              />
+              <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                <p
+                  className={`text-xs font-medium ${
+                    saveError
+                      ? "text-[#c0432a]"
+                      : saveSuccess
+                        ? "text-[#4f6f57]"
+                        : "text-[#8c9785]"
+                  }`}
+                >
+                  {saveError
+                    ? saveError
+                    : saveSuccess
+                      ? "Modifications enregistrées."
+                      : isContentDirty
+                        ? "Modifications non enregistrées."
+                        : "Tu peux modifier ce texte généré par l'IA."}
+                </p>
+                <button
+                  className="flex h-9 shrink-0 items-center gap-2 rounded-md bg-[#17201b] px-3 text-sm font-semibold text-white transition hover:bg-[#2a352e] disabled:cursor-not-allowed disabled:opacity-50"
+                  disabled={!isContentDirty || isSavingContent}
+                  onClick={() => void handleSaveContent()}
+                  type="button"
+                >
+                  <Save className="size-4" />
+                  {isSavingContent ? "Enregistrement..." : "Enregistrer"}
+                </button>
+              </div>
+            </>
+          ) : (
+            <pre className="mt-4 max-h-96 overflow-auto whitespace-pre-wrap rounded-md border border-[#dfe4d8] bg-[#fbfcf8] p-3 text-sm leading-6 text-[#384438]">
+              Lance une génération pour voir ici le document créé par SaaSTom.
+            </pre>
+          )}
         </section>
       </aside>
     </div>
