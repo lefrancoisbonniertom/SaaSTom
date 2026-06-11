@@ -38,25 +38,17 @@ function isActiveRoute(pathname: string, href: string) {
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
-function Brand({ tone = "dark" }: { tone?: "dark" | "light" }) {
+function Brand() {
   return (
     <Link className="flex items-center gap-3" href="/dashboard">
-      <div className="grid size-10 place-items-center rounded-lg bg-[#e65f3c] text-white shadow-[0_12px_30px_rgba(230,95,60,0.28)]">
+      <div className="grid size-10 place-items-center rounded-lg bg-linear-to-br from-gold-soft to-gold-deep text-canvas shadow-[0_12px_30px_rgba(201,164,94,0.28)]">
         <Sparkles className="size-5" />
       </div>
       <div>
-        <p
-          className={`text-sm font-semibold uppercase tracking-[0.18em] ${
-            tone === "light" ? "text-[#90a39a]" : "text-[#66705f]"
-          }`}
-        >
+        <p className="text-sm font-semibold uppercase tracking-[0.18em] text-gold">
           SaaSTom
         </p>
-        <h1
-          className={`text-xl font-semibold ${
-            tone === "light" ? "text-white" : "text-[#17201b]"
-          }`}
-        >
+        <h1 className="font-display text-xl font-semibold text-ink">
           BusinessPilot IA
         </h1>
       </div>
@@ -79,8 +71,8 @@ function NavLink({
     <Link
       className={`flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium transition ${
         active
-          ? "bg-white text-[#17201b] shadow-[0_10px_26px_rgba(0,0,0,0.18)]"
-          : "text-[#a9bbb2] hover:bg-white/[0.08] hover:text-white"
+          ? "bg-gold/10 text-gold shadow-[inset_0_0_0_1px_rgba(201,164,94,0.25)]"
+          : "text-ink-muted hover:bg-surface-raised hover:text-ink"
       }`}
       href={href}
     >
@@ -99,10 +91,10 @@ export function AppShell({ children }: { children: ReactNode }) {
   const items = isAdmin ? [...navigation, adminNavigation] : navigation;
 
   return (
-    <main className="min-h-screen w-full overflow-x-hidden bg-[#f4f7f4] text-[#17201b]">
+    <main className="min-h-screen w-full overflow-x-hidden bg-canvas text-ink">
       <div className="mx-auto flex min-h-screen w-full max-w-[1500px] overflow-x-hidden lg:overflow-visible">
-        <aside className="hidden w-72 shrink-0 border-r border-[#24342c] bg-[#0d1512] px-5 py-5 lg:flex lg:flex-col">
-          <Brand tone="light" />
+        <aside className="hidden w-72 shrink-0 border-r border-border bg-canvas px-5 py-5 lg:flex lg:flex-col">
+          <Brand />
 
           <nav className="mt-8 space-y-1">
             {items.map((item) => (
@@ -116,16 +108,16 @@ export function AppShell({ children }: { children: ReactNode }) {
             ))}
           </nav>
 
-          <div className="mt-auto rounded-lg border border-white/10 bg-white/[0.06] p-4 shadow-[0_20px_50px_rgba(0,0,0,0.24)]">
+          <div className="mt-auto rounded-lg border border-border bg-surface-raised p-4 shadow-[0_20px_50px_rgba(0,0,0,0.35)]">
             <div className="flex items-center gap-2 text-sm font-semibold">
-              <CircleDollarSign className="size-4 text-[#b9e885]" />
-              <span className="text-white">Offre Pro</span>
+              <CircleDollarSign className="size-4 text-gold" />
+              <span className="text-ink">Offre Pro</span>
             </div>
-            <p className="mt-2 text-sm leading-6 text-[#a9bbb2]">
+            <p className="mt-2 text-sm leading-6 text-ink-muted">
               10 générations IA gratuites incluses. Passez au Pro à 19 EUR/mois pour un accès illimité.
             </p>
             <Link
-              className="mt-4 flex h-10 w-full items-center justify-center gap-2 rounded-md bg-[#e65f3c] px-3 text-sm font-semibold text-white transition hover:bg-[#f0714f]"
+              className="mt-4 flex h-10 w-full items-center justify-center gap-2 rounded-md bg-gold px-3 text-sm font-semibold text-canvas transition hover:bg-gold-soft"
               href="/pricing"
             >
               Voir le plan
@@ -133,40 +125,44 @@ export function AppShell({ children }: { children: ReactNode }) {
           </div>
         </aside>
 
-        <section className="w-full max-w-[100vw] min-w-0 flex-1 bg-[linear-gradient(135deg,#f5f8f2_0%,#eef8f8_48%,#fff3ec_100%)] px-4 py-4 sm:px-6 lg:px-8">
-          <header className="mb-5 border-b border-[#dfe4d8] pb-4 lg:hidden">
-            <Brand />
-            <nav className="mt-4 flex flex-wrap gap-2 pb-1">
-              {items.map((item) => (
-                <Link
-                  className={`flex h-10 shrink-0 items-center gap-2 rounded-md border px-3 text-sm font-medium ${
-                    isActiveRoute(pathname, item.href)
-                      ? "border-[#17201b] bg-[#17201b] text-white"
-                      : "border-[#dfe4d8] bg-white text-[#526052]"
-                  }`}
-                  href={item.href}
-                  key={item.href}
-                >
-                  <item.icon className="size-4" />
-                  {item.label}
-                </Link>
-              ))}
-            </nav>
-          </header>
+        <section className="relative w-full max-w-[100vw] min-w-0 flex-1 overflow-hidden bg-canvas-soft px-4 py-4 sm:px-6 lg:px-8">
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(201,164,94,0.07),transparent_55%)]" />
 
-          <div className="hidden items-center justify-end gap-2 pb-5 lg:flex">
-            <GlobalSearch />
-            <Link
-              aria-label="Ajouter un client"
-              className="grid size-10 place-items-center rounded-md border border-white/70 bg-white/75 text-[#526052] shadow-[0_10px_30px_rgba(27,43,37,0.06)] transition hover:border-[#b9c4ad] hover:text-[#17201b]"
-              href="/clients"
-              title="Ajouter un client"
-            >
-              <Plus className="size-4" />
-            </Link>
+          <div className="relative">
+            <header className="mb-5 border-b border-border pb-4 lg:hidden">
+              <Brand />
+              <nav className="mt-4 flex flex-wrap gap-2 pb-1">
+                {items.map((item) => (
+                  <Link
+                    className={`flex h-10 shrink-0 items-center gap-2 rounded-md border px-3 text-sm font-medium transition ${
+                      isActiveRoute(pathname, item.href)
+                        ? "border-gold/40 bg-gold/10 text-gold"
+                        : "border-border bg-surface text-ink-muted hover:text-ink"
+                    }`}
+                    href={item.href}
+                    key={item.href}
+                  >
+                    <item.icon className="size-4" />
+                    {item.label}
+                  </Link>
+                ))}
+              </nav>
+            </header>
+
+            <div className="hidden items-center justify-end gap-2 pb-5 lg:flex">
+              <GlobalSearch />
+              <Link
+                aria-label="Ajouter un client"
+                className="grid size-10 place-items-center rounded-md border border-border bg-surface text-ink-muted shadow-[0_10px_30px_rgba(0,0,0,0.3)] transition hover:border-gold/40 hover:text-gold"
+                href="/clients"
+                title="Ajouter un client"
+              >
+                <Plus className="size-4" />
+              </Link>
+            </div>
+
+            {children}
           </div>
-
-          {children}
         </section>
       </div>
     </main>
