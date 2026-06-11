@@ -21,7 +21,7 @@ const fraunces = Fraunces({
 });
 
 export const metadata: Metadata = {
-  title: "SaaSTom | Copilote IA business",
+  title: "Orfeo | Copilote IA business",
   description:
     "Un copilote SaaS pour aider les independants et petites entreprises a gerer clients, documents et relances.",
 };

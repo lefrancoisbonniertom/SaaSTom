@@ -1,6 +1,6 @@
-# SaaSTom
+# Orfeo
 
-SaaSTom est un projet de SaaS IA pour aider les independants, freelances et petites entreprises a gerer leur activite : clients, documents, relances, propositions commerciales et taches.
+Orfeo est un projet de SaaS IA pour aider les independants, freelances et petites entreprises a gerer leur activite : clients, documents, relances, propositions commerciales et taches.
 
 ## MVP vise
 

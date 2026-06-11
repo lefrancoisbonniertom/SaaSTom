@@ -1,10 +1,10 @@
 import { auth } from "@/lib/auth";
 import {
   deleteClient,
-  getSaaSTomState,
+  getOrfeoState,
   updateClient,
-} from "@/lib/server/saastom-repository";
-import { normalizeTags, type ClientStatus } from "@/lib/saastom-data";
+} from "@/lib/server/orfeo-repository";
+import { normalizeTags, type ClientStatus } from "@/lib/orfeo-data";
 
 export const runtime = "nodejs";
 
@@ -50,7 +50,7 @@ export async function PATCH(request: Request, context: RouteContext) {
     return Response.json({ message: "Client introuvable." }, { status: 404 });
   }
 
-  const state = await getSaaSTomState(userId);
+  const state = await getOrfeoState(userId);
   return Response.json({ state });
 }
 
@@ -68,6 +68,6 @@ export async function DELETE(_request: Request, context: RouteContext) {
     return Response.json({ message: "Client introuvable." }, { status: 404 });
   }
 
-  const state = await getSaaSTomState(userId);
+  const state = await getOrfeoState(userId);
   return Response.json({ state });
 }

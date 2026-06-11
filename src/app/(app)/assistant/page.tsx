@@ -5,7 +5,7 @@ export default function AssistantPage() {
   return (
     <>
       <PageHeader
-        description="Decris ton besoin en quelques mots, SaaSTom redige le document en quelques secondes et l'enregistre dans ton historique."
+        description="Decris ton besoin en quelques mots, Orfeo redige le document en quelques secondes et l'enregistre dans ton historique."
         eyebrow="Assistant IA"
         title="Transforme un brief en email, devis ou proposition."
       />

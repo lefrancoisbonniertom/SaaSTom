@@ -56,7 +56,7 @@ export default async function PricingPage() {
   return (
     <>
       <PageHeader
-        description="Une offre lisible pour transformer SaaSTom en produit vendable : gratuit pour essayer, Pro pour gagner du temps chaque semaine."
+        description="Une offre lisible pour transformer Orfeo en produit vendable : gratuit pour essayer, Pro pour gagner du temps chaque semaine."
         eyebrow="Tarifs"
         title="Un prix simple pour un SaaS qui fait avancer le business."
       />
@@ -69,7 +69,7 @@ export default async function PricingPage() {
               Positionnement MVP
             </div>
             <h3 className="mt-4 font-display text-2xl font-semibold text-ink">
-              SaaSTom vend du temps gagné, pas seulement des générations IA.
+              Orfeo vend du temps gagné, pas seulement des générations IA.
             </h3>
             <p className="mt-3 max-w-3xl text-sm leading-6 text-ink-soft">
               Centralise les clients, transforme les briefs en documents, relance

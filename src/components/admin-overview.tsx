@@ -1,6 +1,6 @@
 import { Crown, FileText, UserPlus, Users, WalletCards } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import { formatCurrency } from "@/lib/saastom-data";
+import { formatCurrency } from "@/lib/orfeo-data";
 
 type PlanBreakdown = {
   free: number;

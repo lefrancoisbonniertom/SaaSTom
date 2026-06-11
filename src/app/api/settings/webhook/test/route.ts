@@ -27,7 +27,7 @@ export async function POST() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         event: "webhook.test",
-        data: { message: "Ceci est un test envoyé depuis SaaSTom." },
+        data: { message: "Ceci est un test envoyé depuis Orfeo." },
         timestamp: new Date().toISOString(),
       }),
       signal: AbortSignal.timeout(8000),

@@ -18,7 +18,7 @@ import {
   statusStyles,
   type ClientRecord,
   type ClientStatus,
-} from "@/lib/saastom-data";
+} from "@/lib/orfeo-data";
 
 const statusOptions: ClientStatus[] = [
   "Prospect",

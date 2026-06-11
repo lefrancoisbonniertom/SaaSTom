@@ -19,7 +19,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
           </div>
           <div>
             <p className="text-sm font-semibold uppercase tracking-[0.18em] text-gold">
-              SaaSTom
+              Orfeo
             </p>
             <p className="font-display text-xl font-semibold text-ink">
               BusinessPilot IA

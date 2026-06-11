@@ -1,7 +1,7 @@
 import { LegalPage, LegalSection } from "@/components/legal-content";
 
 export const metadata = {
-  title: "Mentions légales | SaaSTom",
+  title: "Mentions légales | Orfeo",
 };
 
 export default function MentionsLegalesPage() {
@@ -9,7 +9,7 @@ export default function MentionsLegalesPage() {
     <LegalPage title="Mentions légales" updatedAt="10 juin 2026">
       <LegalSection title="Éditeur du site">
         <p>
-          Le site et l&apos;application SaaSTom sont édités par <strong>Tom Lefrancois Bonnier</strong>,
+          Le site et l&apos;application Orfeo sont édités par <strong>Tom Lefrancois Bonnier</strong>,
           exerçant en Micro-Entreprise (Entreprise Individuelle).
         </p>
         <ul className="list-disc space-y-1 pl-5">
@@ -37,7 +37,7 @@ export default function MentionsLegalesPage() {
 
       <LegalSection title="Propriété intellectuelle">
         <p>
-          L&apos;ensemble des éléments composant SaaSTom (textes, logos, interfaces, code source) est la
+          L&apos;ensemble des éléments composant Orfeo (textes, logos, interfaces, code source) est la
           propriété de Tom Lefrancois Bonnier, sauf mentions contraires. Toute reproduction,
           représentation, modification, publication ou adaptation, totale ou partielle, sans
           autorisation préalable est interdite.

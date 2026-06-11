@@ -80,7 +80,7 @@ function DocumentPdf({ title, type, content, clientName, createdAt }: DocumentPd
     <Document title={title}>
       <Page size="A4" style={styles.page}>
         <View style={styles.header}>
-          <Text style={styles.brand}>SaaSTom</Text>
+          <Text style={styles.brand}>Orfeo</Text>
           <View>
             <Text style={styles.businessInfo}>Tom Lefrancois Bonnier - Micro-Entreprise</Text>
             <Text style={styles.businessInfo}>7 Grande Rue, 77114 Villiers-sur-Seine</Text>
@@ -97,7 +97,7 @@ function DocumentPdf({ title, type, content, clientName, createdAt }: DocumentPd
         <Text style={styles.content}>{content}</Text>
 
         <Text fixed style={styles.footer}>
-          Document généré via SaaSTom - Tom Lefrancois Bonnier - SIRET 101 407 914 00015 - TVA non applicable, art.
+          Document généré via Orfeo - Tom Lefrancois Bonnier - SIRET 101 407 914 00015 - TVA non applicable, art.
           293 B du CGI
         </Text>
       </Page>

@@ -34,7 +34,7 @@ export type DashboardStats = {
   signedRevenuePercent: number;
 };
 
-export type SaaSTomState = {
+export type OrfeoState = {
   clients: ClientRecord[];
   documents: DocumentRecord[];
   tasks: TaskRecord[];
@@ -92,7 +92,7 @@ export function buildDemoDocument(prompt: string) {
   ].join("\n");
 }
 
-export const emptyState: SaaSTomState = {
+export const emptyState: OrfeoState = {
   clients: [],
   documents: [],
   tasks: [],

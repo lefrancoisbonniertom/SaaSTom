@@ -1,5 +1,5 @@
 import { auth } from "@/lib/auth";
-import { createTask, getSaaSTomState } from "@/lib/server/saastom-repository";
+import { createTask, getOrfeoState } from "@/lib/server/orfeo-repository";
 
 export const runtime = "nodejs";
 
@@ -21,7 +21,7 @@ export async function POST(request: Request) {
   }
 
   const task = await createTask(userId, title);
-  const state = await getSaaSTomState(userId);
+  const state = await getOrfeoState(userId);
 
   return Response.json({ task, state }, { status: 201 });
 }

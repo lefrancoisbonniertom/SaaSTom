@@ -1,5 +1,5 @@
 import { auth } from "@/lib/auth";
-import { getSaaSTomState } from "@/lib/server/saastom-repository";
+import { getOrfeoState } from "@/lib/server/orfeo-repository";
 
 export const runtime = "nodejs";
 
@@ -9,6 +9,6 @@ export async function GET() {
     return Response.json({ message: "Non autorisé." }, { status: 401 });
   }
 
-  const state = await getSaaSTomState(session.user.id);
+  const state = await getOrfeoState(session.user.id);
   return Response.json({ state });
 }

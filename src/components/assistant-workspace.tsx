@@ -3,7 +3,7 @@
 import { AlertCircle, Bot, FileText, MessageSquareText, Save, Send, Sparkles } from "lucide-react";
 import { useState } from "react";
 import { useAppState } from "@/components/app-state-provider";
-import { promptTemplates, type DocumentRecord } from "@/lib/saastom-data";
+import { promptTemplates, type DocumentRecord } from "@/lib/orfeo-data";
 
 const FREE_PLAN_LIMIT = 10;
 
@@ -88,7 +88,7 @@ export function AssistantWorkspace() {
               Atelier de génération
             </p>
             <h3 className="mt-1 font-display text-xl font-semibold text-ink">
-              Donne un brief, SaaSTom prépare une première version.
+              Donne un brief, Orfeo prépare une première version.
             </h3>
           </div>
         </div>
@@ -236,7 +236,7 @@ export function AssistantWorkspace() {
             </>
           ) : (
             <pre className="mt-4 max-h-96 overflow-auto whitespace-pre-wrap rounded-md border border-border bg-canvas-soft p-3 text-sm leading-6 text-ink-muted">
-              Lance une génération pour voir ici le document créé par SaaSTom.
+              Lance une génération pour voir ici le document créé par Orfeo.
             </pre>
           )}
         </section>

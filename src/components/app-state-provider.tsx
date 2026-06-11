@@ -14,8 +14,8 @@ import {
   type ClientRecord,
   type ClientStatus,
   type DocumentRecord,
-  type SaaSTomState,
-} from "@/lib/saastom-data";
+  type OrfeoState,
+} from "@/lib/orfeo-data";
 
 type NewClientInput = {
   name: string;
@@ -30,7 +30,7 @@ type NewClientInput = {
 type ClientUpdateInput = Partial<NewClientInput>;
 
 type StateResponse = {
-  state: SaaSTomState;
+  state: OrfeoState;
 };
 
 type ClientResponse = StateResponse & {
@@ -42,7 +42,7 @@ type DocumentResponse = StateResponse & {
 };
 
 type AppStateContextValue = {
-  state: SaaSTomState;
+  state: OrfeoState;
   isLoading: boolean;
   error: string | null;
   addClient: (client: NewClientInput) => Promise<ClientRecord>;
@@ -83,7 +83,7 @@ async function parseJsonResponse<T>(response: Response): Promise<T> {
 }
 
 export function AppStateProvider({ children }: { children: ReactNode }) {
-  const [state, setState] = useState<SaaSTomState>(emptyState);
+  const [state, setState] = useState<OrfeoState>(emptyState);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 

@@ -7,9 +7,9 @@ import {
   type ClientStatus,
   type DashboardStats,
   type DocumentRecord,
-  type SaaSTomState,
+  type OrfeoState,
   type TaskRecord,
-} from "@/lib/saastom-data";
+} from "@/lib/orfeo-data";
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
@@ -23,7 +23,7 @@ async function generateWithGroq(
     messages: [
       {
         role: "system",
-        content: `Tu es un assistant IA intégré à SaaSTom, un CRM et outil de productivité pour freelances et indépendants français.
+        content: `Tu es un assistant IA intégré à Orfeo, un CRM et outil de productivité pour freelances et indépendants français.
 
 Mission : À partir d'un brief utilisateur, génère un document professionnel complet, prêt à l'emploi : relance client, proposition commerciale, devis descriptif, email de suivi, brief projet, compte-rendu, etc.
 
@@ -236,7 +236,7 @@ async function ensureUsage(userId: string) {
   return promise;
 }
 
-export async function getSaaSTomState(userId: string): Promise<SaaSTomState> {
+export async function getOrfeoState(userId: string): Promise<OrfeoState> {
   await ensureUsage(userId);
 
   const [clients, documents, tasks, usage] = await Promise.all([

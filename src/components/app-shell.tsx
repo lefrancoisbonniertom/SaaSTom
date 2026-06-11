@@ -46,7 +46,7 @@ function Brand() {
       </div>
       <div>
         <p className="text-sm font-semibold uppercase tracking-[0.18em] text-gold">
-          SaaSTom
+          Orfeo
         </p>
         <h1 className="font-display text-xl font-semibold text-ink">
           BusinessPilot IA

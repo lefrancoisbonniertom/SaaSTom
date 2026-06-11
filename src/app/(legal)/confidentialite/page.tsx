@@ -1,7 +1,7 @@
 import { LegalPage, LegalSection } from "@/components/legal-content";
 
 export const metadata = {
-  title: "Politique de confidentialité | SaaSTom",
+  title: "Politique de confidentialité | Orfeo",
 };
 
 export default function ConfidentialitePage() {
@@ -20,7 +20,7 @@ export default function ConfidentialitePage() {
         <ul className="list-disc space-y-1 pl-5">
           <li><strong>Données de compte</strong> : nom, adresse email, mot de passe (stocké de manière chiffrée).</li>
           <li><strong>Données métier</strong> : informations sur vos clients, documents générés, tâches que vous saisissez dans l&apos;application.</li>
-          <li><strong>Données de facturation</strong> : gérées directement par Stripe (SaaSTom ne stocke pas vos coordonnées bancaires, uniquement un identifiant client et d&apos;abonnement Stripe).</li>
+          <li><strong>Données de facturation</strong> : gérées directement par Stripe (Orfeo ne stocke pas vos coordonnées bancaires, uniquement un identifiant client et d&apos;abonnement Stripe).</li>
           <li><strong>Données techniques</strong> : cookies de session nécessaires à l&apos;authentification.</li>
           <li><strong>Contenus transmis à l&apos;assistant IA</strong> : les informations que vous saisissez pour générer un document (nom du client, prestation, montants, etc.) sont transmises à notre fournisseur de modèles d&apos;IA pour produire le contenu demandé.</li>
         </ul>
@@ -28,7 +28,7 @@ export default function ConfidentialitePage() {
 
       <LegalSection title="Finalités du traitement">
         <ul className="list-disc space-y-1 pl-5">
-          <li>Fournir et faire fonctionner le service SaaSTom (compte, authentification, sauvegarde de vos données).</li>
+          <li>Fournir et faire fonctionner le service Orfeo (compte, authentification, sauvegarde de vos données).</li>
           <li>Gérer les abonnements et la facturation.</li>
           <li>Générer des documents et contenus via l&apos;assistant IA, à votre demande.</li>
           <li>Vous envoyer des emails transactionnels (confirmation d&apos;abonnement, réinitialisation de mot de passe).</li>
@@ -37,7 +37,7 @@ export default function ConfidentialitePage() {
       </LegalSection>
 
       <LegalSection title="Sous-traitants et destinataires des données">
-        <p>Pour fonctionner, SaaSTom fait appel aux prestataires suivants, qui peuvent être amenés à traiter tout ou partie de vos données :</p>
+        <p>Pour fonctionner, Orfeo fait appel aux prestataires suivants, qui peuvent être amenés à traiter tout ou partie de vos données :</p>
         <ul className="list-disc space-y-1 pl-5">
           <li><strong>Vercel Inc.</strong> — hébergement de l&apos;application.</li>
           <li><strong>Neon</strong> — hébergement de la base de données (PostgreSQL).</li>
@@ -71,7 +71,7 @@ export default function ConfidentialitePage() {
 
       <LegalSection title="Cookies">
         <p>
-          SaaSTom utilise uniquement des cookies strictement nécessaires au fonctionnement du
+          Orfeo utilise uniquement des cookies strictement nécessaires au fonctionnement du
           service : un cookie de session d&apos;authentification et un cookie technique permettant de
           détecter la fermeture de votre navigateur pour vous déconnecter automatiquement. Aucun
           cookie de mesure d&apos;audience ou publicitaire n&apos;est utilisé.

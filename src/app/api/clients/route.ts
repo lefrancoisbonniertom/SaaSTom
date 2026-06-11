@@ -1,6 +1,6 @@
 import { auth } from "@/lib/auth";
-import { createClient, getSaaSTomState } from "@/lib/server/saastom-repository";
-import { normalizeTags, type ClientStatus } from "@/lib/saastom-data";
+import { createClient, getOrfeoState } from "@/lib/server/orfeo-repository";
+import { normalizeTags, type ClientStatus } from "@/lib/orfeo-data";
 
 export const runtime = "nodejs";
 
@@ -52,7 +52,7 @@ export async function POST(request: Request) {
         : undefined,
     tags: normalizeTags(body.tags),
   });
-  const state = await getSaaSTomState(userId);
+  const state = await getOrfeoState(userId);
 
   return Response.json({ client, state }, { status: 201 });
 }

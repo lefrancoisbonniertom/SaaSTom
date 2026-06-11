@@ -20,7 +20,7 @@ export default async function SettingsPage() {
   return (
     <>
       <PageHeader
-        description="Gère ton compte, ta sécurité et les préférences de ton espace SaaSTom."
+        description="Gère ton compte, ta sécurité et les préférences de ton espace Orfeo."
         eyebrow="Réglages"
         title="Configure ton espace SaaS."
       />

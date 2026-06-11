@@ -2,8 +2,8 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/server/prisma";
 import {
   generateDocument,
-  getSaaSTomState,
-} from "@/lib/server/saastom-repository";
+  getOrfeoState,
+} from "@/lib/server/orfeo-repository";
 
 export const runtime = "nodejs";
 
@@ -50,7 +50,7 @@ export async function POST(request: Request) {
     typeof body.type === "string" ? body.type : "Document IA",
     typeof body.clientId === "string" && body.clientId ? body.clientId : undefined,
   );
-  const state = await getSaaSTomState(userId);
+  const state = await getOrfeoState(userId);
 
   return Response.json({ document, state }, { status: 201 });
 }

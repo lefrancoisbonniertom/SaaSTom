@@ -65,7 +65,7 @@ export default async function AdminPage() {
   return (
     <>
       <PageHeader
-        description="Vue d'ensemble des inscriptions, abonnements et revenus récurrents de SaaSTom."
+        description="Vue d'ensemble des inscriptions, abonnements et revenus récurrents de Orfeo."
         eyebrow="Suivi"
         title="Le pouls de l'application."
       />

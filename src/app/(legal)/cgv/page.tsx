@@ -2,7 +2,7 @@ import Link from "next/link";
 import { LegalPage, LegalSection } from "@/components/legal-content";
 
 export const metadata = {
-  title: "CGV | SaaSTom",
+  title: "CGV | Orfeo",
 };
 
 export default function CgvPage() {
@@ -11,7 +11,7 @@ export default function CgvPage() {
       <LegalSection title="Article 1 — Objet et champ d'application">
         <p>
           Les présentes conditions générales de vente (CGV) régissent l&apos;accès et l&apos;utilisation
-          du service SaaSTom, une application en ligne (SaaS) éditée par Tom Lefrancois Bonnier
+          du service Orfeo, une application en ligne (SaaS) éditée par Tom Lefrancois Bonnier
           (Micro-Entreprise, SIRET 101 407 914 00015), permettant aux indépendants et petites
           entreprises de gérer leurs clients, de générer des documents assistés par IA et de suivre
           leur activité commerciale.
@@ -31,14 +31,14 @@ export default function CgvPage() {
       </LegalSection>
 
       <LegalSection title="Article 3 — Offres et tarifs">
-        <p>SaaSTom propose les offres suivantes, détaillées sur la <Link className="text-gold hover:underline" href="/pricing">page tarifs</Link> :</p>
+        <p>Orfeo propose les offres suivantes, détaillées sur la <Link className="text-gold hover:underline" href="/pricing">page tarifs</Link> :</p>
         <ul className="list-disc space-y-1 pl-5">
           <li><strong>Gratuit</strong> : 0 EUR, fonctionnalités limitées (générations IA et clients en nombre limité).</li>
           <li><strong>Pro</strong> : 19 EUR/mois, générations IA et clients illimités, fonctionnalités avancées.</li>
           <li><strong>Business</strong> : 49 EUR/mois, fonctionnalités du plan Pro et fonctionnalités complémentaires pour équipes.</li>
         </ul>
         <p>
-          Les prix sont indiqués en euros. SaaSTom se réserve le droit de modifier ses tarifs à tout
+          Les prix sont indiqués en euros. Orfeo se réserve le droit de modifier ses tarifs à tout
           moment ; les utilisateurs déjà abonnés seront informés avant toute application d&apos;un
           nouveau tarif à leur abonnement.
         </p>
@@ -47,7 +47,7 @@ export default function CgvPage() {
       <LegalSection title="Article 4 — Paiement">
         <p>
           Le paiement des offres payantes s&apos;effectue par carte bancaire via la plateforme de
-          paiement sécurisée Stripe. SaaSTom ne stocke aucune donnée bancaire. Les abonnements sont
+          paiement sécurisée Stripe. Orfeo ne stocke aucune donnée bancaire. Les abonnements sont
           facturés mensuellement et renouvelés automatiquement par prélèvement, sauf résiliation.
         </p>
       </LegalSection>
@@ -76,9 +76,9 @@ export default function CgvPage() {
 
       <LegalSection title="Article 7 — Disponibilité et responsabilité">
         <p>
-          SaaSTom met en œuvre les moyens raisonnables pour assurer la disponibilité et la sécurité
+          Orfeo met en œuvre les moyens raisonnables pour assurer la disponibilité et la sécurité
           du service, sans garantie de continuité absolue. Le service est fourni « en l&apos;état »,
-          sans garantie d&apos;adéquation à un besoin particulier. SaaSTom ne pourra être tenu
+          sans garantie d&apos;adéquation à un besoin particulier. Orfeo ne pourra être tenu
           responsable des dommages indirects résultant de l&apos;utilisation ou de l&apos;impossibilité
           d&apos;utiliser le service.
         </p>
@@ -107,7 +107,7 @@ export default function CgvPage() {
 
       <LegalSection title="Article 10 — Modification des CGV">
         <p>
-          SaaSTom peut modifier les présentes CGV à tout moment. Les utilisateurs seront informés de
+          Orfeo peut modifier les présentes CGV à tout moment. Les utilisateurs seront informés de
           toute modification substantielle. La poursuite de l&apos;utilisation du service après
           notification vaut acceptation des nouvelles CGV.
         </p>

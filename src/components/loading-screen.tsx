@@ -34,7 +34,7 @@ export function LoadingScreen() {
         </div>
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.32em] text-ink-muted">
-            SaaSTom
+            Orfeo
           </p>
           <p className="font-display text-2xl font-semibold text-ink">
             BusinessPilot IA

@@ -1,5 +1,5 @@
 import { auth } from "@/lib/auth";
-import { deleteTask, getSaaSTomState, toggleTask } from "@/lib/server/saastom-repository";
+import { deleteTask, getOrfeoState, toggleTask } from "@/lib/server/orfeo-repository";
 
 export const runtime = "nodejs";
 
@@ -16,7 +16,7 @@ export async function PATCH(_request: Request, context: RouteContext) {
 
   try {
     const task = await toggleTask(userId, id);
-    const state = await getSaaSTomState(userId);
+    const state = await getOrfeoState(userId);
     return Response.json({ task, state });
   } catch {
     return Response.json({ message: "Tache introuvable." }, { status: 404 });
@@ -34,7 +34,7 @@ export async function DELETE(_request: Request, context: RouteContext) {
 
   try {
     await deleteTask(userId, id);
-    const state = await getSaaSTomState(userId);
+    const state = await getOrfeoState(userId);
     return Response.json({ state });
   } catch {
     return Response.json({ message: "Tache introuvable." }, { status: 404 });

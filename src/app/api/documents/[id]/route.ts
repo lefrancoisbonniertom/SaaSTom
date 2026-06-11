@@ -1,9 +1,9 @@
 import { auth } from "@/lib/auth";
 import {
   deleteDocument,
-  getSaaSTomState,
+  getOrfeoState,
   updateDocument,
-} from "@/lib/server/saastom-repository";
+} from "@/lib/server/orfeo-repository";
 
 export const runtime = "nodejs";
 
@@ -31,7 +31,7 @@ export async function PATCH(request: Request, context: RouteContext) {
     return Response.json({ message: "Document introuvable." }, { status: 404 });
   }
 
-  const state = await getSaaSTomState(userId);
+  const state = await getOrfeoState(userId);
   return Response.json({ state });
 }
 
@@ -49,6 +49,6 @@ export async function DELETE(_request: Request, context: RouteContext) {
     return Response.json({ message: "Document introuvable." }, { status: 404 });
   }
 
-  const state = await getSaaSTomState(userId);
+  const state = await getOrfeoState(userId);
   return Response.json({ state });
 }

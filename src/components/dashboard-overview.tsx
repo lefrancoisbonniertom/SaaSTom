@@ -23,7 +23,7 @@ import {
   formatCurrency,
   promptTemplates,
   statusStyles,
-} from "@/lib/saastom-data";
+} from "@/lib/orfeo-data";
 
 type Metric = {
   label: string;
@@ -135,7 +135,7 @@ export function DashboardOverview() {
               Pilote ton activité avec une IA qui prépare le travail.
             </h2>
             <p className="mt-5 max-w-xl text-base leading-7 text-ink-soft">
-              SaaSTom centralise les clients, les priorités et les documents
+              Orfeo centralise les clients, les priorités et les documents
               pour transformer les briefs en actions vendables.
             </p>
             <div className="mt-7 flex flex-col gap-3 sm:flex-row">
