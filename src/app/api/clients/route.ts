@@ -1,6 +1,6 @@
 import { auth } from "@/lib/auth";
 import { createClient, getSaaSTomState } from "@/lib/server/saastom-repository";
-import type { ClientStatus } from "@/lib/saastom-data";
+import { normalizeTags, type ClientStatus } from "@/lib/saastom-data";
 
 export const runtime = "nodejs";
 
@@ -24,6 +24,7 @@ export async function POST(request: Request) {
     status?: unknown;
     contact?: unknown;
     nextAction?: unknown;
+    tags?: unknown;
   };
 
   const name = typeof body.name === "string" ? body.name.trim() : "";
@@ -49,6 +50,7 @@ export async function POST(request: Request) {
       typeof body.nextAction === "string" && body.nextAction.trim()
         ? body.nextAction.trim()
         : undefined,
+    tags: normalizeTags(body.tags),
   });
   const state = await getSaaSTomState(userId);
 

@@ -24,6 +24,7 @@ type NewClientInput = {
   status: ClientStatus;
   contact: string;
   nextAction: string;
+  tags: string[];
 };
 
 type ClientUpdateInput = Partial<NewClientInput>;

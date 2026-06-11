@@ -17,7 +17,7 @@ export function GlobalSearch() {
 
     return state.clients
       .filter((client) =>
-        [client.name, client.work, client.contact, client.status]
+        [client.name, client.work, client.contact, client.status, ...client.tags]
           .join(" ")
           .toLowerCase()
           .includes(normalizedQuery),

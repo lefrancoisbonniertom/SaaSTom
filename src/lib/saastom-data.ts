@@ -8,6 +8,7 @@ export type ClientRecord = {
   status: ClientStatus;
   contact: string;
   nextAction: string;
+  tags: string[];
 };
 
 export type DocumentRecord = {
@@ -59,6 +60,21 @@ export function formatCurrency(amount: number) {
   const rounded = Math.round(amount);
   const readable = String(rounded).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
   return `${readable} EUR`;
+}
+
+export function normalizeTags(value: unknown): string[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return Array.from(
+    new Set(
+      value
+        .filter((item): item is string => typeof item === "string")
+        .map((item) => item.trim())
+        .filter(Boolean),
+    ),
+  );
 }
 
 export function buildDemoDocument(prompt: string) {

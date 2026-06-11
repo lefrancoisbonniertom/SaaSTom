@@ -4,7 +4,7 @@ import {
   getSaaSTomState,
   updateClient,
 } from "@/lib/server/saastom-repository";
-import type { ClientStatus } from "@/lib/saastom-data";
+import { normalizeTags, type ClientStatus } from "@/lib/saastom-data";
 
 export const runtime = "nodejs";
 
@@ -31,6 +31,7 @@ export async function PATCH(request: Request, context: RouteContext) {
     status?: unknown;
     contact?: unknown;
     nextAction?: unknown;
+    tags?: unknown;
   };
 
   try {
@@ -43,6 +44,7 @@ export async function PATCH(request: Request, context: RouteContext) {
       ...(typeof body.nextAction === "string" && {
         nextAction: body.nextAction.trim(),
       }),
+      ...(body.tags !== undefined && { tags: normalizeTags(body.tags) }),
     });
   } catch {
     return Response.json({ message: "Client introuvable." }, { status: 404 });

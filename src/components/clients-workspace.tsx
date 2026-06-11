@@ -14,6 +14,7 @@ import { useMemo, useState, type FormEvent } from "react";
 import { useAppState } from "@/components/app-state-provider";
 import {
   formatCurrency,
+  normalizeTags,
   statusStyles,
   type ClientRecord,
   type ClientStatus,
@@ -33,6 +34,7 @@ type EditDraft = {
   status: ClientStatus;
   contact: string;
   nextAction: string;
+  tags: string;
 };
 
 function toEditDraft(client: ClientRecord): EditDraft {
@@ -43,6 +45,7 @@ function toEditDraft(client: ClientRecord): EditDraft {
     status: client.status,
     contact: client.contact,
     nextAction: client.nextAction,
+    tags: client.tags.join(", "),
   };
 }
 
@@ -66,6 +69,7 @@ export function ClientsWorkspace({
   const [amount, setAmount] = useState("");
   const [status, setStatus] = useState<ClientStatus>("Prospect");
   const [contact, setContact] = useState("");
+  const [tags, setTags] = useState("");
   const [isSaving, setIsSaving] = useState(false);
 
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -84,7 +88,7 @@ export function ClientsWorkspace({
     }
 
     return state.clients.filter((client) =>
-      [client.name, client.work, client.contact, client.status]
+      [client.name, client.work, client.contact, client.status, ...client.tags]
         .join(" ")
         .toLowerCase()
         .includes(normalizedQuery),
@@ -119,12 +123,14 @@ export function ClientsWorkspace({
         status,
         contact: contact.trim() || "contact@client.fr",
         nextAction: "Définir la prochaine action.",
+        tags: normalizeTags(tags.split(",")),
       });
       setName("");
       setWork("");
       setAmount("");
       setStatus("Prospect");
       setContact("");
+      setTags("");
       setShowForm(false);
     } finally {
       setIsSaving(false);
@@ -156,6 +162,7 @@ export function ClientsWorkspace({
         status: editDraft.status,
         contact: editDraft.contact.trim(),
         nextAction: editDraft.nextAction.trim(),
+        tags: normalizeTags(editDraft.tags.split(",")),
       });
       setEditingId(null);
       setEditDraft(null);
@@ -312,6 +319,18 @@ export function ClientsWorkspace({
                 ))}
               </select>
             </div>
+            <div>
+              <label className="text-sm font-semibold" htmlFor="client-tags">
+                Étiquettes
+              </label>
+              <input
+                className={fieldClass}
+                id="client-tags"
+                onChange={(event) => setTags(event.target.value)}
+                placeholder="urgent, web, design"
+                value={tags}
+              />
+            </div>
             <div className="flex items-end">
               <button
                 className="flex h-10 w-full items-center justify-center gap-2 rounded-md bg-[#17201b] px-4 text-sm font-semibold text-white transition hover:bg-[#2a352e] disabled:cursor-not-allowed disabled:opacity-50"
@@ -450,6 +469,17 @@ export function ClientsWorkspace({
                         placeholder="Prochaine action"
                         value={editDraft.nextAction}
                       />
+                      <input
+                        className={cardFieldClass}
+                        onChange={(event) =>
+                          setEditDraft({
+                            ...editDraft,
+                            tags: event.target.value,
+                          })
+                        }
+                        placeholder="Étiquettes (séparées par des virgules)"
+                        value={editDraft.tags}
+                      />
                       <div className="flex gap-2">
                         <button
                           className="flex h-8 flex-1 items-center justify-center gap-1.5 rounded-md bg-[#17201b] text-xs font-semibold text-white transition hover:bg-[#2a352e] disabled:cursor-not-allowed disabled:opacity-50"
@@ -507,6 +537,18 @@ export function ClientsWorkspace({
                       <p className="mt-2 rounded-md border border-[#dfe4d8] bg-[#fbfcf8] px-2 py-1.5 text-xs leading-5 text-[#384438]">
                         {client.nextAction}
                       </p>
+                      {client.tags.length > 0 ? (
+                        <div className="mt-2 flex flex-wrap gap-1">
+                          {client.tags.map((tag) => (
+                            <span
+                              className="rounded-full border border-[#dfe4d8] bg-[#f3f7ec] px-2 py-0.5 text-[10px] font-semibold text-[#4f6f57]"
+                              key={tag}
+                            >
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                      ) : null}
                     </>
                   )}
                 </article>

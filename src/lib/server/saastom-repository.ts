@@ -66,6 +66,7 @@ type NewClientInput = {
   status: ClientStatus;
   contact: string;
   nextAction?: string;
+  tags?: string[];
 };
 
 type ClientUpdateInput = Partial<{
@@ -75,6 +76,7 @@ type ClientUpdateInput = Partial<{
   status: ClientStatus;
   contact: string;
   nextAction: string;
+  tags: string[];
 }>;
 
 const clientStatuses = new Set<ClientStatus>([
@@ -132,6 +134,7 @@ function toClientRecord(client: {
   status: string;
   contact: string;
   nextAction: string;
+  tags: string[];
 }): ClientRecord {
   return {
     id: client.id,
@@ -141,6 +144,7 @@ function toClientRecord(client: {
     status: normalizeStatus(client.status),
     contact: client.contact,
     nextAction: client.nextAction,
+    tags: client.tags,
   };
 }
 
@@ -265,6 +269,7 @@ export async function createClient(userId: string, input: NewClientInput) {
       status: input.status,
       contact: input.contact,
       nextAction: input.nextAction ?? "Définir la prochaine action.",
+      tags: input.tags ?? [],
     },
   });
 
@@ -296,6 +301,7 @@ export async function updateClient(
       ...(input.status !== undefined && { status: input.status }),
       ...(input.contact !== undefined && { contact: input.contact }),
       ...(input.nextAction !== undefined && { nextAction: input.nextAction }),
+      ...(input.tags !== undefined && { tags: input.tags }),
     },
   });
 

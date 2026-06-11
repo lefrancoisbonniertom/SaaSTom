@@ -18,7 +18,7 @@ export async function GET() {
   });
 
   const rows = [
-    ["Nom", "Projet", "Montant (EUR)", "Statut", "Contact", "Prochaine action"],
+    ["Nom", "Projet", "Montant (EUR)", "Statut", "Contact", "Prochaine action", "Tags"],
     ...clients.map((client) => [
       client.name,
       client.work,
@@ -26,6 +26,7 @@ export async function GET() {
       client.status,
       client.contact,
       client.nextAction,
+      client.tags.join("; "),
     ]),
   ];
 
