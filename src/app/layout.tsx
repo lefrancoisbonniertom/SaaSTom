@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Fraunces, Geist, Geist_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import { SessionProvider } from "@/components/session-provider";
 import { LoadingScreen } from "@/components/loading-screen";
 import "./globals.css";
@@ -64,6 +65,7 @@ export default function RootLayout({
       <body className="flex min-h-full flex-col bg-canvas text-ink">
         <LoadingScreen />
         <SessionProvider>{children}</SessionProvider>
+        <Analytics />
       </body>
     </html>
   );
