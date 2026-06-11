@@ -261,29 +261,44 @@ export function DashboardOverview() {
           </div>
 
           <div className="mt-5 space-y-3">
-            {state.clients.slice(0, 3).map((client) => (
-              <article
-                className="grid gap-3 rounded-lg border border-border bg-canvas-soft p-3 sm:grid-cols-[1fr_auto] sm:items-center"
-                key={client.id}
-              >
-                <div className="min-w-0">
-                  <h4 className="font-semibold text-ink">
-                    {client.name}
-                  </h4>
-                  <p className="mt-1 text-sm text-ink-muted">{client.work}</p>
-                </div>
-                <div className="flex flex-wrap items-center gap-3 sm:justify-end">
-                  <p className="text-sm font-semibold text-ink">
-                    {formatCurrency(client.amount)}
-                  </p>
-                  <span
-                    className={`rounded-md border px-2 py-1 text-xs font-semibold ${statusStyles[client.status]}`}
-                  >
-                    {client.status}
-                  </span>
-                </div>
-              </article>
-            ))}
+            {state.clients.length === 0 ? (
+              <div className="rounded-lg border border-dashed border-border bg-canvas-soft p-5 text-center">
+                <p className="text-sm text-ink-muted">
+                  Aucun client pour le moment.
+                </p>
+                <Link
+                  className="mt-3 inline-flex h-9 items-center justify-center gap-2 rounded-md bg-gold px-4 text-sm font-semibold text-canvas transition hover:bg-gold-soft"
+                  href="/clients"
+                >
+                  Ajouter ton premier client
+                  <ArrowRight className="size-4" />
+                </Link>
+              </div>
+            ) : (
+              state.clients.slice(0, 3).map((client) => (
+                <article
+                  className="grid gap-3 rounded-lg border border-border bg-canvas-soft p-3 sm:grid-cols-[1fr_auto] sm:items-center"
+                  key={client.id}
+                >
+                  <div className="min-w-0">
+                    <h4 className="font-semibold text-ink">
+                      {client.name}
+                    </h4>
+                    <p className="mt-1 text-sm text-ink-muted">{client.work}</p>
+                  </div>
+                  <div className="flex flex-wrap items-center gap-3 sm:justify-end">
+                    <p className="text-sm font-semibold text-ink">
+                      {formatCurrency(client.amount)}
+                    </p>
+                    <span
+                      className={`rounded-md border px-2 py-1 text-xs font-semibold ${statusStyles[client.status]}`}
+                    >
+                      {client.status}
+                    </span>
+                  </div>
+                </article>
+              ))
+            )}
           </div>
         </section>
 
@@ -423,27 +438,42 @@ export function DashboardOverview() {
           </div>
 
           <div className="mt-5 space-y-3">
-            {state.documents.slice(0, 3).map((document) => (
-              <article
-                className="flex items-center gap-3 rounded-lg border border-border bg-canvas-soft p-3"
-                key={document.id}
-              >
-                <div className="grid size-10 shrink-0 place-items-center rounded-md bg-gold/10 text-gold">
-                  <FileText className="size-5" />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <h4 className="truncate font-semibold text-ink">
-                    {document.title}
-                  </h4>
-                  <p className="mt-1 text-sm text-ink-muted">
-                    {document.type}
-                  </p>
-                </div>
-                <p className="hidden text-sm font-medium text-ink-muted sm:block">
-                  {document.createdAt}
+            {state.documents.length === 0 ? (
+              <div className="rounded-lg border border-dashed border-border bg-canvas-soft p-5 text-center">
+                <p className="text-sm text-ink-muted">
+                  Aucun document généré pour le moment.
                 </p>
-              </article>
-            ))}
+                <Link
+                  className="mt-3 inline-flex h-9 items-center justify-center gap-2 rounded-md bg-gold px-4 text-sm font-semibold text-canvas transition hover:bg-gold-soft"
+                  href="/assistant"
+                >
+                  Générer ton premier document
+                  <ArrowRight className="size-4" />
+                </Link>
+              </div>
+            ) : (
+              state.documents.slice(0, 3).map((document) => (
+                <article
+                  className="flex items-center gap-3 rounded-lg border border-border bg-canvas-soft p-3"
+                  key={document.id}
+                >
+                  <div className="grid size-10 shrink-0 place-items-center rounded-md bg-gold/10 text-gold">
+                    <FileText className="size-5" />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <h4 className="truncate font-semibold text-ink">
+                      {document.title}
+                    </h4>
+                    <p className="mt-1 text-sm text-ink-muted">
+                      {document.type}
+                    </p>
+                  </div>
+                  <p className="hidden text-sm font-medium text-ink-muted sm:block">
+                    {document.createdAt}
+                  </p>
+                </article>
+              ))
+            )}
           </div>
         </section>
       </div>
