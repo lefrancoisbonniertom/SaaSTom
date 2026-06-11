@@ -20,10 +20,35 @@ const fraunces = Fraunces({
   weight: ["400", "500", "600", "700"],
 });
 
+const siteUrl = "https://orfeo.digitaleweb.fr";
+const title = "Orfeo | Copilote IA pour freelances et independants";
+const description =
+  "Orfeo centralise tes clients, genere tes documents (devis, relances, propositions) avec l'IA et garde ton pipeline a jour.";
+
 export const metadata: Metadata = {
-  title: "Orfeo | Copilote IA business",
-  description:
-    "Un copilote SaaS pour aider les independants et petites entreprises a gerer clients, documents et relances.",
+  metadataBase: new URL(siteUrl),
+  title,
+  description,
+  keywords: [
+    "CRM freelance",
+    "copilote IA",
+    "gestion clients indépendant",
+    "génération de devis IA",
+    "relances automatiques",
+  ],
+  openGraph: {
+    title,
+    description,
+    url: siteUrl,
+    siteName: "Orfeo",
+    locale: "fr_FR",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description,
+  },
 };
 
 export default function RootLayout({
