@@ -53,6 +53,32 @@ export async function sendPlanUpgradeEmail(to: string, plan: string) {
   });
 }
 
+export async function sendOtpEmail(to: string, code: string) {
+  if (!resend) return;
+
+  await resend.emails.send({
+    from: FROM_EMAIL,
+    to,
+    subject: `${code} est ton code de connexion Orfeo`,
+    html: wrapEmail(
+      "Ton code de connexion",
+      `
+        <p style="font-size: 14px; line-height: 22px; color: #384438;">
+          Utilise ce code pour te connecter à ton espace Orfeo. Il est valable 10 minutes.
+        </p>
+        <div style="margin: 20px 0; text-align: center;">
+          <span style="display: inline-block; font-size: 32px; font-weight: 700; letter-spacing: 10px; color: #17201b; background: #f3f5ef; border: 1px solid #dfe4d8; border-radius: 10px; padding: 14px 22px;">
+            ${code}
+          </span>
+        </div>
+        <p style="margin-top: 16px; font-size: 13px; line-height: 20px; color: #8c9785;">
+          Si tu n'es pas à l'origine de cette demande, tu peux ignorer cet email.
+        </p>
+      `,
+    ),
+  });
+}
+
 export async function sendPasswordResetEmail(to: string, resetUrl: string) {
   if (!resend) return;
 
