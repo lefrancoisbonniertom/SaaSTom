@@ -240,12 +240,13 @@ export function TextReveal({ text, className = "" }: { text: string; className?:
             const o = Math.min(Math.max((p * 1.15 - start) * words.length * 0.35, 0), 1);
             const gold = w.startsWith("*");
             return (
-              <span
-                className={`mr-[0.25em] inline-block transition-[opacity,filter] duration-200 ${gold ? "text-shine" : ""}`}
-                key={i}
-                style={{ opacity: 0.12 + o * 0.88, filter: `blur(${(1 - o) * 2}px)` }}
-              >
-                {gold ? w.slice(1) : w}
+              <span key={i}>
+                <span
+                  className={`inline-block transition-[opacity,filter] duration-200 ${gold ? "text-shine" : ""}`}
+                  style={{ opacity: 0.12 + o * 0.88, filter: `blur(${(1 - o) * 2}px)` }}
+                >
+                  {gold ? w.slice(1) : w}
+                </span>{" "}
               </span>
             );
           })}
