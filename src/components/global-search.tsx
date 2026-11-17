@@ -47,10 +47,10 @@ export function GlobalSearch() {
   }
 
   return (
-    <div className="relative min-w-80">
+    <div className="relative w-full max-w-md">
       <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-ink-muted" />
       <input
-        className="h-10 w-full rounded-md border border-border bg-surface pl-9 pr-3 text-sm text-ink shadow-[0_10px_30px_rgba(0,0,0,0.3)] outline-none transition placeholder:text-ink-muted/60 focus:border-gold focus:ring-2 focus:ring-gold/20"
+        className="field h-10 rounded-xl pl-9 pr-3 text-sm"
         onBlur={() => setTimeout(() => setIsOpen(false), 150)}
         onChange={(event) => setQuery(event.target.value)}
         onFocus={() => setIsOpen(true)}
@@ -59,7 +59,7 @@ export function GlobalSearch() {
         value={query}
       />
       {showDropdown ? (
-        <div className="absolute left-0 right-0 top-full z-20 mt-2 max-h-96 overflow-y-auto rounded-md border border-border bg-surface-raised p-2 shadow-[0_20px_50px_rgba(0,0,0,0.45)]">
+        <div className="absolute left-0 right-0 top-full z-20 mt-2 max-h-96 overflow-y-auto glass rounded-2xl p-2">
           {hasResults ? (
             <>
               {matchedClients.length > 0 ? (

@@ -57,14 +57,14 @@ export default async function PricingPage() {
     <>
       <PageHeader
         description="Une offre lisible pour transformer Orfeo en produit vendable : gratuit pour essayer, Pro pour gagner du temps chaque semaine."
-        eyebrow="Tarifs"
-        title="Un prix simple pour un SaaS qui fait avancer le business."
+        eyebrow="Abonnement"
+        title="Choisis l'offre qui te fait gagner du temps."
       />
 
-      <section className="mb-4 rounded-lg border border-border bg-canvas p-5 text-ink shadow-[0_22px_70px_rgba(0,0,0,0.35)] sm:p-6">
+      <section className="glass mb-4 rounded-3xl p-5 text-ink sm:p-6">
         <div className="grid gap-5 lg:grid-cols-[1fr_auto] lg:items-center">
           <div>
-            <div className="inline-flex items-center gap-2 rounded-md border border-gold/20 bg-gold/10 px-3 py-2 text-sm font-semibold text-ink-soft">
+            <div className="inline-flex items-center gap-2 rounded-xl border border-gold/20 bg-gold/10 px-3 py-2 text-sm font-semibold text-ink-soft">
               <Sparkles className="size-4 text-gold" />
               Positionnement MVP
             </div>
@@ -76,7 +76,7 @@ export default async function PricingPage() {
               au bon moment.
             </p>
           </div>
-          <div className="rounded-lg border border-border bg-surface/60 p-4">
+          <div className="glass rounded-3xl p-4">
             <p className="text-sm font-medium text-ink-muted">Plan recommandé</p>
             <p className="mt-1 font-display text-3xl font-semibold text-gold">Pro 19 EUR</p>
           </div>
@@ -86,7 +86,7 @@ export default async function PricingPage() {
       <div className="grid gap-4 lg:grid-cols-3">
         {plans.map((plan) => (
           <section
-            className={`rounded-lg border p-5 shadow-[0_18px_55px_rgba(0,0,0,0.3)] ${
+            className={`rounded-2xl border p-5 shadow-[0_18px_55px_rgba(0,0,0,0.3)] ${
               plan.highlighted
                 ? "border-gold/40 bg-surface text-ink"
                 : "border-border bg-surface/70 text-ink backdrop-blur"

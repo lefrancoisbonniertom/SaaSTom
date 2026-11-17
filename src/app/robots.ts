@@ -8,7 +8,7 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: "*",
       allow: "/",
       // Espace connecté : rien à indexer
-      disallow: ["/api/", "/dashboard", "/assistant", "/clients", "/documents", "/settings", "/admin", "/pricing"],
+      disallow: ["/api/", "/dashboard", "/echeances", "/assistant", "/clients", "/documents", "/settings", "/admin", "/pricing"],
     },
     sitemap: `${SITE_URL}/sitemap.xml`,
   };

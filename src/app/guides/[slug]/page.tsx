@@ -116,7 +116,7 @@ export default async function GuidePage({ params }: Props) {
               Questions fréquentes
             </h2>
             {guide.faq.map(([q, a]) => (
-              <details className="group rounded-lg border border-border bg-surface/60 p-4" key={q}>
+              <details className="glass group rounded-3xl p-4" key={q}>
                 <summary className="cursor-pointer list-none font-medium text-ink marker:hidden">
                   <span className="flex items-start justify-between gap-4">
                     {q}
@@ -130,7 +130,7 @@ export default async function GuidePage({ params }: Props) {
             ))}
           </section>
 
-          <section className="mt-12 rounded-lg border border-border bg-surface/60 p-5">
+          <section className="glass mt-12 rounded-3xl p-5">
             <h2 className="font-semibold text-ink">Sources officielles</h2>
             <ul className="mt-3 space-y-2 text-sm">
               {guide.sources.map(([label, href]) => (
@@ -153,7 +153,7 @@ export default async function GuidePage({ params }: Props) {
             </p>
           </section>
 
-          <section className="mt-12 rounded-lg border border-gold/25 bg-linear-to-br from-gold/[0.12] to-transparent p-6 sm:p-8">
+          <section className="mt-12 rounded-2xl border border-gold/25 bg-linear-to-br from-gold/[0.12] to-transparent p-6 sm:p-8">
             <p className="text-sm font-semibold uppercase tracking-[0.14em] text-gold">Orfeo</p>
             <h2 className="mt-2 font-display text-2xl font-semibold text-ink">
               Moins d&apos;administratif, plus de temps pour vos clients
@@ -163,7 +163,7 @@ export default async function GuidePage({ params }: Props) {
               IA qui rédige à votre place. Gratuit pour commencer, sans carte bancaire.
             </p>
             <Link
-              className="mt-6 inline-flex h-11 items-center gap-2 rounded-md bg-gold px-6 text-sm font-semibold text-canvas transition hover:bg-gold-soft"
+              className="btn-gold mt-6 inline-flex h-11 items-center gap-2 rounded-xl px-6 text-sm font-semibold"
               href="/register"
             >
               Essayer Orfeo gratuitement <ArrowRight className="size-4" />
@@ -175,7 +175,7 @@ export default async function GuidePage({ params }: Props) {
           <div className="sticky top-8 space-y-8">
             <nav aria-label="Sommaire">
               <p className="text-xs font-semibold uppercase tracking-[0.14em] text-ink-muted">Sommaire</p>
-              <ol className="mt-3 space-y-2 border-l border-border text-sm">
+              <ol className="mt-3 space-y-2 border-l border-white/10 text-sm">
                 {guide.toc.map(([id, label]) => (
                   <li key={id}>
                     <a className="-ml-px block border-l border-transparent pl-4 text-ink-soft hover:border-gold hover:text-gold" href={`#${id}`}>

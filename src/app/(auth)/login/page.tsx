@@ -4,9 +4,10 @@ import Link from "next/link";
 import { useRef, useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Loader2, Mail, Sparkles } from "lucide-react";
+import { ArrowLeft, Loader2, Mail } from "lucide-react";
 import { markSessionActive } from "@/lib/session-marker";
 import { CanvasRevealEffect } from "@/components/ui/canvas-reveal-effect";
+import { OrfeoLogo } from "@/components/orfeo-logo";
 
 const legalLinks = [
   { href: "/mentions-legales", label: "Mentions légales" },
@@ -179,13 +180,13 @@ export default function LoginPage() {
           animationSpeed={3}
           containerClassName="bg-canvas"
           colors={[
-            [201, 164, 94],
-            [227, 201, 138],
+            [214, 178, 110],
+            [95, 227, 176],
           ]}
           dotSize={6}
           reverse={false}
         />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(14,24,18,0.92)_0%,_rgba(14,24,18,0.4)_60%,_transparent_100%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(6,10,8,0.92)_0%,_rgba(6,10,8,0.45)_60%,_transparent_100%)]" />
         <div className="absolute top-0 left-0 right-0 h-1/3 bg-gradient-to-b from-canvas to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-canvas to-transparent" />
       </div>
@@ -195,9 +196,7 @@ export default function LoginPage() {
         <div className="animate-orfeo-rise w-full max-w-sm">
           {/* Marque Orfeo */}
           <div className="mb-8 flex flex-col items-center gap-3 text-center">
-            <div className="grid size-11 place-items-center rounded-xl bg-linear-to-br from-gold-soft to-gold-deep text-canvas shadow-[0_12px_30px_rgba(201,164,94,0.28)]">
-              <Sparkles className="size-5" />
-            </div>
+            <OrfeoLogo size="lg" />
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-gold">
                 Orfeo

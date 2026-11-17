@@ -24,7 +24,7 @@ export function SubscriptionSection({ plan }: { plan: string }) {
   }
 
   return (
-    <section className="mt-4 rounded-lg border border-border bg-surface p-5 shadow-[0_18px_55px_rgba(0,0,0,0.3)]">
+    <section className="glass mt-4 rounded-3xl p-5">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h3 className="font-display text-lg font-semibold text-ink">Abonnement</h3>
@@ -46,14 +46,14 @@ export function SubscriptionSection({ plan }: { plan: string }) {
         </div>
         {plan === "free" ? (
           <a
-            className="flex h-10 items-center justify-center gap-2 rounded-md bg-gold px-4 text-sm font-semibold text-canvas transition hover:bg-gold-soft sm:whitespace-nowrap"
+            className="btn-gold flex h-10 items-center justify-center gap-2 rounded-xl px-4 text-sm font-semibold sm:whitespace-nowrap"
             href="/pricing"
           >
             Passer au Pro
           </a>
         ) : (
           <button
-            className="flex h-10 items-center justify-center gap-2 rounded-md border border-border bg-canvas-soft px-4 text-sm font-semibold text-ink-soft transition hover:border-gold/40 hover:text-gold disabled:opacity-60 sm:whitespace-nowrap"
+            className="btn-ghost flex h-10 items-center justify-center gap-2 rounded-xl px-4 text-sm font-semibold text-ink-soft hover:border-gold/40 hover:text-gold disabled:opacity-60 sm:whitespace-nowrap"
             disabled={loading}
             onClick={() => void openPortal()}
             type="button"

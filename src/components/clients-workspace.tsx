@@ -199,7 +199,7 @@ export function ClientsWorkspace({
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-col gap-3 rounded-lg border border-border bg-surface p-4 shadow-[0_18px_55px_rgba(0,0,0,0.3)] sm:flex-row sm:items-center sm:justify-between sm:p-5">
+      <div className="glass flex flex-col gap-3 rounded-3xl p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5">
         <div className="flex items-center gap-2">
           <Users className="size-4 text-gold" />
           <h3 className="font-display text-lg font-semibold text-ink">Pipeline clients</h3>
@@ -208,7 +208,7 @@ export function ClientsWorkspace({
           <div className="relative sm:w-64">
             <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-ink-muted" />
             <input
-              className="h-10 w-full rounded-md border border-border bg-canvas-soft pl-9 pr-3 text-sm text-ink outline-none transition placeholder:text-ink-muted/50 focus:border-gold focus:ring-2 focus:ring-gold/20"
+              className="field h-10 w-full rounded-xl pl-9 pr-3 text-sm"
               onChange={(event) => setQuery(event.target.value)}
               placeholder="Filtrer..."
               type="search"
@@ -216,7 +216,7 @@ export function ClientsWorkspace({
             />
           </div>
           <a
-            className="flex h-10 items-center justify-center gap-2 rounded-md border border-border bg-canvas-soft px-4 text-sm font-semibold text-ink transition hover:border-gold/40 hover:text-gold sm:whitespace-nowrap"
+            className="btn-ghost flex h-10 items-center justify-center gap-2 rounded-xl px-4 text-sm font-semibold text-ink hover:border-gold/40 hover:text-gold sm:whitespace-nowrap"
             download
             href="/api/clients/export"
           >
@@ -224,7 +224,7 @@ export function ClientsWorkspace({
             Exporter CSV
           </a>
           <button
-            className="flex h-10 items-center justify-center gap-2 rounded-md bg-gold px-4 text-sm font-semibold text-canvas transition hover:bg-gold-soft sm:whitespace-nowrap"
+            className="btn-gold flex h-10 items-center justify-center gap-2 rounded-xl px-4 text-sm font-semibold sm:whitespace-nowrap"
             onClick={() => setShowForm((value) => !value)}
             type="button"
           >
@@ -235,7 +235,7 @@ export function ClientsWorkspace({
       </div>
 
       {showForm ? (
-        <section className="rounded-lg border border-border bg-surface p-4 shadow-[0_18px_55px_rgba(0,0,0,0.3)] sm:p-5">
+        <section className="glass rounded-3xl p-4 sm:p-5">
           <form
             className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
             onSubmit={handleSubmit}
@@ -333,7 +333,7 @@ export function ClientsWorkspace({
             </div>
             <div className="flex items-end">
               <button
-                className="flex h-10 w-full items-center justify-center gap-2 rounded-md bg-gold px-4 text-sm font-semibold text-canvas transition hover:bg-gold-soft disabled:cursor-not-allowed disabled:opacity-50"
+                className="btn-gold flex h-10 w-full items-center justify-center gap-2 rounded-xl px-4 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-50"
                 disabled={!name.trim() || !work.trim() || isSaving}
                 type="submit"
               >
@@ -348,7 +348,7 @@ export function ClientsWorkspace({
       <div className="grid gap-4 lg:grid-cols-4">
         {columns.map((column) => (
           <div
-            className={`flex flex-col gap-3 rounded-lg border-2 p-3 transition ${
+            className={`flex flex-col gap-3 rounded-2xl border-2 p-3 transition ${
               dragOverStatus === column.status
                 ? "border-gold bg-gold/10"
                 : "border-transparent bg-surface/40"
@@ -367,7 +367,7 @@ export function ClientsWorkspace({
           >
             <div className="flex items-center justify-between px-1">
               <span
-                className={`rounded-md border px-2 py-1 text-xs font-semibold ${statusStyles[column.status]}`}
+                className={`rounded-xl border px-2 py-1 text-xs font-semibold ${statusStyles[column.status]}`}
               >
                 {column.status}
               </span>
@@ -379,7 +379,7 @@ export function ClientsWorkspace({
             <div className="space-y-3">
               {column.clients.map((client) => (
                 <article
-                  className={`rounded-lg border border-border bg-surface p-3 shadow-[0_10px_30px_rgba(0,0,0,0.25)] transition ${
+                  className={`glass rounded-3xl p-3 transition ${
                     editingId === client.id
                       ? ""
                       : "cursor-grab active:cursor-grabbing"
@@ -482,7 +482,7 @@ export function ClientsWorkspace({
                       />
                       <div className="flex gap-2">
                         <button
-                          className="flex h-8 flex-1 items-center justify-center gap-1.5 rounded-md bg-gold text-xs font-semibold text-canvas transition hover:bg-gold-soft disabled:cursor-not-allowed disabled:opacity-50"
+                          className="btn-gold flex h-8 flex-1 items-center justify-center gap-1.5 rounded-xl text-xs font-semibold disabled:cursor-not-allowed disabled:opacity-50"
                           disabled={isUpdating}
                           onClick={() => void saveEdit()}
                           type="button"
@@ -491,7 +491,7 @@ export function ClientsWorkspace({
                           Enregistrer
                         </button>
                         <button
-                          className="flex h-8 flex-1 items-center justify-center gap-1.5 rounded-md border border-border bg-canvas-soft text-xs font-semibold text-ink-soft transition hover:border-gold/40"
+                          className="btn-ghost flex h-8 flex-1 items-center justify-center gap-1.5 rounded-xl text-xs font-semibold text-ink-soft hover:border-gold/40"
                           onClick={cancelEdit}
                           type="button"
                         >
@@ -513,14 +513,14 @@ export function ClientsWorkspace({
                         </div>
                         <div className="flex shrink-0 gap-1">
                           <button
-                            className="grid size-7 place-items-center rounded-md text-ink-muted transition hover:bg-gold/10 hover:text-gold"
+                            className="grid size-7 place-items-center rounded-xl text-ink-muted transition hover:bg-gold/10 hover:text-gold"
                             onClick={() => startEdit(client)}
                             type="button"
                           >
                             <Pencil className="size-3.5" />
                           </button>
                           <button
-                            className="grid size-7 place-items-center rounded-md text-ink-muted transition hover:bg-red-500/10 hover:text-red-400"
+                            className="grid size-7 place-items-center rounded-xl text-ink-muted transition hover:bg-red-500/10 hover:text-red-400"
                             onClick={() => void handleDelete(client.id)}
                             type="button"
                           >
@@ -534,7 +534,7 @@ export function ClientsWorkspace({
                       <p className="mt-1 truncate text-xs text-ink-muted">
                         {client.contact}
                       </p>
-                      <p className="mt-2 rounded-md border border-border bg-canvas-soft px-2 py-1.5 text-xs leading-5 text-ink-soft">
+                      <p className="mt-2 rounded-xl border border-white/5 bg-white/[0.02] px-2 py-1.5 text-xs leading-5 text-ink-soft">
                         {client.nextAction}
                       </p>
                       {client.tags.length > 0 ? (
@@ -555,7 +555,7 @@ export function ClientsWorkspace({
               ))}
 
               {column.clients.length === 0 ? (
-                <p className="rounded-md border border-dashed border-border p-3 text-center text-xs text-ink-muted">
+                <p className="rounded-xl border border-dashed border-white/10 p-3 text-center text-xs text-ink-muted">
                   Aucun client
                 </p>
               ) : null}

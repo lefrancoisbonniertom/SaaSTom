@@ -44,7 +44,7 @@ export default function GuidesIndex() {
       <div className="mt-12 grid gap-4 md:grid-cols-3">
         {GUIDES.map((g) => (
           <Link
-            className="group flex flex-col rounded-lg border border-border bg-surface/70 p-6 shadow-[0_18px_55px_rgba(0,0,0,0.3)] transition hover:-translate-y-0.5 hover:border-gold/40"
+            className="glass group flex flex-col rounded-3xl p-6 transition hover:-translate-y-0.5 hover:border-gold/40"
             href={`/guides/${g.slug}`}
             key={g.slug}
           >

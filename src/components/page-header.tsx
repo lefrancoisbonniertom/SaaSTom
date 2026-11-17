@@ -12,18 +12,17 @@ export function PageHeader({
   actions?: ReactNode;
 }) {
   return (
-    <header className="mb-6 flex flex-col gap-4 border-b border-border pb-5 xl:flex-row xl:items-end xl:justify-between">
+    <header className="mb-8 flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
       <div className="min-w-0">
-        <p className="text-sm font-semibold uppercase tracking-[0.16em] text-gold">
+        <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-gold">
+          <span className="h-px w-6 bg-linear-to-r from-transparent to-gold" />
           {eyebrow}
         </p>
-        <h2 className="mt-2 max-w-[calc(100vw-2rem)] break-words font-display text-2xl font-semibold tracking-normal text-ink sm:max-w-[calc(100vw-3rem)] sm:text-3xl xl:max-w-4xl">
+        <h1 className="mt-3 break-words font-display text-3xl font-semibold leading-tight tracking-tight text-ink sm:text-4xl xl:max-w-4xl">
           {title}
-        </h2>
+        </h1>
         {description ? (
-          <p className="mt-2 max-w-[calc(100vw-2rem)] break-words text-sm leading-6 text-ink-muted sm:max-w-[calc(100vw-3rem)] xl:max-w-2xl">
-            {description}
-          </p>
+          <p className="mt-3 max-w-2xl break-words text-[15px] leading-7 text-ink-muted">{description}</p>
         ) : null}
       </div>
       {actions ? <div className="flex items-center gap-2">{actions}</div> : null}

@@ -50,10 +50,10 @@ export const promptTemplates = [
 ];
 
 export const statusStyles: Record<ClientStatus, string> = {
-  Prospect: "border-zinc-300 bg-zinc-50 text-zinc-700",
-  "À relancer": "border-amber-300 bg-amber-50 text-amber-800",
-  "En cours": "border-sky-300 bg-sky-50 text-sky-800",
-  Signé: "border-emerald-300 bg-emerald-50 text-emerald-800",
+  Prospect: "border-white/10 bg-white/5 text-ink-soft",
+  "À relancer": "border-coral/30 bg-coral/10 text-coral",
+  "En cours": "border-sky/30 bg-sky/10 text-sky",
+  Signé: "border-mint/30 bg-mint/10 text-mint",
 };
 
 export function formatCurrency(amount: number) {

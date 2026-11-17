@@ -22,11 +22,11 @@ export default async function SettingsPage() {
       <PageHeader
         description="Gère ton compte, ta sécurité et les préférences de ton espace Orfeo."
         eyebrow="Réglages"
-        title="Configure ton espace SaaS."
+        title="Ton espace, à ta façon."
       />
       <div className="grid gap-4 md:grid-cols-2">
-        <section className="rounded-lg border border-border bg-surface p-5 shadow-[0_18px_55px_rgba(0,0,0,0.3)]">
-          <div className="grid size-10 place-items-center rounded-md bg-gold/10 text-gold">
+        <section className="glass rounded-3xl p-5">
+          <div className="grid size-10 place-items-center rounded-xl bg-gold/10 text-gold">
             <UserRound className="size-5" />
           </div>
           <h3 className="mt-4 font-display text-lg font-semibold text-ink">Profil</h3>
@@ -36,8 +36,8 @@ export default async function SettingsPage() {
           <p className="text-sm text-ink-muted">{session?.user?.email ?? "—"}</p>
         </section>
 
-        <section className="rounded-lg border border-border bg-surface p-5 shadow-[0_18px_55px_rgba(0,0,0,0.3)]">
-          <div className="grid size-10 place-items-center rounded-md bg-gold/10 text-gold">
+        <section className="glass rounded-3xl p-5">
+          <div className="grid size-10 place-items-center rounded-xl bg-gold/10 text-gold">
             <ShieldCheck className="size-5" />
           </div>
           <h3 className="mt-4 font-display text-lg font-semibold text-ink">Sécurité</h3>
@@ -46,8 +46,8 @@ export default async function SettingsPage() {
           </p>
         </section>
 
-        <section className="rounded-lg border border-border bg-surface p-5 shadow-[0_18px_55px_rgba(0,0,0,0.3)]">
-          <div className="grid size-10 place-items-center rounded-md bg-gold/10 text-gold">
+        <section className="glass rounded-3xl p-5">
+          <div className="grid size-10 place-items-center rounded-xl bg-gold/10 text-gold">
             <KeyRound className="size-5" />
           </div>
           <h3 className="mt-4 font-display text-lg font-semibold text-ink">Clé IA</h3>

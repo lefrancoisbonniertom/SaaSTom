@@ -20,7 +20,7 @@ export default async function LegalLayout({ children }: { children: ReactNode })
       <div className="relative mx-auto w-full max-w-3xl">
         <div className="mb-8 flex items-center justify-between gap-3">
           <Link className="flex items-center gap-3" href="/dashboard">
-            <div className="grid size-10 place-items-center rounded-lg bg-linear-to-br from-gold-soft to-gold-deep text-canvas shadow-[0_12px_30px_rgba(201,164,94,0.28)]">
+            <div className="grid size-10 place-items-center rounded-2xl bg-linear-to-br from-gold-soft to-gold-deep text-canvas shadow-[0_12px_30px_rgba(201,164,94,0.28)]">
               <Sparkles className="size-5" />
             </div>
             <div>
@@ -39,7 +39,7 @@ export default async function LegalLayout({ children }: { children: ReactNode })
           </Link>
         </div>
 
-        <div className="rounded-xl border border-border bg-surface/80 p-8 shadow-[0_18px_55px_rgba(0,0,0,0.35)] backdrop-blur">
+        <div className="rounded-xl border border-white/10 bg-surface/80 p-8 shadow-[0_18px_55px_rgba(0,0,0,0.35)] backdrop-blur">
           {children}
         </div>
 

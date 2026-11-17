@@ -71,8 +71,8 @@ export function IntegrationsSection({
   }
 
   return (
-    <section className="rounded-lg border border-border bg-surface p-5 shadow-[0_18px_55px_rgba(0,0,0,0.3)]">
-      <div className="grid size-10 place-items-center rounded-md bg-gold/10 text-gold">
+    <section className="glass rounded-3xl p-5">
+      <div className="grid size-10 place-items-center rounded-xl bg-gold/10 text-gold">
         <Plug className="size-5" />
       </div>
       <h3 className="mt-4 font-display text-lg font-semibold text-ink">Intégrations</h3>
@@ -84,7 +84,7 @@ export function IntegrationsSection({
         URL du webhook
       </label>
       <input
-        className="mt-2 h-10 w-full rounded-md border border-border bg-canvas-soft px-3 text-sm text-ink outline-none transition placeholder:text-ink-muted/50 focus:border-gold focus:ring-2 focus:ring-gold/20"
+        className="field mt-2 h-10 w-full rounded-xl px-3 text-sm"
         id="webhook-url"
         onChange={(event) => setWebhookUrl(event.target.value)}
         placeholder="https://hooks.zapier.com/..."
@@ -93,7 +93,7 @@ export function IntegrationsSection({
       />
       <div className="mt-3 flex flex-wrap gap-2">
         <button
-          className="flex h-10 items-center justify-center gap-2 rounded-md bg-gold px-4 text-sm font-semibold text-canvas transition hover:bg-gold-soft disabled:cursor-not-allowed disabled:opacity-50"
+          className="btn-gold flex h-10 items-center justify-center gap-2 rounded-xl px-4 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-50"
           disabled={isSaving || webhookUrl.trim() === savedUrl.trim()}
           onClick={() => void handleSave()}
           type="button"
@@ -101,7 +101,7 @@ export function IntegrationsSection({
           {isSaving ? "Enregistrement..." : "Enregistrer"}
         </button>
         <button
-          className="flex h-10 items-center justify-center gap-2 rounded-md border border-border bg-canvas-soft px-4 text-sm font-semibold text-ink transition hover:border-gold/40 hover:text-gold disabled:cursor-not-allowed disabled:opacity-50"
+          className="btn-ghost flex h-10 items-center justify-center gap-2 rounded-xl px-4 text-sm font-semibold text-ink hover:border-gold/40 hover:text-gold disabled:cursor-not-allowed disabled:opacity-50"
           disabled={isTesting || !savedUrl.trim()}
           onClick={() => void handleTest()}
           type="button"

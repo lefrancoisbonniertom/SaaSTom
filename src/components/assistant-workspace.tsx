@@ -78,9 +78,9 @@ export function AssistantWorkspace() {
 
   return (
     <div className="grid gap-4 xl:grid-cols-[1fr_0.75fr]">
-      <section className="rounded-lg border border-border bg-surface p-4 shadow-[0_18px_55px_rgba(0,0,0,0.3)] sm:p-5">
+      <section className="glass rounded-3xl p-4 sm:p-5">
         <div className="flex items-start gap-3">
-          <div className="grid size-10 place-items-center rounded-md bg-gold text-canvas">
+          <div className="btn-gold grid size-10 place-items-center rounded-xl">
             <Bot className="size-5" />
           </div>
           <div>
@@ -100,7 +100,7 @@ export function AssistantWorkspace() {
           Client concerné (optionnel)
         </label>
         <select
-          className="mt-3 h-10 w-full rounded-md border border-border bg-canvas-soft px-3 text-sm text-ink outline-none transition focus:border-gold focus:ring-2 focus:ring-gold/20 disabled:opacity-50"
+          className="field mt-3 h-10 w-full rounded-xl px-3 text-sm disabled:opacity-50"
           disabled={limitReached}
           id="assistant-client"
           onChange={(event) => setSelectedClientId(event.target.value)}
@@ -121,7 +121,7 @@ export function AssistantWorkspace() {
           Brief
         </label>
         <textarea
-          className="mt-3 min-h-72 w-full resize-none rounded-md border border-border bg-canvas-soft p-3 text-sm leading-6 text-ink outline-none transition placeholder:text-ink-muted/50 focus:border-gold focus:ring-2 focus:ring-gold/20 disabled:opacity-50"
+          className="field mt-3 min-h-72 w-full resize-none rounded-xl p-3 text-sm leading-6 disabled:opacity-50"
           disabled={limitReached}
           id="assistant-prompt"
           onChange={(event) => setPrompt(event.target.value)}
@@ -136,7 +136,7 @@ export function AssistantWorkspace() {
               : `${state.aiCreditsUsed}/${FREE_PLAN_LIMIT} générations gratuites utilisées (${creditsLeft} restante${creditsLeft > 1 ? "s" : ""})`}
           </p>
           <button
-            className="flex h-10 items-center justify-center gap-2 rounded-md bg-gold px-4 text-sm font-semibold text-canvas transition hover:bg-gold-soft disabled:cursor-not-allowed disabled:opacity-50 sm:whitespace-nowrap"
+            className="btn-gold flex h-10 items-center justify-center gap-2 rounded-xl px-4 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-50 sm:whitespace-nowrap"
             disabled={!prompt.trim() || isGenerating || limitReached}
             onClick={() => void handleGenerate()}
             type="button"
@@ -147,7 +147,7 @@ export function AssistantWorkspace() {
         </div>
 
         {genError ? (
-          <div className="mt-4 flex items-start gap-2 rounded-lg border border-red-500/30 bg-red-500/10 p-4">
+          <div className="mt-4 flex items-start gap-2 rounded-2xl border border-red-500/30 bg-red-500/10 p-4">
             <AlertCircle className="mt-0.5 size-4 shrink-0 text-red-400" />
             <div>
               <p className="text-sm font-semibold text-red-300">
@@ -159,7 +159,7 @@ export function AssistantWorkspace() {
         ) : null}
 
         {lastDocument && !genError ? (
-          <div className="mt-5 rounded-lg border border-emerald-500/30 bg-emerald-500/10 p-4">
+          <div className="mt-5 rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-4">
             <div className="flex items-center gap-2 text-sm font-semibold text-emerald-300">
               <Sparkles className="size-4" />
               Document ajouté à l&apos;historique
@@ -175,12 +175,12 @@ export function AssistantWorkspace() {
       </section>
 
       <aside className="space-y-4">
-        <section className="rounded-lg border border-border bg-surface p-4 shadow-[0_18px_55px_rgba(0,0,0,0.3)] sm:p-5">
+        <section className="glass rounded-3xl p-4 sm:p-5">
           <p className="text-sm font-medium text-ink-muted">Modèles rapides</p>
           <div className="mt-4 space-y-3">
             {promptTemplates.map((template) => (
               <button
-                className="flex w-full items-center gap-3 rounded-lg border border-border bg-canvas-soft p-3 text-left text-sm font-medium text-ink-soft transition hover:border-gold/40 hover:bg-gold/5 disabled:opacity-40"
+                className="flex w-full items-center gap-3 rounded-2xl border border-white/5 bg-white/[0.02] p-3 text-left text-sm font-medium text-ink-soft transition hover:border-gold/40 hover:bg-gold/5 disabled:opacity-40"
                 disabled={limitReached}
                 key={template}
                 onClick={() => setPrompt(template)}
@@ -193,7 +193,7 @@ export function AssistantWorkspace() {
           </div>
         </section>
 
-        <section className="rounded-lg border border-border bg-surface p-4 shadow-[0_18px_55px_rgba(0,0,0,0.3)] sm:p-5">
+        <section className="glass rounded-3xl p-4 sm:p-5">
           <div className="flex items-center gap-2">
             <FileText className="size-4 text-gold" />
             <p className="text-sm font-semibold text-ink">Dernier résultat</p>
@@ -201,7 +201,7 @@ export function AssistantWorkspace() {
           {lastDocument ? (
             <>
               <textarea
-                className="mt-4 min-h-72 w-full resize-y rounded-md border border-border bg-canvas-soft p-3 text-sm leading-6 text-ink outline-none transition focus:border-gold focus:ring-2 focus:ring-gold/20"
+                className="field mt-4 min-h-72 w-full resize-y rounded-xl p-3 text-sm leading-6"
                 onChange={(event) => setEditedContent(event.target.value)}
                 value={editedContent}
               />
@@ -224,7 +224,7 @@ export function AssistantWorkspace() {
                         : "Tu peux modifier ce texte généré par l'IA."}
                 </p>
                 <button
-                  className="flex h-9 shrink-0 items-center gap-2 rounded-md bg-gold px-3 text-sm font-semibold text-canvas transition hover:bg-gold-soft disabled:cursor-not-allowed disabled:opacity-50"
+                  className="btn-gold flex h-9 shrink-0 items-center gap-2 rounded-xl px-3 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-50"
                   disabled={!isContentDirty || isSavingContent}
                   onClick={() => void handleSaveContent()}
                   type="button"
@@ -235,7 +235,7 @@ export function AssistantWorkspace() {
               </div>
             </>
           ) : (
-            <pre className="mt-4 max-h-96 overflow-auto whitespace-pre-wrap rounded-md border border-border bg-canvas-soft p-3 text-sm leading-6 text-ink-muted">
+            <pre className="mt-4 max-h-96 overflow-auto whitespace-pre-wrap rounded-xl border border-white/5 bg-white/[0.02] p-3 text-sm leading-6 text-ink-muted">
               Lance une génération pour voir ici le document créé par Orfeo.
             </pre>
           )}

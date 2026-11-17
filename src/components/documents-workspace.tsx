@@ -157,19 +157,19 @@ export function DocumentsWorkspace({
   return (
     <div className="grid gap-4 xl:grid-cols-[0.8fr_1.2fr]">
       <section className="space-y-4">
-        <div className="rounded-lg border border-border bg-surface p-4 shadow-[0_18px_55px_rgba(0,0,0,0.3)] sm:p-5">
+        <div className="glass rounded-3xl p-4 sm:p-5">
           <div className="flex items-center gap-2">
             <Plus className="size-4 text-gold" />
             <h3 className="font-display text-lg font-semibold text-ink">Nouveau brouillon</h3>
           </div>
           <textarea
-            className="mt-4 min-h-32 w-full resize-none rounded-md border border-border bg-canvas-soft p-3 text-sm leading-6 text-ink outline-none transition placeholder:text-ink-muted/50 focus:border-gold focus:ring-2 focus:ring-gold/20"
+            className="field mt-4 min-h-32 w-full resize-none rounded-xl p-3 text-sm leading-6"
             onChange={(event) => setPrompt(event.target.value)}
             placeholder="Exemple : Créer un email de relance pour Atelier Moreau."
             value={prompt}
           />
           <select
-            className="mt-3 h-10 w-full rounded-md border border-border bg-canvas-soft px-3 text-sm text-ink outline-none transition focus:border-gold focus:ring-2 focus:ring-gold/20"
+            className="field mt-3 h-10 w-full rounded-xl px-3 text-sm"
             onChange={(event) => setDraftClientId(event.target.value)}
             value={draftClientId}
           >
@@ -181,7 +181,7 @@ export function DocumentsWorkspace({
             ))}
           </select>
           <button
-            className="mt-3 flex h-10 w-full items-center justify-center gap-2 rounded-md bg-gold px-4 text-sm font-semibold text-canvas transition hover:bg-gold-soft disabled:cursor-not-allowed disabled:opacity-50"
+            className="btn-gold mt-3 flex h-10 w-full items-center justify-center gap-2 rounded-xl px-4 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-50"
             disabled={!prompt.trim() || isCreating}
             onClick={() => void handleCreate()}
             type="button"
@@ -191,12 +191,12 @@ export function DocumentsWorkspace({
           </button>
         </div>
 
-        <div className="rounded-lg border border-border bg-surface p-4 shadow-[0_18px_55px_rgba(0,0,0,0.3)] sm:p-5">
+        <div className="glass rounded-3xl p-4 sm:p-5">
           <div className="flex gap-2">
             <div className="relative flex-1">
               <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-ink-muted" />
               <input
-                className="h-10 w-full rounded-md border border-border bg-canvas-soft pl-9 pr-3 text-sm text-ink outline-none transition placeholder:text-ink-muted/50 focus:border-gold focus:ring-2 focus:ring-gold/20"
+                className="field h-10 w-full rounded-xl pl-9 pr-3 text-sm"
                 onChange={(event) => setQuery(event.target.value)}
                 placeholder="Rechercher document..."
                 type="search"
@@ -204,7 +204,7 @@ export function DocumentsWorkspace({
               />
             </div>
             <a
-              className="flex h-10 shrink-0 items-center justify-center gap-2 rounded-md border border-border bg-canvas-soft px-3 text-sm font-semibold text-ink transition hover:border-gold/40 hover:text-gold"
+              className="btn-ghost flex h-10 shrink-0 items-center justify-center gap-2 rounded-xl px-3 text-sm font-semibold text-ink hover:border-gold/40 hover:text-gold"
               download
               href="/api/documents/export"
             >
@@ -216,7 +216,7 @@ export function DocumentsWorkspace({
           <div className="mt-4 space-y-3">
             {filteredDocuments.map((document) => (
               <button
-                className={`flex w-full items-start gap-3 rounded-lg border p-3 text-left transition ${
+                className={`flex w-full items-start gap-3 rounded-2xl border p-3 text-left transition ${
                   selectedDocument?.id === document.id
                     ? "border-gold bg-gold/10"
                     : "border-border bg-canvas-soft hover:border-gold/40"
@@ -225,7 +225,7 @@ export function DocumentsWorkspace({
                 onClick={() => handleSelectDocument(document.id)}
                 type="button"
               >
-                <div className="grid size-9 shrink-0 place-items-center rounded-md bg-surface text-gold">
+                <div className="grid size-9 shrink-0 place-items-center rounded-xl bg-surface text-gold">
                   <FileText className="size-4" />
                 </div>
                 <div className="min-w-0">
@@ -242,7 +242,7 @@ export function DocumentsWorkspace({
         </div>
       </section>
 
-      <section className="rounded-lg border border-border bg-surface p-4 shadow-[0_18px_55px_rgba(0,0,0,0.3)] sm:p-5">
+      <section className="glass rounded-3xl p-4 sm:p-5">
         {selectedDocument ? (
           <>
             <div className="flex items-start justify-between gap-3">
@@ -260,7 +260,7 @@ export function DocumentsWorkspace({
               </div>
               <div className="flex shrink-0 items-center gap-2">
                 <button
-                  className="flex h-9 items-center gap-2 rounded-md border border-border bg-canvas-soft px-3 text-sm font-semibold text-ink transition hover:border-gold/40 hover:text-gold disabled:cursor-not-allowed disabled:opacity-50"
+                  className="btn-ghost flex h-9 items-center gap-2 rounded-xl px-3 text-sm font-semibold text-ink hover:border-gold/40 hover:text-gold disabled:cursor-not-allowed disabled:opacity-50"
                   disabled={isSending}
                   onClick={() => void handleSendEmail()}
                   type="button"
@@ -269,7 +269,7 @@ export function DocumentsWorkspace({
                   {isSending ? "Envoi..." : "Envoyer au client"}
                 </button>
                 <a
-                  className="flex h-9 items-center gap-2 rounded-md border border-border bg-canvas-soft px-3 text-sm font-semibold text-ink transition hover:border-gold/40 hover:text-gold"
+                  className="btn-ghost flex h-9 items-center gap-2 rounded-xl px-3 text-sm font-semibold text-ink hover:border-gold/40 hover:text-gold"
                   download
                   href={`/api/documents/${selectedDocument.id}/pdf`}
                 >
@@ -277,7 +277,7 @@ export function DocumentsWorkspace({
                   PDF
                 </a>
                 <button
-                  className="flex h-9 items-center gap-2 rounded-md border border-border bg-canvas-soft px-3 text-sm font-semibold text-ink-muted transition hover:border-red-500/40 hover:text-red-400 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="btn-ghost flex h-9 items-center gap-2 rounded-xl px-3 text-sm font-semibold text-ink-muted hover:border-red-500/40 hover:text-red-400 disabled:cursor-not-allowed disabled:opacity-50"
                   disabled={isDeleting}
                   onClick={() => void handleDelete()}
                   type="button"
@@ -297,7 +297,7 @@ export function DocumentsWorkspace({
               </p>
             ) : null}
             <textarea
-              className="mt-5 min-h-96 w-full resize-y rounded-md border border-border bg-canvas-soft p-4 text-sm leading-6 text-ink outline-none transition focus:border-gold focus:ring-2 focus:ring-gold/20"
+              className="field mt-5 min-h-96 w-full resize-y rounded-xl p-4 text-sm leading-6"
               onChange={(event) => setEditedContent(event.target.value)}
               value={editedContent}
             />
@@ -318,7 +318,7 @@ export function DocumentsWorkspace({
                     : "Tu peux modifier ce texte généré par l'IA."}
               </p>
               <button
-                className="flex h-9 shrink-0 items-center gap-2 rounded-md bg-gold px-3 text-sm font-semibold text-canvas transition hover:bg-gold-soft disabled:cursor-not-allowed disabled:opacity-50"
+                className="btn-gold flex h-9 shrink-0 items-center gap-2 rounded-xl px-3 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-50"
                 disabled={!isContentDirty || isSavingContent}
                 onClick={() => void handleSaveContent()}
                 type="button"
@@ -329,7 +329,7 @@ export function DocumentsWorkspace({
             </div>
           </>
         ) : (
-          <div className="grid min-h-96 place-items-center rounded-md border border-dashed border-border bg-canvas-soft p-6 text-center">
+          <div className="grid min-h-96 place-items-center rounded-xl border border-dashed border-white/5 bg-white/[0.02] p-6 text-center">
             <div>
               <FileText className="mx-auto size-8 text-ink-muted" />
               <p className="mt-3 text-sm font-medium text-ink-muted">

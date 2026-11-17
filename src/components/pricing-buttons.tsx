@@ -42,7 +42,7 @@ export function PricingButton({
 
   return (
     <button
-      className={`mt-6 flex h-10 w-full items-center justify-center gap-2 rounded-md px-4 text-sm font-semibold transition disabled:opacity-60 ${
+      className={`mt-6 flex h-10 w-full items-center justify-center gap-2 rounded-xl px-4 text-sm font-semibold transition disabled:opacity-60 ${
         highlighted
           ? "bg-gold text-canvas hover:bg-gold-soft"
           : "border border-border bg-canvas-soft text-ink hover:border-gold/40 hover:text-gold"

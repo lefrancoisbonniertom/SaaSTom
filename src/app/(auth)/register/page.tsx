@@ -8,7 +8,7 @@ import { Loader2 } from "lucide-react";
 import { markSessionActive } from "@/lib/session-marker";
 
 const fieldClass =
-  "h-10 w-full rounded-md border border-border bg-canvas-soft px-3 text-sm text-ink outline-none transition placeholder:text-ink-muted/50 focus:border-gold focus:ring-2 focus:ring-gold/20";
+  "field h-11 rounded-xl px-3 text-sm";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -43,7 +43,7 @@ export default function RegisterPage() {
   }
 
   return (
-    <section className="rounded-xl border border-border bg-surface/80 p-8 shadow-[0_18px_55px_rgba(0,0,0,0.35)] backdrop-blur">
+    <section className="glass ring-gradient rounded-3xl p-8">
       <h1 className="font-display text-2xl font-semibold text-ink">
         Créer un compte
       </h1>
@@ -103,13 +103,13 @@ export default function RegisterPage() {
         </div>
 
         {error ? (
-          <p className="rounded-md border border-red-500/20 bg-red-500/10 px-3 py-2 text-sm text-red-300">
+          <p className="rounded-xl border border-red-500/20 bg-red-500/10 px-3 py-2 text-sm text-red-300">
             {error}
           </p>
         ) : null}
 
         <button
-          className="flex h-10 w-full items-center justify-center gap-2 rounded-md bg-gold text-sm font-semibold text-canvas transition hover:bg-gold-soft disabled:opacity-60"
+          className="btn-gold flex h-10 w-full items-center justify-center gap-2 rounded-xl text-sm font-semibold disabled:opacity-60"
           disabled={loading}
           type="submit"
         >

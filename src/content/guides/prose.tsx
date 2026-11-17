@@ -23,7 +23,7 @@ export function UL({ children }: { children: ReactNode }) {
 
 export function Callout({ title, children }: { title: string; children: ReactNode }) {
   return (
-    <aside className="rounded-lg border border-gold/25 bg-gold/[0.07] p-5">
+    <aside className="rounded-2xl border border-gold/25 bg-gold/[0.07] p-5">
       <p className="font-semibold text-gold-soft">{title}</p>
       <div className="mt-2 space-y-2 text-sm leading-6 text-ink-soft">{children}</div>
     </aside>
@@ -32,7 +32,7 @@ export function Callout({ title, children }: { title: string; children: ReactNod
 
 export function Table({ head, rows }: { head: string[]; rows: (string | ReactNode)[][] }) {
   return (
-    <div className="overflow-x-auto rounded-lg border border-border">
+    <div className="overflow-x-auto rounded-2xl border border-white/10">
       <table className={`w-full text-left text-sm ${head.length > 2 ? "min-w-[520px]" : ""}`}>
         <thead className="bg-surface-raised text-ink">
           <tr>

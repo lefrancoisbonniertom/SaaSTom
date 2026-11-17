@@ -110,7 +110,7 @@ export function AdminOverview({
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {metrics.map((metric) => (
           <section
-            className="rounded-lg border border-border bg-surface/70 p-4 shadow-[0_18px_55px_rgba(0,0,0,0.3)] backdrop-blur"
+            className="glass rounded-3xl p-4"
             key={metric.label}
           >
             <div className="flex items-start justify-between gap-3">
@@ -123,7 +123,7 @@ export function AdminOverview({
                 </p>
               </div>
               <div
-                className={`grid size-10 place-items-center rounded-md ${metric.accent}`}
+                className={`grid size-10 place-items-center rounded-xl ${metric.accent}`}
               >
                 <metric.icon className="size-5" />
               </div>
@@ -134,7 +134,7 @@ export function AdminOverview({
       </div>
 
       <div className="mt-4 grid gap-4 xl:grid-cols-[0.85fr_1.15fr]">
-        <section className="rounded-lg border border-border bg-surface/70 p-4 shadow-[0_18px_55px_rgba(0,0,0,0.3)] backdrop-blur sm:p-5">
+        <section className="glass rounded-3xl p-4 sm:p-5">
           <p className="text-sm font-semibold uppercase tracking-[0.14em] text-gold">
             Répartition
           </p>
@@ -147,7 +147,7 @@ export function AdminOverview({
               <div key={row.key}>
                 <div className="flex items-center justify-between gap-3 text-sm">
                   <span
-                    className={`rounded-md border px-2 py-0.5 text-xs font-semibold ${PLAN_BADGE_STYLES[row.key]}`}
+                    className={`rounded-xl border px-2 py-0.5 text-xs font-semibold ${PLAN_BADGE_STYLES[row.key]}`}
                   >
                     {row.label}
                   </span>
@@ -165,7 +165,7 @@ export function AdminOverview({
             ))}
           </div>
 
-          <div className="mt-6 grid grid-cols-2 gap-3 border-t border-border pt-4">
+          <div className="mt-6 grid grid-cols-2 gap-3 border-t border-white/10 pt-4">
             <div>
               <p className="text-sm text-ink-muted">Clients enregistrés</p>
               <p className="mt-1 flex items-center gap-2 text-lg font-semibold text-ink">
@@ -183,7 +183,7 @@ export function AdminOverview({
           </div>
         </section>
 
-        <section className="rounded-lg border border-border bg-surface/70 p-4 shadow-[0_18px_55px_rgba(0,0,0,0.3)] backdrop-blur sm:p-5">
+        <section className="glass rounded-3xl p-4 sm:p-5">
           <p className="text-sm font-semibold uppercase tracking-[0.14em] text-gold">
             Acquisition
           </p>
@@ -211,7 +211,7 @@ export function AdminOverview({
                 ) : (
                   recentUsers.map((user) => (
                     <tr
-                      className="border-t border-border"
+                      className="border-t border-white/10"
                       key={user.id}
                     >
                       <td className="py-2 pr-3 font-medium text-ink">
@@ -222,7 +222,7 @@ export function AdminOverview({
                       </td>
                       <td className="py-2 pr-3">
                         <span
-                          className={`rounded-md border px-2 py-0.5 text-xs font-semibold ${PLAN_BADGE_STYLES[user.plan] ?? PLAN_BADGE_STYLES.free}`}
+                          className={`rounded-xl border px-2 py-0.5 text-xs font-semibold ${PLAN_BADGE_STYLES[user.plan] ?? PLAN_BADGE_STYLES.free}`}
                         >
                           {PLAN_LABELS[user.plan] ?? user.plan}
                         </span>

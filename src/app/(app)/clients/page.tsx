@@ -12,8 +12,8 @@ export default async function ClientsPage({ searchParams }: ClientsPageProps) {
     <>
       <PageHeader
         description="Ajoute des prospects, suis les montants et garde une prochaine action claire."
-        eyebrow="CRM"
-        title="Gère les clients et opportunités du SaaS."
+        eyebrow="Clients"
+        title="Tes clients et opportunités."
       />
       <ClientsWorkspace initialQuery={q ?? ""} key={q ?? "all"} />
     </>
