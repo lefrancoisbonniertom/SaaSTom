@@ -1,9 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { Sparkles } from "lucide-react";
 
 export function LoadingScreen() {
+  // Pas d'écran d'attente sur les guides : le lecteur vient de Google et veut sa réponse tout de suite
+  const isGuide = usePathname()?.startsWith("/guides") ?? false;
   const [isFading, setIsFading] = useState(false);
   const [isHidden, setIsHidden] = useState(false);
 
@@ -17,7 +20,7 @@ export function LoadingScreen() {
     };
   }, []);
 
-  if (isHidden) {
+  if (isHidden || isGuide) {
     return null;
   }
 

@@ -29,7 +29,11 @@ export default async function proxy(request: NextRequest) {
     pathname === "/" ||
     pathname.startsWith("/mentions-legales") ||
     pathname.startsWith("/cgv") ||
-    pathname.startsWith("/confidentialite");
+    pathname.startsWith("/confidentialite") ||
+    pathname === "/guides" ||
+    pathname.startsWith("/guides/") ||
+    pathname === "/robots.txt" ||
+    pathname === "/sitemap.xml";
 
   const hasActiveSession = request.cookies.has(SESSION_MARKER_COOKIE);
 

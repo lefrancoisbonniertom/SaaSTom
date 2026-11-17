@@ -12,9 +12,11 @@ import {
 const navLinks = [
   { href: "#fonctionnalites", label: "Fonctionnalités" },
   { href: "#tarifs", label: "Tarifs" },
+  { href: "/guides", label: "Guides" },
 ];
 
 const legalLinks = [
+  { href: "/guides", label: "Guides" },
   { href: "/mentions-legales", label: "Mentions légales" },
   { href: "/cgv", label: "CGV" },
   { href: "/confidentialite", label: "Confidentialité" },
