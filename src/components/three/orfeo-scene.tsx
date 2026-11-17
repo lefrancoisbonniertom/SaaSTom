@@ -137,7 +137,7 @@ export function OrfeoScene({ variant = "hero", className = "" }: { variant?: Var
     scene.add(coral);
 
     const world = new THREE.Group();
-    world.position.x = compact ? 2.6 : small ? 0 : 3.1;
+    world.position.x = compact ? 2.6 : small ? 0 : 3.6;
     world.position.y = 0;
     scene.add(world);
 
@@ -203,7 +203,7 @@ export function OrfeoScene({ variant = "hero", className = "" }: { variant?: Var
       world.add(mesh);
       cards.push({
         mesh,
-        radius: 3.2 + (i % 3) * 0.85,
+        radius: (compact || small ? 3.2 : 2.8) + (i % 3) * (compact || small ? 0.85 : 0.7),
         speed: 0.12 + (i % 4) * 0.025,
         phase: (i / labels.length) * Math.PI * 2,
         tilt: ((i % 3) - 1) * 0.6,

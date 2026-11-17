@@ -14,7 +14,8 @@ import {
 import type { LucideIcon } from "lucide-react";
 import { OrfeoScene } from "@/components/three/orfeo-scene";
 import { Reveal, SpotlightCard, Tilt } from "@/components/fx/motion";
-import { CursorGlow, HeroFade, ScrollTilt, TypewriterDemo } from "@/components/fx/landing-fx";
+import { CursorGlow, HeroFade, Meteors, ScrollTilt, TextReveal, TypewriterDemo } from "@/components/fx/landing-fx";
+import { BeamFlow, OrbitingTools } from "@/components/fx/orbit-beam";
 import { ProductMockup } from "@/components/product-mockup";
 import { OrfeoLogo } from "@/components/orfeo-logo";
 import { GUIDES } from "@/content/guides";
@@ -109,7 +110,20 @@ export function LandingPage() {
         <div className="absolute inset-0 -z-20 bg-[radial-gradient(80%_60%_at_70%_40%,rgba(214,178,110,0.14),transparent_60%),radial-gradient(60%_50%_at_10%_90%,rgba(95,227,176,0.08),transparent_60%)]" />
         <div className="bg-grid absolute inset-0 -z-20 [mask-image:radial-gradient(70%_60%_at_50%_40%,#000,transparent)]" />
         <OrfeoScene className="relative -z-10 h-[42svh] w-full shrink-0 md:absolute md:inset-0 md:h-auto" />
-        <div className="pointer-events-none absolute inset-y-0 left-0 -z-10 hidden w-[62%] bg-linear-to-r from-canvas via-canvas/75 to-transparent md:block" />
+        <div className="pointer-events-none absolute inset-y-0 left-0 -z-10 hidden w-[60%] bg-linear-to-r from-canvas from-30% via-canvas/85 to-transparent md:block" />
+        <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-[38%] overflow-hidden [mask-image:linear-gradient(to_bottom,transparent,#000_35%)] [perspective:420px]">
+          <div className="absolute inset-0 [transform:rotateX(62deg)] [transform-origin:50%_0%]">
+            <div
+              className="absolute -inset-x-1/2 h-[300%] [animation:orfeo-grid-flow_14s_linear_infinite]"
+              style={{
+                backgroundImage:
+                  "linear-gradient(rgba(214,178,110,0.28) 1px, transparent 1px), linear-gradient(90deg, rgba(214,178,110,0.28) 1px, transparent 1px)",
+                backgroundSize: "64px 64px",
+              }}
+            />
+          </div>
+          <div className="absolute inset-0 bg-linear-to-t from-canvas via-canvas/30 to-transparent" />
+        </div>
         <div className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-48 bg-linear-to-b from-transparent to-canvas" />
 
         <HeroFade className="mx-auto w-full max-w-6xl px-5">
@@ -276,17 +290,16 @@ export function LandingPage() {
                 Exporte tes clients et documents en CSV, et envoie tes événements vers tes outils d&apos;automatisation (Zapier, Make, n8n…)
                 grâce aux webhooks.
               </p>
-              <div className="mt-6 flex items-center justify-center">
-                <div className="relative grid size-28 place-items-center">
-                  <div className="animate-spin-slow absolute inset-0 rounded-full border border-dashed border-gold/30" />
-                  <div className="absolute inset-4 rounded-full border border-mint/20" />
-                  <OrfeoLogo size="lg" />
-                </div>
+              <div className="mt-2">
+                <OrbitingTools />
               </div>
             </SpotlightCard>
           </Reveal>
         </div>
       </section>
+
+      {/* ───── Manifeste (texte qui s'allume au défilement) ───── */}
+      <TextReveal text="Tu as lancé ton activité pour faire ton métier. Pas pour courir après les devis, les relances et les déclarations Urssaf. *Orfeo *s'occupe *du *reste." />
 
       {/* ───── Copilote ───── */}
       <section className="relative scroll-mt-24 overflow-hidden py-28" id="copilote">
@@ -378,11 +391,16 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* ───── Étapes ───── */}
-      <section className="mx-auto max-w-6xl px-5 py-24">
+      {/* ───── Comment ça marche ───── */}
+      <section className="relative mx-auto max-w-6xl overflow-hidden px-5 py-24">
         <Reveal className="text-center">
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-gold">En 3 minutes</p>
-          <h2 className="mt-3 font-display text-4xl font-semibold tracking-tight sm:text-5xl">Prêt avant ton café.</h2>
+          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-gold">Comment ça marche</p>
+          <h2 className="mt-3 font-display text-4xl font-semibold tracking-tight sm:text-5xl">
+            Tu donnes l&apos;essentiel, <span className="text-shine">Orfeo fait le reste.</span>
+          </h2>
+        </Reveal>
+        <Reveal className="mt-14" delay={100}>
+          <BeamFlow />
         </Reveal>
         <div className="mt-14 grid gap-4 md:grid-cols-3">
           {[
@@ -391,11 +409,13 @@ export function LandingPage() {
             ["03", "Laisse Orfeo t'aider", "L'IA rédige, le copilote te prévient, le récap du matin te guide."],
           ].map(([n, t, d], i) => (
             <Reveal delay={i * 100} key={n}>
-              <SpotlightCard className="glass h-full rounded-3xl p-7">
-                <span className="font-display text-5xl font-semibold text-gold/30">{n}</span>
-                <h3 className="mt-4 text-xl font-semibold">{t}</h3>
-                <p className="mt-2 text-ink-soft">{d}</p>
-              </SpotlightCard>
+              <div className="flex gap-4 border-t border-white/8 pt-5">
+                <span className="font-display text-3xl font-semibold text-gold/40">{n}</span>
+                <div>
+                  <h3 className="font-semibold">{t}</h3>
+                  <p className="mt-1 text-sm leading-6 text-ink-muted">{d}</p>
+                </div>
+              </div>
             </Reveal>
           ))}
         </div>
@@ -495,6 +515,7 @@ export function LandingPage() {
         <Reveal>
           <div className="noise ring-gradient relative mx-auto max-w-6xl overflow-hidden rounded-[2rem] border border-white/5 bg-surface px-6 py-20 text-center">
             <OrfeoScene className="absolute inset-0 opacity-60" variant="compact" />
+            <Meteors />
             <div className="absolute inset-0 bg-[radial-gradient(60%_80%_at_50%_50%,rgba(6,10,8,0.2),rgba(6,10,8,0.85))]" />
             <div className="relative">
               <h2 className="mx-auto max-w-2xl font-display text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">

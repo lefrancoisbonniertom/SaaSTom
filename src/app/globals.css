@@ -429,3 +429,50 @@ canvas {
     opacity: 0;
   }
 }
+
+/* ───────────────────────── Effets inspirés de Magic UI (MIT) ───────────────────────── */
+
+/* Orbites : chaque icône tourne autour du centre */
+@keyframes orfeo-orbit {
+  from {
+    transform: rotate(calc(var(--angle) * 1deg)) translateX(var(--radius)) rotate(calc(var(--angle) * -1deg));
+  }
+  to {
+    transform: rotate(calc(var(--angle) * 1deg + 360deg)) translateX(var(--radius)) rotate(calc((var(--angle) * -1deg) - 360deg));
+  }
+}
+
+/* Météores */
+@keyframes orfeo-meteor {
+  0% {
+    transform: rotate(215deg) translateX(0);
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(215deg) translateX(-700px);
+    opacity: 0;
+  }
+}
+
+/* Sol quadrillé en perspective qui défile */
+@keyframes orfeo-grid-flow {
+  from {
+    transform: translateY(-50%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* Faisceau qui parcourt un tracé SVG */
+@keyframes orfeo-beam-dash {
+  from {
+    stroke-dashoffset: 260;
+  }
+  to {
+    stroke-dashoffset: -260;
+  }
+}

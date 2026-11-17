@@ -198,3 +198,85 @@ export function TypewriterDemo() {
     </div>
   );
 }
+
+/* ───────────────────────── Texte qui s'allume au défilement ───────────────────────── */
+
+export function TextReveal({ text, className = "" }: { text: string; className?: string }) {
+  const ref = useRef<HTMLDivElement | null>(null);
+  const [p, setP] = useState(0);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setP(1);
+      return;
+    }
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const r = el.getBoundingClientRect();
+      const total = r.height - window.innerHeight;
+      setP(Math.min(Math.max(-r.top / (total || 1), 0), 1));
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      cancelAnimationFrame(raf);
+    };
+  }, []);
+  const words = text.split(" ");
+  return (
+    <div className={`relative h-[220vh] ${className}`} ref={ref}>
+      <div className="sticky top-0 flex h-screen items-center">
+        <p className="mx-auto max-w-4xl px-5 font-display text-3xl font-semibold leading-[1.25] tracking-tight sm:text-5xl">
+          {words.map((w, i) => {
+            const start = i / words.length;
+            const o = Math.min(Math.max((p * 1.15 - start) * words.length * 0.35, 0), 1);
+            const gold = w.startsWith("*");
+            return (
+              <span
+                className={`mr-[0.25em] inline-block transition-[opacity,filter] duration-200 ${gold ? "text-shine" : ""}`}
+                key={i}
+                style={{ opacity: 0.12 + o * 0.88, filter: `blur(${(1 - o) * 2}px)` }}
+              >
+                {gold ? w.slice(1) : w}
+              </span>
+            );
+          })}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+/* ───────────────────────── Météores ───────────────────────── */
+
+export function Meteors({ count = 18 }: { count?: number }) {
+  const [items, setItems] = useState<Array<{ left: number; delay: number; duration: number }>>([]);
+  useEffect(() => {
+    setItems(
+      Array.from({ length: count }, () => ({
+        left: Math.random() * 110 - 5,
+        delay: Math.random() * 6,
+        duration: 3 + Math.random() * 5,
+      })),
+    );
+  }, [count]);
+  return (
+    <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+      {items.map((m, i) => (
+        <span
+          className="absolute top-0 size-0.5 rounded-full bg-gold-soft shadow-[0_0_0_1px_rgba(255,255,255,0.08)] before:absolute before:top-1/2 before:h-px before:w-[60px] before:-translate-y-1/2 before:bg-linear-to-r before:from-gold-soft before:to-transparent"
+          key={i}
+          style={{ left: `${m.left}%`, animation: `orfeo-meteor ${m.duration}s linear ${m.delay}s infinite` }}
+        />
+      ))}
+    </div>
+  );
+}
