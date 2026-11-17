@@ -14,6 +14,8 @@ import {
 import type { LucideIcon } from "lucide-react";
 import { OrfeoScene } from "@/components/three/orfeo-scene";
 import { Reveal, SpotlightCard, Tilt } from "@/components/fx/motion";
+import { CursorGlow, HeroFade, ScrollTilt, TypewriterDemo } from "@/components/fx/landing-fx";
+import { ProductMockup } from "@/components/product-mockup";
 import { OrfeoLogo } from "@/components/orfeo-logo";
 import { GUIDES } from "@/content/guides";
 import { CATEGORY_LABELS, computeDeadlines, daysUntil, vatStatus, type CopilotProfile } from "@/lib/copilot";
@@ -76,6 +78,7 @@ export function LandingPage() {
 
   return (
     <main className="relative overflow-x-clip bg-canvas text-ink">
+      <CursorGlow />
       {/* ───── Navigation ───── */}
       <header className="fixed inset-x-0 top-4 z-50 px-4">
         <div className="glass mx-auto flex h-14 max-w-6xl items-center justify-between rounded-2xl px-3 pl-4">
@@ -109,7 +112,7 @@ export function LandingPage() {
         <div className="pointer-events-none absolute inset-y-0 left-0 -z-10 hidden w-[62%] bg-linear-to-r from-canvas via-canvas/75 to-transparent md:block" />
         <div className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-48 bg-linear-to-b from-transparent to-canvas" />
 
-        <div className="mx-auto w-full max-w-6xl px-5">
+        <HeroFade className="mx-auto w-full max-w-6xl px-5">
           <div className="max-w-2xl">
             <a
               className="glass animate-rise inline-flex items-center gap-2 rounded-full py-1 pl-1 pr-3 text-xs text-ink-soft transition hover:text-ink"
@@ -144,7 +147,7 @@ export function LandingPage() {
               ))}
             </p>
           </div>
-        </div>
+        </HeroFade>
       </section>
 
       {/* ───── Métiers ───── */}
@@ -157,6 +160,23 @@ export function LandingPage() {
               </span>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* ───── Aperçu du produit ───── */}
+      <section className="relative mx-auto max-w-6xl px-5 pt-24">
+        <Reveal className="mx-auto max-w-2xl text-center">
+          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-gold">Ton cockpit</p>
+          <h2 className="mt-3 font-display text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">
+            Toute ton activité, <span className="text-shine">en un coup d&apos;œil.</span>
+          </h2>
+        </Reveal>
+        <div className="relative mt-14">
+          <div aria-hidden className="absolute inset-x-[10%] top-[20%] -z-10 h-2/3 rounded-full bg-gold/20 blur-[120px]" />
+          <ScrollTilt>
+            <ProductMockup />
+          </ScrollTilt>
+          <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-linear-to-b from-transparent to-canvas" />
         </div>
       </section>
 
@@ -174,21 +194,13 @@ export function LandingPage() {
 
         <div className="mt-14 grid gap-4 md:grid-cols-6">
           <Reveal className="md:col-span-4">
-            <SpotlightCard className="glass ring-gradient h-full rounded-3xl p-7">
+            <SpotlightCard className="glass beam h-full rounded-3xl p-7">
               <FeatureTitle icon={Bot} kicker="Assistant IA" title="Décris ton besoin, Orfeo rédige." />
               <p className="mt-3 max-w-md text-ink-soft">
                 Devis, propositions commerciales, relances de facture : l&apos;assistant transforme tes notes en
                 document prêt à envoyer, que tu peux modifier, exporter en PDF et envoyer.
               </p>
-              <div className="mt-7 rounded-2xl border border-white/6 bg-canvas/70 p-4 font-mono text-[13px] leading-6">
-                <p className="text-ink-muted">
-                  <span className="text-gold">›</span> Relance polie pour la facture n°24, envoyée il y a 10 jours
-                </p>
-                <p className="mt-2 text-ink-soft">
-                  Bonjour Madame Martin, je me permets de revenir vers vous au sujet de la facture n°24
-                  <span className="ml-0.5 inline-block h-4 w-2 translate-y-0.5 animate-pulse bg-gold" />
-                </p>
-              </div>
+              <TypewriterDemo />
             </SpotlightCard>
           </Reveal>
 
@@ -311,7 +323,7 @@ export function LandingPage() {
 
           <Reveal delay={120}>
             <Tilt>
-              <div className="glass ring-gradient rounded-3xl p-6 sm:p-7">
+              <div className="glass beam rounded-3xl p-6 sm:p-7">
                 <div className="flex items-center justify-between">
                   <p className="flex items-center gap-2 font-semibold">
                     <CalendarClock className="size-5 text-mint" /> Mes prochaines échéances
@@ -400,7 +412,7 @@ export function LandingPage() {
           {plans.map((plan, i) => (
             <Reveal delay={i * 90} key={plan.name}>
               <SpotlightCard
-                className={`glass flex h-full flex-col rounded-3xl p-7 ${plan.highlighted ? "ring-gradient lg:-translate-y-3" : ""}`}
+                className={`glass flex h-full flex-col rounded-3xl p-7 ${plan.highlighted ? "beam lg:-translate-y-3" : ""}`}
               >
                 <div className="flex items-center justify-between">
                   <p className={`font-semibold ${plan.highlighted ? "text-gold" : "text-ink-soft"}`}>{plan.name}</p>

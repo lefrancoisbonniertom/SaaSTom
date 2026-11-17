@@ -145,7 +145,7 @@ export function DashboardOverview() {
       {/* ───── Studio IA + copilote ───── */}
       <div className="grid gap-4 xl:grid-cols-[1.6fr_1fr]">
         <Reveal>
-          <section className="glass ring-gradient noise relative isolate h-full overflow-hidden rounded-3xl p-6 sm:p-7">
+          <section className="glass beam noise relative isolate h-full overflow-hidden rounded-3xl p-6 sm:p-7">
             <OrfeoScene className="absolute inset-y-0 right-[-18%] -z-10 hidden w-[75%] opacity-80 md:block" variant="compact" />
             <div className="absolute inset-0 -z-10 hidden bg-linear-to-r from-surface via-surface/85 to-transparent md:block" />
             <div className="max-w-xl">
