@@ -28,10 +28,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       url,
       siteName: "Orfeo",
       locale: "fr_FR",
+      images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Orfeo" }],
       type: "article",
       modifiedTime: guide.updatedAt,
     },
-    twitter: { card: "summary_large_image", title: guide.title, description: guide.description },
+    twitter: { card: "summary_large_image", images: ["/opengraph-image"], title: guide.title, description: guide.description },
   };
 }
 

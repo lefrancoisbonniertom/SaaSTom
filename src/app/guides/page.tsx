@@ -11,8 +11,9 @@ export const metadata: Metadata = {
   title: `${title} | Orfeo`,
   description,
   alternates: { canonical: "/guides" },
-  openGraph: { title, description, url: `${SITE_URL}/guides`, siteName: "Orfeo", locale: "fr_FR", type: "website" },
-  twitter: { card: "summary_large_image", title, description },
+  openGraph: { title, description, url: `${SITE_URL}/guides`, siteName: "Orfeo", locale: "fr_FR",
+      images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Orfeo" }], type: "website" },
+  twitter: { card: "summary_large_image", images: ["/opengraph-image"], title, description },
 };
 
 export default function GuidesIndex() {
