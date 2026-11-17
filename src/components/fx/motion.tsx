@@ -15,14 +15,16 @@ export function Reveal({
   children,
   className = "",
   delay = 0,
-  as: Tag = "div",
+  as = "div",
 }: {
   children: ReactNode;
   className?: string;
   delay?: number;
   as?: ElementType;
 }) {
-  const ref = useRef<HTMLElement | null>(null);
+  // Typé comme une div pour éviter une union de props trop complexe pour TypeScript
+  const Tag = as as "div";
+  const ref = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const el = ref.current;

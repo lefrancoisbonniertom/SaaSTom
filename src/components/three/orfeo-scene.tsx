@@ -264,12 +264,12 @@ export function OrfeoScene({ variant = "hero", className = "" }: { variant?: Var
     });
     io.observe(container);
 
-    const clock = new THREE.Clock();
+    const t0 = performance.now();
     let raf = 0;
     const render = () => {
       raf = requestAnimationFrame(render);
       if (!visible) return;
-      const t = reduce ? 4 : clock.getElapsedTime();
+      const t = reduce ? 4 : (performance.now() - t0) / 1000;
 
       pointer.x += (pointer.tx - pointer.x) * 0.04;
       pointer.y += (pointer.ty - pointer.y) * 0.04;
