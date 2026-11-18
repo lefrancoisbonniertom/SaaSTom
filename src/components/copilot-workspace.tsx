@@ -10,6 +10,7 @@ import {
   CheckCircle2,
   Circle,
   Info,
+  Mail,
   PencilLine,
   Receipt,
   ShieldCheck,
@@ -39,7 +40,7 @@ const CATEGORY_STYLES: Record<Category, string> = {
 };
 
 export function CopilotWorkspace() {
-  const { profile, done, ready, setProfile, toggleDone } = useCopilot();
+  const { profile, done, ready, error, emailReminders, setProfile, toggleDone, setEmailReminders } = useCopilot();
   const [editing, setEditing] = useState(false);
 
   if (!ready) {
@@ -64,7 +65,20 @@ export function CopilotWorkspace() {
     );
   }
 
-  return <CopilotDashboard done={done} onEdit={() => setEditing(true)} onToggle={toggleDone} profile={profile} setProfile={setProfile} />;
+  return (
+    <>
+      {error ? <p className="mb-4 rounded-2xl border border-coral/30 bg-coral/10 px-4 py-3 text-sm text-coral">{error}</p> : null}
+      <CopilotDashboard
+        done={done}
+        emailReminders={emailReminders}
+        onEdit={() => setEditing(true)}
+        onEmailReminders={setEmailReminders}
+        onToggle={toggleDone}
+        profile={profile}
+        setProfile={setProfile}
+      />
+    </>
+  );
 }
 
 /* ───────────────────────── Tableau des échéances ───────────────────────── */
@@ -75,12 +89,16 @@ function CopilotDashboard({
   onToggle,
   onEdit,
   setProfile,
+  emailReminders,
+  onEmailReminders,
 }: {
   profile: CopilotProfile;
   done: string[];
   onToggle: (id: string) => void;
   onEdit: () => void;
   setProfile: (p: CopilotProfile) => void;
+  emailReminders: boolean;
+  onEmailReminders: (on: boolean) => void;
 }) {
   const deadlines = useMemo(() => computeDeadlines(profile), [profile]);
   const vat = useMemo(() => vatStatus(profile), [profile]);
@@ -129,6 +147,16 @@ function CopilotDashboard({
         <button className="btn-ghost flex h-10 items-center gap-2 rounded-xl px-4 text-sm font-semibold" onClick={onEdit} type="button">
           <PencilLine className="size-4" /> Modifier ma situation
         </button>
+        <label className="btn-ghost flex h-10 cursor-pointer items-center gap-2.5 rounded-xl px-4 text-sm font-semibold">
+          <input
+            checked={emailReminders}
+            className="peer sr-only"
+            onChange={(e) => onEmailReminders(e.target.checked)}
+            type="checkbox"
+          />
+          <span className="relative h-5 w-9 rounded-full bg-white/10 transition after:absolute after:left-0.5 after:top-0.5 after:size-4 after:rounded-full after:bg-ink-muted after:transition peer-checked:bg-mint/30 peer-checked:after:translate-x-4 peer-checked:after:bg-mint" />
+          <Mail className="size-4" /> Rappels par e-mail
+        </label>
         <p className="text-xs text-ink-muted sm:ml-2">
           {ACTIVITY_LABELS[profile.activity].split(" (")[0]} · déclaration {profile.periodicity}
         </p>
@@ -317,7 +345,7 @@ function CopilotDashboard({
         <Info className="mt-0.5 size-3.5 shrink-0" />
         Calcul indicatif à partir des règles publiées par l&apos;administration (vérifiées le 17 novembre 2026). Quand une
         date tombe un week-end, elle est parfois reportée, mais pas toujours : déclarez quelques jours avant. Ta situation
-        est enregistrée sur cet appareil.
+        est enregistrée dans ton compte{emailReminders ? " : tu reçois un rappel dans ton récap du matin, 7 jours avant chaque échéance" : ""}.
       </p>
     </div>
   );
@@ -425,7 +453,7 @@ function ProfileForm({
             </button>
           ) : null}
         </div>
-        <p className="mt-4 text-xs text-ink-muted">Ces informations restent sur cet appareil. Tu peux les modifier à tout moment.</p>
+        <p className="mt-4 text-xs text-ink-muted">Ces informations sont enregistrées dans ton compte. Tu peux les modifier à tout moment.</p>
       </form>
     </Reveal>
   );

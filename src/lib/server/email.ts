@@ -148,12 +148,32 @@ export async function sendDailyDigestEmail({
   to,
   clients,
   tasks,
+  deadlines = [],
 }: {
   to: string;
   clients: { name: string; work: string; nextAction: string }[];
   tasks: { title: string }[];
+  deadlines?: { title: string; detail: string; days: number; date: string; approx: boolean; guide?: string }[];
 }) {
   if (!resend) return;
+
+  const esc = (value: string) =>
+    value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "";
+  const deadlineItems = deadlines
+    .map((d) => {
+      const when = d.days <= 0 ? "aujourd'hui" : d.days === 1 ? "demain" : `dans ${d.days} jours`;
+      const guide = d.guide
+        ? ` <a href="${appUrl}/guides/${encodeURIComponent(d.guide)}" style="color: #8f7140;">Comprendre</a>`
+        : "";
+      return `
+        <li style="margin-bottom: 10px;">
+          <strong>${esc(d.title)}</strong> — ${when} (${d.approx ? "vers le " : ""}${esc(d.date)})<br />
+          <span style="color: #8c9785;">${esc(d.detail)}</span>${guide}
+        </li>
+      `;
+    })
+    .join("");
 
   const clientItems = clients
     .map(
@@ -171,6 +191,13 @@ export async function sendDailyDigestEmail({
     .join("");
 
   const sections = [
+    deadlines.length
+      ? `
+        <h2 style="font-size: 14px; color: #17201b; margin: 20px 0 8px;">Échéances à venir (${deadlines.length})</h2>
+        <ul style="padding-left: 18px; margin: 0; font-size: 14px; line-height: 22px; color: #384438;">${deadlineItems}</ul>
+        <p style="font-size: 12px; color: #8c9785; margin: 6px 0 0;">Déjà fait ? Coche-la dans <a href="${appUrl}/echeances" style="color: #8f7140;">Mes échéances</a> pour ne plus la voir.</p>
+      `
+      : "",
     clients.length
       ? `
         <h2 style="font-size: 14px; color: #17201b; margin: 20px 0 8px;">À relancer (${clients.length})</h2>

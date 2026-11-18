@@ -24,6 +24,7 @@ model User {
   tasks               Task[]
   usage               Usage?
   passwordResetTokens PasswordResetToken[]
+  copilotProfile      CopilotProfile?
 }
 
 model Client {
@@ -91,4 +92,18 @@ model EmailOtp {
   createdAt DateTime @default(now())
 
   @@index([email])
+}
+
+/// Copilote administratif : situation du micro-entrepreneur et échéances déjà traitées
+model CopilotProfile {
+  userId          String   @id
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  activity        String
+  periodicity     String
+  startDate       String
+  revenueThisYear Int      @default(0)
+  doneIds         String[] @default([])
+  emailReminders  Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
