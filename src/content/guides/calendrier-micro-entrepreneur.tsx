@@ -141,6 +141,14 @@ export default function Content() {
         expert-comptable.
       </P>
 
+      <Callout title="Ton calendrier personnalisé">
+        <p>
+          Ces dates dépendent de ta date de création et de ton rythme de déclaration. Le{" "}
+          <A href="/calculateur-echeances">calculateur d&apos;échéances</A> te les donne en 30 secondes, gratuitement et
+          sans inscription.
+        </p>
+      </Callout>
+
       <H2 id="recap">Le récapitulatif</H2>
       <Table
         head={["Quand", "Quoi"]}

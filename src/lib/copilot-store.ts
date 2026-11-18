@@ -35,9 +35,10 @@ function subscribe(listener: () => void) {
 // Ancienne version : situation gardée dans le navigateur. On la récupère une fois.
 const legacyKey = (email: string) => `orfeo-copilot:${email}`;
 const legacyDoneKey = (email: string) => `orfeo-copilot-done:${email}`;
+const PENDING_KEY = "orfeo-copilot:pending"; // saisi sur le calculateur public, avant l'inscription
 function readLegacy(email: string) {
   try {
-    const profile = window.localStorage.getItem(legacyKey(email));
+    const profile = window.localStorage.getItem(legacyKey(email)) ?? window.localStorage.getItem(PENDING_KEY);
     const done = window.localStorage.getItem(legacyDoneKey(email));
     return profile ? { profile: JSON.parse(profile) as CopilotProfile, done: done ? (JSON.parse(done) as string[]) : [] } : null;
   } catch {
@@ -48,6 +49,7 @@ function clearLegacy(email: string) {
   try {
     window.localStorage.removeItem(legacyKey(email));
     window.localStorage.removeItem(legacyDoneKey(email));
+    window.localStorage.removeItem(PENDING_KEY);
   } catch {
     // rien à faire
   }

@@ -329,9 +329,15 @@ export function LandingPage() {
                 </li>
               ))}
             </ul>
-            <Link className="btn-gold mt-9 inline-flex h-12 items-center gap-2 rounded-2xl px-6 font-semibold" href="/register">
-              Activer mon copilote <ArrowRight className="size-4" />
-            </Link>
+            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+              <Link className="btn-gold inline-flex h-12 items-center justify-center gap-2 rounded-2xl px-6 font-semibold" href="/calculateur-echeances">
+                Calculer mes échéances <ArrowRight className="size-4" />
+              </Link>
+              <Link className="btn-ghost inline-flex h-12 items-center justify-center rounded-2xl px-6 font-semibold" href="/register">
+                Créer mon compte
+              </Link>
+            </div>
+            <p className="mt-3 text-sm text-ink-muted">Gratuit et sans inscription.</p>
           </Reveal>
 
           <Reveal delay={120}>

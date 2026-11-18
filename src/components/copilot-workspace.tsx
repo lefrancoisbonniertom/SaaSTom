@@ -83,7 +83,7 @@ export function CopilotWorkspace() {
 
 /* ───────────────────────── Tableau des échéances ───────────────────────── */
 
-function CopilotDashboard({
+export function CopilotDashboard({
   profile,
   done,
   onToggle,
@@ -97,8 +97,9 @@ function CopilotDashboard({
   onToggle: (id: string) => void;
   onEdit: () => void;
   setProfile: (p: CopilotProfile) => void;
-  emailReminders: boolean;
-  onEmailReminders: (on: boolean) => void;
+  /** Absent en mode découverte (sans compte) */
+  emailReminders?: boolean;
+  onEmailReminders?: (on: boolean) => void;
 }) {
   const deadlines = useMemo(() => computeDeadlines(profile), [profile]);
   const vat = useMemo(() => vatStatus(profile), [profile]);
@@ -147,16 +148,18 @@ function CopilotDashboard({
         <button className="btn-ghost flex h-10 items-center gap-2 rounded-xl px-4 text-sm font-semibold" onClick={onEdit} type="button">
           <PencilLine className="size-4" /> Modifier ma situation
         </button>
-        <label className="btn-ghost flex h-10 cursor-pointer items-center gap-2.5 rounded-xl px-4 text-sm font-semibold">
-          <input
-            checked={emailReminders}
-            className="peer sr-only"
-            onChange={(e) => onEmailReminders(e.target.checked)}
-            type="checkbox"
-          />
-          <span className="relative h-5 w-9 rounded-full bg-white/10 transition after:absolute after:left-0.5 after:top-0.5 after:size-4 after:rounded-full after:bg-ink-muted after:transition peer-checked:bg-mint/30 peer-checked:after:translate-x-4 peer-checked:after:bg-mint" />
-          <Mail className="size-4" /> Rappels par e-mail
-        </label>
+        {onEmailReminders ? (
+          <label className="btn-ghost flex h-10 cursor-pointer items-center gap-2.5 rounded-xl px-4 text-sm font-semibold">
+            <input
+              checked={Boolean(emailReminders)}
+              className="peer sr-only"
+              onChange={(e) => onEmailReminders(e.target.checked)}
+              type="checkbox"
+            />
+            <span className="relative h-5 w-9 rounded-full bg-white/10 transition after:absolute after:left-0.5 after:top-0.5 after:size-4 after:rounded-full after:bg-ink-muted after:transition peer-checked:bg-mint/30 peer-checked:after:translate-x-4 peer-checked:after:bg-mint" />
+            <Mail className="size-4" /> Rappels par e-mail
+          </label>
+        ) : null}
         <p className="text-xs text-ink-muted sm:ml-2">
           {ACTIVITY_LABELS[profile.activity].split(" (")[0]} · déclaration {profile.periodicity}
         </p>
@@ -344,8 +347,10 @@ function CopilotDashboard({
       <p className="flex items-start gap-2 px-1 text-xs leading-5 text-ink-muted">
         <Info className="mt-0.5 size-3.5 shrink-0" />
         Calcul indicatif à partir des règles publiées par l&apos;administration (vérifiées le 17 novembre 2026). Quand une
-        date tombe un week-end, elle est parfois reportée, mais pas toujours : déclarez quelques jours avant. Ta situation
-        est enregistrée dans ton compte{emailReminders ? " : tu reçois un rappel dans ton récap du matin, 7 jours avant chaque échéance" : ""}.
+        date tombe un week-end, elle est parfois reportée, mais pas toujours : déclarez quelques jours avant.{" "}
+        {onEmailReminders
+          ? `Ta situation est enregistrée dans ton compte${emailReminders ? " : tu reçois un rappel dans ton récap du matin, 7 jours avant chaque échéance" : ""}.`
+          : "Rien n'est enregistré tant que tu ne crées pas de compte."}
       </p>
     </div>
   );
@@ -353,14 +358,17 @@ function CopilotDashboard({
 
 /* ───────────────────────── Formulaire de situation ───────────────────────── */
 
-function ProfileForm({
+export function ProfileForm({
   initial,
   onSave,
   onCancel,
+  note = "Ces informations sont enregistrées dans ton compte. Tu peux les modifier à tout moment.",
 }: {
   initial: CopilotProfile | null;
   onSave: (p: CopilotProfile) => void;
   onCancel?: () => void;
+  /** Texte sous le bouton (par défaut : enregistré dans le compte) */
+  note?: string;
 }) {
   const [activity, setActivity] = useState<Activity>(initial?.activity ?? "liberal");
   const [periodicity, setPeriodicity] = useState<Periodicity>(initial?.periodicity ?? "mensuelle");
@@ -453,7 +461,7 @@ function ProfileForm({
             </button>
           ) : null}
         </div>
-        <p className="mt-4 text-xs text-ink-muted">Ces informations sont enregistrées dans ton compte. Tu peux les modifier à tout moment.</p>
+        <p className="mt-4 text-xs text-ink-muted">{note}</p>
       </form>
     </Reveal>
   );

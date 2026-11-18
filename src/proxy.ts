@@ -34,7 +34,8 @@ export default async function proxy(request: NextRequest) {
     pathname.startsWith("/guides/") ||
     pathname === "/robots.txt" ||
     pathname === "/sitemap.xml" ||
-    pathname === "/api/track";
+    pathname === "/api/track" ||
+    pathname === "/calculateur-echeances";
 
   const hasActiveSession = request.cookies.has(SESSION_MARKER_COOKIE);
 

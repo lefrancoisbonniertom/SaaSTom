@@ -5,6 +5,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const latest = GUIDES.map((g) => g.updatedAt).sort().at(-1);
   return [
     { url: `${SITE_URL}/`, changeFrequency: "monthly", priority: 1 },
+    { url: `${SITE_URL}/calculateur-echeances`, changeFrequency: "monthly", priority: 0.9 },
     { url: `${SITE_URL}/guides`, lastModified: latest, changeFrequency: "weekly", priority: 0.9 },
     ...GUIDES.map((g) => ({
       url: `${SITE_URL}/guides/${g.slug}`,

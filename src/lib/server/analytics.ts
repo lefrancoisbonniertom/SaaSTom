@@ -36,6 +36,7 @@ export function isTrackedPath(path: string) {
     path === "/register" ||
     path === "/login" ||
     path === "/guides" ||
+    path === "/calculateur-echeances" ||
     /^\/guides\/[a-z0-9-]{1,80}$/.test(path) ||
     path === "/mentions-legales" ||
     path === "/cgv" ||
