@@ -15,7 +15,6 @@ import { useAppState } from "@/components/app-state-provider";
 import {
   formatCurrency,
   normalizeTags,
-  statusStyles,
   type ClientRecord,
   type ClientStatus,
 } from "@/lib/orfeo-data";
@@ -35,6 +34,13 @@ type EditDraft = {
   contact: string;
   nextAction: string;
   tags: string;
+};
+
+const COLUMN_ACCENT: Record<ClientStatus, { bar: string; line: string; over: string; avatar: string }> = {
+  Prospect: { bar: "bg-ink-muted", line: "bg-linear-to-r from-transparent via-ink-muted/60 to-transparent", over: "border-white/30 bg-white/[0.05]", avatar: "bg-white/8 text-ink-soft" },
+  "À relancer": { bar: "bg-coral", line: "bg-linear-to-r from-transparent via-coral to-transparent", over: "border-coral/50 bg-coral/[0.07]", avatar: "bg-coral/15 text-coral" },
+  "En cours": { bar: "bg-sky", line: "bg-linear-to-r from-transparent via-sky to-transparent", over: "border-sky/50 bg-sky/[0.07]", avatar: "bg-sky/15 text-sky" },
+  Signé: { bar: "bg-mint", line: "bg-linear-to-r from-transparent via-mint to-transparent", over: "border-mint/50 bg-mint/[0.07]", avatar: "bg-mint/15 text-mint" },
 };
 
 function toEditDraft(client: ClientRecord): EditDraft {
@@ -102,9 +108,13 @@ export function ClientsWorkspace({
         clients: filteredClients.filter(
           (client) => client.status === columnStatus,
         ),
+        total: filteredClients
+          .filter((client) => client.status === columnStatus)
+          .reduce((sum, client) => sum + client.amount, 0),
       })),
     [filteredClients],
   );
+  const pipelineTotal = columns.reduce((sum, column) => sum + column.total, 0);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -345,13 +355,40 @@ export function ClientsWorkspace({
         </section>
       ) : null}
 
-      <div className="grid gap-4 lg:grid-cols-4">
+      {/* Répartition du pipeline */}
+      <div className="glass rounded-3xl p-4 sm:p-5">
+        <div className="flex flex-wrap items-end justify-between gap-3">
+          <div>
+            <p className="text-xs uppercase tracking-[0.18em] text-ink-muted">Pipeline total</p>
+            <p className="mt-1 font-display text-3xl font-semibold">{formatCurrency(pipelineTotal)}</p>
+          </div>
+          <p className="text-sm text-ink-muted">
+            {filteredClients.length} client{filteredClients.length > 1 ? "s" : ""}
+            <span className="hidden lg:inline"> · glisse une fiche pour changer son étape</span>
+            <span className="lg:hidden"> · change l&apos;étape depuis chaque fiche</span>
+          </p>
+        </div>
+        <div className="mt-4 flex h-2.5 overflow-hidden rounded-full bg-white/5">
+          {columns.map((column) =>
+            column.total > 0 ? (
+              <div
+                className={`${COLUMN_ACCENT[column.status].bar} h-full transition-[width] duration-700`}
+                key={column.status}
+                style={{ width: `${pipelineTotal ? (column.total / pipelineTotal) * 100 : 0}%` }}
+                title={`${column.status} : ${formatCurrency(column.total)}`}
+              />
+            ) : null,
+          )}
+        </div>
+      </div>
+
+      <div className="-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 lg:mx-0 lg:grid lg:snap-none lg:grid-cols-4 lg:overflow-visible lg:px-0">
         {columns.map((column) => (
           <div
-            className={`flex flex-col gap-3 rounded-2xl border-2 p-3 transition ${
+            className={`relative flex w-[82%] shrink-0 snap-start flex-col gap-3 overflow-hidden rounded-3xl border p-3 transition duration-300 sm:w-[46%] lg:w-auto ${
               dragOverStatus === column.status
-                ? "border-gold bg-gold/10"
-                : "border-transparent bg-surface/40"
+                ? `${COLUMN_ACCENT[column.status].over} scale-[1.01]`
+                : "border-white/5 bg-white/[0.02]"
             }`}
             key={column.status}
             onDragLeave={() =>
@@ -365,32 +402,36 @@ export function ClientsWorkspace({
             }}
             onDrop={() => handleDrop(column.status)}
           >
-            <div className="flex items-center justify-between px-1">
-              <span
-                className={`rounded-xl border px-2 py-1 text-xs font-semibold ${statusStyles[column.status]}`}
-              >
-                {column.status}
+            <span aria-hidden className={`absolute inset-x-0 top-0 h-px ${COLUMN_ACCENT[column.status].line}`} />
+            <div className="flex items-center justify-between px-1 pt-1">
+              <span className="flex items-center gap-2">
+                <span className={`size-2 rounded-full ${COLUMN_ACCENT[column.status].bar}`} />
+                <span className="text-sm font-semibold text-ink">{column.status}</span>
+                <span className="rounded-full bg-white/5 px-1.5 text-[11px] font-semibold text-ink-muted">{column.clients.length}</span>
               </span>
-              <span className="text-xs font-semibold text-ink-muted">
-                {column.clients.length}
-              </span>
+              <span className="text-xs font-semibold text-ink-muted">{formatCurrency(column.total)}</span>
             </div>
 
             <div className="space-y-3">
               {column.clients.map((client) => (
                 <article
-                  className={`glass rounded-3xl p-3 transition ${
+                  className={`group animate-rise rounded-2xl border border-white/6 bg-linear-to-b from-surface-raised/90 to-surface/90 p-3.5 shadow-[0_12px_30px_-18px_rgba(0,0,0,0.8)] transition duration-200 ${
                     editingId === client.id
                       ? ""
-                      : "cursor-grab active:cursor-grabbing"
-                  } ${draggingId === client.id ? "opacity-50" : ""}`}
+                      : "cursor-grab hover:-translate-y-0.5 hover:border-gold/30 active:cursor-grabbing"
+                  } ${draggingId === client.id ? "rotate-2 scale-95 opacity-40" : ""}`}
                   draggable={editingId !== client.id}
-                  key={client.id}
+                  key={`${client.id}-${client.status}`}
                   onDragEnd={() => {
                     setDraggingId(null);
                     setDragOverStatus(null);
                   }}
-                  onDragStart={() => setDraggingId(client.id)}
+                  onDragStart={(event) => {
+                    // Nécessaire pour Firefox
+                    event.dataTransfer.setData("text/plain", client.id);
+                    event.dataTransfer.effectAllowed = "move";
+                    setDraggingId(client.id);
+                  }}
                 >
                   {editingId === client.id && editDraft ? (
                     <div className="space-y-2">
@@ -503,15 +544,16 @@ export function ClientsWorkspace({
                   ) : (
                     <>
                       <div className="flex items-start justify-between gap-2">
-                        <div className="min-w-0">
-                          <h4 className="truncate text-sm font-semibold text-ink">
-                            {client.name}
-                          </h4>
-                          <p className="mt-1 truncate text-xs text-ink-muted">
-                            {client.work}
-                          </p>
+                        <div className="flex min-w-0 items-start gap-2.5">
+                          <span className={`grid size-9 shrink-0 place-items-center rounded-xl text-sm font-bold ${COLUMN_ACCENT[client.status].avatar}`}>
+                            {client.name.charAt(0).toUpperCase()}
+                          </span>
+                          <div className="min-w-0">
+                            <h4 className="truncate text-sm font-semibold text-ink">{client.name}</h4>
+                            <p className="mt-0.5 truncate text-xs text-ink-muted">{client.work}</p>
+                          </div>
                         </div>
-                        <div className="flex shrink-0 gap-1">
+                        <div className="flex shrink-0 gap-1 opacity-100 transition lg:opacity-0 lg:group-hover:opacity-100">
                           <button
                             className="grid size-7 place-items-center rounded-xl text-ink-muted transition hover:bg-gold/10 hover:text-gold"
                             onClick={() => startEdit(client)}
@@ -528,9 +570,22 @@ export function ClientsWorkspace({
                           </button>
                         </div>
                       </div>
-                      <p className="mt-2 text-sm font-semibold text-ink">
-                        {formatCurrency(client.amount)}
-                      </p>
+                      <div className="mt-3 flex items-center justify-between gap-2">
+                        <p className="text-base font-semibold text-ink">{formatCurrency(client.amount)}</p>
+                        {/* Sur téléphone, le glisser-déposer n'existe pas : on change l'étape ici */}
+                        <select
+                          aria-label={`Étape de ${client.name}`}
+                          className="rounded-lg border border-white/10 bg-canvas px-1.5 py-1 text-[11px] text-ink-soft lg:hidden"
+                          onChange={(event) => void updateClient(client.id, { status: event.target.value as ClientStatus })}
+                          value={client.status}
+                        >
+                          {statusOptions.map((option) => (
+                            <option key={option} value={option}>
+                              {option}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
                       <p className="mt-1 truncate text-xs text-ink-muted">
                         {client.contact}
                       </p>
@@ -555,8 +610,12 @@ export function ClientsWorkspace({
               ))}
 
               {column.clients.length === 0 ? (
-                <p className="rounded-xl border border-dashed border-white/10 p-3 text-center text-xs text-ink-muted">
-                  Aucun client
+                <p
+                  className={`rounded-2xl border border-dashed p-6 text-center text-xs transition ${
+                    dragOverStatus === column.status ? "border-gold/50 text-gold" : "border-white/10 text-ink-muted"
+                  }`}
+                >
+                  {draggingId ? "Dépose la fiche ici" : "Aucun client à cette étape"}
                 </p>
               ) : null}
             </div>

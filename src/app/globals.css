@@ -66,11 +66,14 @@ body {
   color: #fff;
 }
 
-button,
-input,
-textarea,
-select {
-  font: inherit;
+/* Dans une couche « base » pour que les classes utilitaires (text-sm…) gardent la main */
+@layer base {
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+  }
 }
 
 canvas {
@@ -474,5 +477,12 @@ canvas {
   }
   to {
     stroke-dashoffset: -260;
+  }
+}
+
+/* iPhone : un champ en dessous de 16 px déclenche un zoom à la saisie */
+@media (max-width: 640px) {
+  .field {
+    font-size: 16px !important;
   }
 }
