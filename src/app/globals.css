@@ -486,3 +486,31 @@ canvas {
     font-size: 16px !important;
   }
 }
+
+/* Feuille de papier pour relire et modifier un document */
+@layer components {
+  .paper {
+    width: 100%;
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background:
+      linear-gradient(rgba(23, 32, 27, 0.045) 1px, transparent 1px) 0 2.6rem / 100% 1.75rem,
+      linear-gradient(180deg, #fbf8f1, #f4efe4);
+    color: #1d2620;
+    font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+    line-height: 1.75rem;
+    box-shadow:
+      0 30px 60px -30px rgba(0, 0, 0, 0.9),
+      0 0 0 6px rgba(255, 255, 255, 0.02);
+    outline: none;
+    transition: box-shadow 0.2s ease;
+  }
+  .paper:focus {
+    box-shadow:
+      0 30px 60px -30px rgba(0, 0, 0, 0.9),
+      0 0 0 4px rgba(214, 178, 110, 0.35);
+  }
+  .paper::placeholder {
+    color: rgba(29, 38, 32, 0.4);
+  }
+}

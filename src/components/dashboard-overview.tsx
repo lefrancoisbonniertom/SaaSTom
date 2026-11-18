@@ -37,7 +37,7 @@ const DAYS = ["L", "M", "M", "J", "V", "S", "D"];
 export function DashboardOverview() {
   const { state, isLoading, generateDocument, toggleTask, addTask, deleteTask } = useAppState();
   const { data: session } = useSession();
-  const { profile, done } = useCopilot();
+  const { profile, done, ready: copilotReady } = useCopilot();
   const [prompt, setPrompt] = useState("");
   const [lastGeneratedTitle, setLastGeneratedTitle] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
@@ -128,12 +128,19 @@ export function DashboardOverview() {
 
   const maxActivity = Math.max(...state.stats.dailyActivity, 1);
 
+  const onboardingSteps = [
+    { label: "Ajoute ton premier client", hint: "Ton pipeline commence ici.", href: "/clients", done: state.clients.length > 0 },
+    { label: "Génère un document avec l'IA", hint: "Un devis, une relance ou une proposition.", href: "/assistant", done: state.documents.length > 0 },
+    { label: "Active ton copilote", hint: "Tes échéances Urssaf, CFE et TVA calculées.", href: "/echeances", done: Boolean(profile) },
+  ];
+  const onboarding = { steps: onboardingSteps, done: onboardingSteps.filter((step) => step.done).length };
+
   return (
     <div className="space-y-5">
       {/* ───── Accueil ───── */}
       <header className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="text-sm capitalize text-ink-muted">{today}</p>
+          <p className="text-sm text-ink-muted first-letter:uppercase">{today}</p>
           <h1 className="mt-1 font-display text-3xl font-semibold tracking-tight sm:text-4xl">
             {hello}
             {firstName ? `, ${firstName}` : ""} <span className="inline-block origin-[70%_70%] animate-[orfeo-float_3s_ease-in-out_infinite]">👋</span>
@@ -141,6 +148,54 @@ export function DashboardOverview() {
         </div>
         <p className="text-sm text-ink-muted">Voici où en est ton activité aujourd&apos;hui.</p>
       </header>
+
+      {/* ───── Premiers pas (nouveaux comptes) ───── */}
+      {!isLoading && copilotReady && onboarding.done < onboarding.steps.length ? (
+        <Reveal>
+          <section className="glass beam relative overflow-hidden rounded-3xl p-5 sm:p-6">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <p className="text-sm font-semibold text-gold">Bienvenue sur Orfeo</p>
+                <h2 className="mt-1 font-display text-2xl font-semibold">Tes premiers pas</h2>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="text-sm text-ink-muted">
+                  {onboarding.done}/{onboarding.steps.length}
+                </span>
+                <div className="h-2 w-32 overflow-hidden rounded-full bg-white/5">
+                  <div
+                    className="h-full rounded-full bg-linear-to-r from-mint to-gold transition-[width] duration-700"
+                    style={{ width: `${(onboarding.done / onboarding.steps.length) * 100}%` }}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="mt-5 grid gap-3 md:grid-cols-3">
+              {onboarding.steps.map((step, i) => (
+                <Link
+                  className={`group flex items-start gap-3 rounded-2xl border p-4 transition ${
+                    step.done ? "border-mint/20 bg-mint/[0.05]" : "border-white/8 bg-white/[0.02] hover:border-gold/35 hover:bg-white/[0.04]"
+                  }`}
+                  href={step.href}
+                  key={step.label}
+                >
+                  <span
+                    className={`grid size-8 shrink-0 place-items-center rounded-full text-sm font-bold ${
+                      step.done ? "bg-mint/20 text-mint" : "bg-white/5 text-ink-muted group-hover:text-gold"
+                    }`}
+                  >
+                    {step.done ? <CheckCircle2 className="size-4" /> : i + 1}
+                  </span>
+                  <span className="min-w-0">
+                    <span className={`block font-semibold ${step.done ? "text-ink-muted line-through" : ""}`}>{step.label}</span>
+                    <span className="mt-0.5 block text-xs leading-5 text-ink-muted">{step.hint}</span>
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </section>
+        </Reveal>
+      ) : null}
 
       {/* ───── Studio IA + copilote ───── */}
       <div className="grid gap-4 xl:grid-cols-[1.6fr_1fr]">

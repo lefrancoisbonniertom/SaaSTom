@@ -297,7 +297,7 @@ export function DocumentsWorkspace({
               </p>
             ) : null}
             <textarea
-              className="field mt-5 min-h-96 w-full resize-y rounded-xl p-4 text-sm leading-6"
+              className="paper mt-5 min-h-[28rem] resize-y px-6 pb-6 pt-10 text-[15px] sm:px-10"
               onChange={(event) => setEditedContent(event.target.value)}
               value={editedContent}
             />

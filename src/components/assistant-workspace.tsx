@@ -130,11 +130,19 @@ export function AssistantWorkspace() {
         />
 
         <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <p className={`text-sm ${limitReached ? "font-semibold text-red-400" : "text-ink-muted"}`}>
-            {limitReached
-              ? "Limite atteinte — passez au plan Pro"
-              : `${state.aiCreditsUsed}/${FREE_PLAN_LIMIT} générations gratuites utilisées (${creditsLeft} restante${creditsLeft > 1 ? "s" : ""})`}
-          </p>
+          <div className="min-w-0 flex-1">
+            <p className={`text-sm ${limitReached ? "font-semibold text-red-400" : "text-ink-muted"}`}>
+              {limitReached
+                ? "Limite atteinte — passez au plan Pro"
+                : `${state.aiCreditsUsed}/${FREE_PLAN_LIMIT} générations gratuites utilisées (${creditsLeft} restante${creditsLeft > 1 ? "s" : ""})`}
+            </p>
+            <div className="mt-2 h-1.5 max-w-64 overflow-hidden rounded-full bg-white/5">
+              <div
+                className={`h-full rounded-full transition-[width] duration-700 ${limitReached ? "bg-coral" : "bg-linear-to-r from-mint to-gold"}`}
+                style={{ width: `${Math.min((state.aiCreditsUsed / FREE_PLAN_LIMIT) * 100, 100)}%` }}
+              />
+            </div>
+          </div>
           <button
             className="btn-gold flex h-10 items-center justify-center gap-2 rounded-xl px-4 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-50 sm:whitespace-nowrap"
             disabled={!prompt.trim() || isGenerating || limitReached}
@@ -201,7 +209,7 @@ export function AssistantWorkspace() {
           {lastDocument ? (
             <>
               <textarea
-                className="field mt-4 min-h-72 w-full resize-y rounded-xl p-3 text-sm leading-6"
+                className="paper animate-rise mt-4 min-h-80 resize-y px-5 pb-5 pt-10 text-sm"
                 onChange={(event) => setEditedContent(event.target.value)}
                 value={editedContent}
               />
@@ -235,9 +243,23 @@ export function AssistantWorkspace() {
               </div>
             </>
           ) : (
-            <pre className="mt-4 max-h-96 overflow-auto whitespace-pre-wrap rounded-xl border border-white/5 bg-white/[0.02] p-3 text-sm leading-6 text-ink-muted">
-              Lance une génération pour voir ici le document créé par Orfeo.
-            </pre>
+            isGenerating ? (
+              <div className="mt-4 space-y-3 rounded-2xl border border-white/5 bg-white/[0.02] p-5" aria-live="polite">
+                <p className="flex items-center gap-2 text-sm text-gold">
+                  <Sparkles className="size-4 animate-pulse" /> Orfeo rédige ton document…
+                </p>
+                {[92, 100, 84, 96, 60].map((w, i) => (
+                  <div className="skeleton h-3 rounded-full" key={i} style={{ width: `${w}%` }} />
+                ))}
+              </div>
+            ) : (
+              <div className="mt-4 grid place-items-center rounded-2xl border border-dashed border-white/10 px-6 py-12 text-center">
+                <span className="grid size-12 place-items-center rounded-2xl bg-gold/10 text-gold">
+                  <FileText className="size-5" />
+                </span>
+                <p className="mt-3 text-sm text-ink-muted">Lance une génération : le document apparaîtra ici, prêt à relire et à modifier.</p>
+              </div>
+            )
           )}
         </section>
       </aside>
