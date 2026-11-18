@@ -5,6 +5,7 @@ import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/server/prisma";
 import { authConfig } from "@/lib/auth.config";
 import { normalizeEmail, verifyOtp } from "@/lib/server/otp";
+import { sendWelcomeEmailSafely } from "@/lib/server/email";
 
 declare module "next-auth" {
   interface Session {
@@ -56,9 +57,11 @@ const providers: NextAuthConfig["providers"] = [
       if (!ok) return null;
 
       const email = normalizeEmail(credentials.email);
-      const user =
-        (await prisma.user.findUnique({ where: { email } })) ??
-        (await prisma.user.create({ data: { email, name: email } }));
+      let user = await prisma.user.findUnique({ where: { email } });
+      if (!user) {
+        user = await prisma.user.create({ data: { email, name: email } });
+        await sendWelcomeEmailSafely(email);
+      }
 
       return { id: user.id, email: user.email, name: user.name };
     },
@@ -86,11 +89,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (account?.provider === "google") {
         const email = user.email ? normalizeEmail(user.email) : null;
         if (!email) return false;
-        await prisma.user.upsert({
-          where: { email },
-          update: {},
-          create: { email, name: user.name ?? email },
-        });
+        const existing = await prisma.user.findUnique({ where: { email } });
+        if (!existing) {
+          await prisma.user.create({ data: { email, name: user.name ?? email } });
+          await sendWelcomeEmailSafely(email, user.name);
+        }
       }
       return true;
     },

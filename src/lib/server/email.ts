@@ -254,3 +254,69 @@ export async function sendPlanCanceledEmail(to: string) {
     ),
   });
 }
+
+/** E-mail envoyé juste après la création du compte : les 3 premiers pas. */
+export async function sendWelcomeEmail(to: string, name?: string | null) {
+  if (!resend) return;
+
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://orfeo.digitaleweb.fr";
+  const esc = (value: string) =>
+    value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  const firstName = name && !name.includes("@") ? esc(name.trim().split(/\s+/)[0]) : "";
+
+  const steps = [
+    ["Ajoute ton premier client", "Ton pipeline prend forme : prospect, à relancer, en cours, signé.", "/clients"],
+    ["Génère un document avec l'IA", "Décris ton besoin en une phrase : devis, relance ou proposition, prêt à envoyer.", "/assistant"],
+    ["Active ton copilote", "4 questions, et Orfeo calcule tes échéances Urssaf, CFE et TVA, avec un rappel 7 jours avant.", "/echeances"],
+  ]
+    .map(
+      ([title, text, path], i) => `
+        <tr>
+          <td style="vertical-align: top; padding: 0 12px 16px 0;">
+            <span style="display: inline-block; width: 26px; height: 26px; line-height: 26px; text-align: center; border-radius: 13px; background: #f3ecdc; color: #8f7140; font-size: 13px; font-weight: 700;">${i + 1}</span>
+          </td>
+          <td style="vertical-align: top; padding: 0 0 16px;">
+            <a href="${appUrl}${path}" style="font-size: 15px; font-weight: 600; color: #17201b; text-decoration: none;">${title} →</a>
+            <p style="margin: 4px 0 0; font-size: 13px; line-height: 20px; color: #5d6a60;">${text}</p>
+          </td>
+        </tr>`,
+    )
+    .join("");
+
+  // Les réponses arrivent directement chez le fondateur (adresse administrateur)
+  const replyTo = process.env.NEXT_PUBLIC_ADMIN_EMAIL || undefined;
+
+  await resend.emails.send({
+    from: FROM_EMAIL,
+    to,
+    ...(replyTo ? { replyTo } : {}),
+    subject: "Bienvenue sur Orfeo : tes 3 premiers pas",
+    html: wrapEmail(
+      `Bienvenue${firstName ? `, ${firstName}` : ""} !`,
+      `
+        <p style="font-size: 14px; line-height: 22px; color: #384438; margin: 0 0 18px;">
+          Ton compte Orfeo est prêt. Voici les trois étapes pour en tirer le meilleur dès aujourd'hui :
+        </p>
+        <table role="presentation" cellpadding="0" cellspacing="0" style="width: 100%;">${steps}</table>
+        <a href="${appUrl}/dashboard" style="display: inline-block; margin-top: 4px; background: #17201b; color: #ffffff; text-decoration: none; font-size: 14px; font-weight: 600; padding: 11px 20px; border-radius: 8px;">
+          Ouvrir mon tableau de bord
+        </a>
+        <p style="font-size: 13px; line-height: 20px; color: #8c9785; margin: 22px 0 0;">
+          Une question sur l'administratif ? Nos <a href="${appUrl}/guides" style="color: #8f7140;">guides gratuits</a>
+          expliquent l'essentiel, sources officielles à l'appui.${
+            replyTo ? " Et si tu as la moindre remarque sur Orfeo, réponds simplement à cet e-mail." : ""
+          }
+        </p>
+      `,
+    ),
+  });
+}
+
+/** Ne bloque jamais l'inscription si l'envoi échoue. */
+export async function sendWelcomeEmailSafely(to: string, name?: string | null) {
+  try {
+    await sendWelcomeEmail(to, name);
+  } catch (error) {
+    console.error("[welcome-email]", error);
+  }
+}

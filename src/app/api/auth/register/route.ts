@@ -1,5 +1,6 @@
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/server/prisma";
+import { sendWelcomeEmailSafely } from "@/lib/server/email";
 
 export const runtime = "nodejs";
 
@@ -31,6 +32,8 @@ export async function POST(request: Request) {
   const user = await prisma.user.create({
     data: { email, name: name || email, password: hashedPassword },
   });
+
+  await sendWelcomeEmailSafely(user.email, name || null);
 
   return Response.json({ id: user.id }, { status: 201 });
 }
