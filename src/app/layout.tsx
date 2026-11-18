@@ -3,6 +3,7 @@ import { Fraunces, Geist, Geist_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SessionProvider } from "@/components/session-provider";
 import { LoadingScreen } from "@/components/loading-screen";
+import { PageTracker } from "@/components/page-tracker";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -66,6 +67,7 @@ export default function RootLayout({
         <LoadingScreen />
         <SessionProvider>{children}</SessionProvider>
         <Analytics />
+        <PageTracker />
       </body>
     </html>
   );

@@ -76,6 +76,12 @@ export default function ConfidentialitePage() {
           détecter la fermeture de votre navigateur pour vous déconnecter automatiquement. Aucun
           cookie de mesure d&apos;audience ou publicitaire n&apos;est utilisé.
         </p>
+        <p>
+          Pour savoir quelles pages publiques sont consultées (accueil, guides, inscription), Orfeo
+          compte les pages vues de façon anonyme : seuls le chemin de la page, le nom du site
+          d&apos;origine (par exemple « google.com ») et la date sont enregistrés. Ni cookie, ni
+          adresse IP, ni identifiant ne sont conservés, et l&apos;espace connecté n&apos;est jamais mesuré.
+        </p>
       </LegalSection>
 
       <LegalSection title="Vos droits">

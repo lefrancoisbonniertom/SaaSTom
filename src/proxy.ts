@@ -33,7 +33,8 @@ export default async function proxy(request: NextRequest) {
     pathname === "/guides" ||
     pathname.startsWith("/guides/") ||
     pathname === "/robots.txt" ||
-    pathname === "/sitemap.xml";
+    pathname === "/sitemap.xml" ||
+    pathname === "/api/track";
 
   const hasActiveSession = request.cookies.has(SESSION_MARKER_COOKIE);
 

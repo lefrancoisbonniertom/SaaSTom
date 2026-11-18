@@ -3,6 +3,8 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/server/prisma";
 import { PageHeader } from "@/components/page-header";
 import { AdminOverview } from "@/components/admin-overview";
+import { AdminGrowth } from "@/components/admin-growth";
+import { getGrowthData } from "@/lib/server/growth";
 
 const PLAN_PRICES: Record<string, number> = {
   free: 0,
@@ -48,6 +50,7 @@ export default async function AdminPage() {
     prisma.client.count(),
     prisma.document.count(),
   ]);
+  const growth = await getGrowthData();
 
   const planBreakdown = { free: 0, pro: 0, business: 0 };
   for (const row of planCounts) {
@@ -87,6 +90,7 @@ export default async function AdminPage() {
         totalDocuments={totalDocuments}
         totalUsers={totalUsers}
       />
+      <AdminGrowth data={growth} />
     </>
   );
 }

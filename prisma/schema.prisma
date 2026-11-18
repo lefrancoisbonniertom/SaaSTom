@@ -107,3 +107,14 @@ model CopilotProfile {
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 }
+
+/// Mesure d'audience anonyme : une ligne par page vue (aucune donnée personnelle)
+model PageView {
+  id        String   @id @default(cuid())
+  path      String
+  referrer  String?
+  entry     Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+}
