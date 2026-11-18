@@ -101,7 +101,8 @@ export default function Content() {
         fin du mois qui suit vos trois premiers mois d&apos;activité : pour une activité commencée le 6 mars 2026,
         c&apos;était au plus tard le 31 juillet 2026. En trimestriel, elle se fait avant la fin du mois qui suit le
         trimestre d&apos;après celui de la création : pour une activité commencée le 12 avril 2026, c&apos;était au plus
-        tard le 31 octobre 2026.
+        tard le 31 octobre 2026. Le pas à pas est dans notre{" "}
+        <A href="/guides/premiere-declaration-urssaf">guide de la première déclaration</A>.
       </P>
 
       <H2 id="cfe">La CFE, chaque fin d&apos;année</H2>

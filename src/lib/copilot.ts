@@ -97,7 +97,7 @@ function urssafDeadlines(p: CopilotProfile, from: Date, to: Date): Deadline[] {
             ? "Elle regroupe vos premiers mois d'activité. À faire même si vous n'avez rien encaissé (indiquez 0)."
             : `Chiffre d'affaires encaissé en ${MONTHS[m]} ${y}, sur autoentrepreneur.urssaf.fr. À faire même à 0 €.`,
           category: "urssaf",
-          guide: "calendrier-micro-entrepreneur",
+          guide: isFirst ? "premiere-declaration-urssaf" : "calendrier-micro-entrepreneur",
         });
       }
     }
@@ -120,7 +120,7 @@ function urssafDeadlines(p: CopilotProfile, from: Date, to: Date): Deadline[] {
             ? "Elle couvre le trimestre de création et le suivant. À faire même si vous n'avez rien encaissé (indiquez 0)."
             : `Chiffre d'affaires encaissé de ${months} ${y}, sur autoentrepreneur.urssaf.fr. À faire même à 0 €.`,
           category: "urssaf",
-          guide: "calendrier-micro-entrepreneur",
+          guide: isFirst ? "premiere-declaration-urssaf" : "calendrier-micro-entrepreneur",
         });
       }
     }

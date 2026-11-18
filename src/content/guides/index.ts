@@ -3,6 +3,8 @@ import type { GuideMeta } from "./types";
 import Calendrier, { meta as calendrier } from "./calendrier-micro-entrepreneur";
 import Tva, { meta as tva } from "./seuil-tva-micro-entrepreneur";
 import Cfe, { meta as cfe } from "./cfe-micro-entrepreneur";
+import PremiereDeclaration, { meta as premiereDeclaration } from "./premiere-declaration-urssaf";
+import Mentions, { meta as mentions } from "./mentions-obligatoires-facture";
 
 export type Guide = GuideMeta & { Content: ComponentType };
 
@@ -11,6 +13,8 @@ export const GUIDES: Guide[] = [
   { ...calendrier, Content: Calendrier },
   { ...tva, Content: Tva },
   { ...cfe, Content: Cfe },
+  { ...premiereDeclaration, Content: PremiereDeclaration },
+  { ...mentions, Content: Mentions },
 ];
 
 export function getGuide(slug: string) {
